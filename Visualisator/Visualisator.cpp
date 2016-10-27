@@ -2,11 +2,11 @@
 
 
 
-Visualisator::Visualisator()
+
+Visualisator::Visualisator(Network *network)
 {
     STEP = 10;
-
-
+    this->network = network;
 }
 
 void Visualisator::init()
@@ -25,7 +25,7 @@ void Visualisator::draw()
     //glTranslate(QPointF(50,50));
     //glRotate(360);
     //spriteView.draw();
-    network.input.node.size();
+    network->input.node.size();
     glPopMatrix();
 	
 }

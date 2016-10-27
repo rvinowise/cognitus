@@ -6,8 +6,11 @@
 
 using namespace std;
 
+
+
 class Interface
 {
+friend class Network;
 public:
 	Interface();
 
@@ -17,5 +20,7 @@ public:
     vector<InterfaceNode*> node;
 	
 private:
+
 	
 };
+

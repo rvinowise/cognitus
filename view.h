@@ -15,7 +15,7 @@ class View : public QGLWidget
 public slots:
     void stepTimer();
 public:
-    View(QWidget *parent = 0);
+    View(Network* network);
 
     void initializeGL(); // Метод для инициализирования opengl
     void resizeGL(int inWidth, int inHeight); // Метод вызываемый после каждого изменения размера окна
@@ -34,7 +34,7 @@ public:
     float scale; // viewport size
     float aspectRatio;
 
-    Visualisator visualisator;
+    Visualisator *visualisator;
 
 };
 

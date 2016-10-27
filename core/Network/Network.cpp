@@ -8,23 +8,48 @@ Network::Network()
 
 }
 
-void Network::step()
+/*void Network::initProcessingThreads()
 {
-    fireInputAndThenHigherNodes();
-    connectLastBendsToNewOnes();
-    createNewHighNodes();
+    //threadProcessInput = new std::thread(checkAndProcessInputSignals);
+}*/
+
+void Network::step() {
+
+    prepareOutputOnMotors();
+
 }
 
+/*void Network::checkAndProcessInputSignals() {
+    if (areInputSignalsChanged()) {
 
-void Network::fireInputAndThenHigherNodes() {
-    input.firePreparedNodes();
+        constructCurrentStructureOfNodes();
+    }
+}*/
+
+void Network::constructCurrentStructureOfNodes() {
+
+    registerActivationOfExistingNodes();
+    extendNodesAndCreateNewOnes();
 }
 
 void Network::connectLastBendsToNewOnes() {
-    lastActiveBend.connectThisBendsToOthers(&newActiveBend);
-    lastActiveBend = newActiveBend;
-    newActiveBend.bend.clear();
+    lastActiveBends.connectThisBendsToOthers(&newActiveBends);
+    lastActiveBends = newActiveBends;
+    newActiveBends.bend.clear();
 }
+
+void Network::registerActivationOfExistingNodes() {
+
+}
+
+void Network::extendNodesAndCreateNewOnes() {
+    //Circuits circuits = findCircuits(newActiveBends);
+    //extendNodesAndCreateNewOnes(circuits);
+}
+
+
+
+
 
 void Network::createNewHighNodes()
 {
@@ -35,7 +60,12 @@ void Network::createNewHighNodes()
 
 void Network::saveNewActivatedBend(Bend *inBend)
 {
-    newActiveBend.bend.push_back(inBend);
+    newActiveBends.bend.push_back(inBend);
+}
+
+
+void Network::prepareOutputOnMotors() {
+
 }
 
 

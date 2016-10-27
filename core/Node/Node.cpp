@@ -5,8 +5,9 @@
 void Node::fire()
 {
     transmitExpectationForward();
-    addNewActiveBend();
+    addNewBendAsActive();
 
+    //createNewAndExpandOldFigures();
     //createHighNodes();
 }
 
@@ -14,18 +15,17 @@ void Node::fire()
 
 void Node::transmitExpectationForward()
 {
-    for (unsigned int i=0;i<bend.size();i++) {
-        if (bend[i]->isExpectedByAll()) {
-            bend[i]->transmitExpectationForward();
+    /*for (unsigned int i=0;i<bend.size();i++) {
+        if (bend[i]->isExpected) {
+            bend[i]->fire();
         }
-    }
+    }*/
 }
 
 
-void Node::addNewActiveBend() {
-    Bend* newBend = new Bend(this);
-    bend.push_back(newBend);
-    network.saveNewActivatedBend(newBend);
+void Node::addNewBendAsActive() {
+    /*Bend* newBend = new Bend(this);
+    network.saveNewActivatedBend(newBend);*/
 }
 
 
@@ -36,5 +36,5 @@ bool Node::isLowest()
 
 void Node::expectLowerBends()
 {
-    lowerChainBend->transmitExpectationForward();
+    lowerChainBend->fire();
 }

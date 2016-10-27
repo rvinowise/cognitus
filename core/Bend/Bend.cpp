@@ -14,46 +14,39 @@ Bend::Bend(Node *masterNode)
     transmitExpectationForward();
 }*/
 
-void Bend::transmitExpectationForward()
+void Bend::fire()
 {
-    if (isThisLastBendInChain()) {
+    /*if (isThisLastBendInChain()) {
         highNode->fire();
     } else {
-        transmitExpectationHorisontal();
+        expectLastBend();
     }
-    firedBend.clear(); //?
+    isExpected = false;*/
 }
 
 bool Bend::isThisLastBendInChain() {
-    return nextBend.size() == 0;
+    //return nextBend == nullptr;
 }
 
 
-void Bend::transmitExpectationHorisontal() {
-    for (unsigned int i_bend=0; i_bend<nextBend.size(); i_bend++) {
-        //expect(nextBend[i_bend]);
-        nextBend[i_bend]->expectedBy(this);
-    }
+/*void Bend::expectLastBend() {
+    //nextBend[i_bend]->expect();
 }
 
 
-void Bend::expectedBy(Bend* expectingBend) {
-    firedBend.insert(expectingBend);
-    if ((isExpectedByAll()) && (!node->isLowest())) {
+void Bend::expect() {
+    isExpected = true;
+    if (!node->isLowest()) {
         node->expectLowerBends();
     }
-}
+}*/
 
 void Bend::connectTo(Bend *toBend)
 {
-    this->nextBend.push_back(toBend);
-    toBend->prevBend.push_back(this);
+    /*this->nextBend = toBend;
+    toBend->prevBend.push_back(this);*/
 }
 
 
 
-bool Bend::isExpectedByAll()
-{
-    return firedBend.size() == prevBend.size();
-}
 

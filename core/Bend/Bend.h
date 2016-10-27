@@ -17,7 +17,7 @@ public:
 
     bool isExpectedByAll();
 
-    void transmitExpectationForward();
+    void fire();
     bool isThisLastBendInChain();
     void transmitExpectationHorisontal();
 
@@ -26,13 +26,14 @@ public:
 
 
 private:
+    // essential
     vector<Bend*> prevBend;
-    set<Bend*> firedBend;
-
     vector<Bend*> nextBend;
-    Node* node;
-    Node* highNode;
 
+    Node* node;
+
+    // volatile
+    set<Bend*> firedBend;
 
 };
 

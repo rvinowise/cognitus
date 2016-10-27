@@ -8,12 +8,14 @@
 class Visualisator
 {
 public:
-    Visualisator();
+    Visualisator(Network* network);
     void init();
 
     void draw();
 	
     int STEP;
 private:
+    Network *network;
+    
     SpriteView spriteView;
 };

@@ -7,7 +7,7 @@
 class Output: public Interface
 {
 public:
-    Output(){}
+    Output();
 
 };
 

@@ -4,9 +4,9 @@
 #
 #-------------------------------------------------
 
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=c++11
 
-QT += widgets core gui opengl
+QT += widgets core gui opengl network
 
 #CONFIG += c++11
 
@@ -35,7 +35,13 @@ SOURCES += main.cpp \
     ../gameEngine/spriteEngine/SpriteView.cpp \
     sprites/spriteIndexes.cpp \
     core/Network/ActiveBend/ActiveBend.cpp \
-    core/Node/InterfaceNode.cpp
+    core/Node/InterfaceNode.cpp \
+    core/Bend/BendOfFigure/BendOfFigure.cpp \
+    core/Bend/FreeBend/FreeBend.cpp \
+    core/Circuit/Circuit.cpp \
+    core/Network/Interface/Output/Output.cpp \
+    interface/InterfaceWindow.cpp \
+    core/threadSynchronization/WaiterForCondition.cpp
 
 
 
@@ -59,10 +65,15 @@ HEADERS  += \
     ../gameEngine/spriteEngine/SpriteView.h \
     view.h \
     sprites/spriteIndexes.h \
-    core/Network/Activity/ActiveBend.h \
     core/Network/ActiveBend/ActiveBend.h \
-    core/Node/InterfaceNode.h
+    core/Node/InterfaceNode.h \
+    core/Bend/BendOfFigure/BendOfFigure.h \
+    core/Bend/FreeBend/FreeBend.h \
+    core/Circuit/Circuit.h \
+    interface/InterfaceWindow.h \
+    core/threadSynchronization/WaiterForCondition.h
 
 
 
-FORMS    += mainwindow.ui
+FORMS    += \
+    interface/InterfaceWindow.ui

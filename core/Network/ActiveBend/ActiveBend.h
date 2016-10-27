@@ -6,12 +6,12 @@
 using namespace std;
 
 
-class ActiveBend
+class ActiveBends
 {
 public:
-    ActiveBend(){}
+    ActiveBends(){}
 
-    void connectThisBendsToOthers(ActiveBend* nextActiveBend);
+    void connectThisBendsToOthers(ActiveBends* nextActiveBend);
 
     vector<Bend*> bend;
 };

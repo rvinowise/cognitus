@@ -3,13 +3,13 @@ View* view;
 
 
 
-View::View(QWidget *parent) :
-    QGLWidget(parent)
+View::View(Network *network)
 {
 
     //engine.initEngine();
+    visualisator = new Visualisator(network);
 
-    timer.singleShot(visualisator.STEP,this,SLOT(stepTimer()));
+    timer.singleShot(visualisator->STEP,this,SLOT(stepTimer()));
 
     setMouseTracking(true);
 
@@ -24,9 +24,11 @@ void View::stepTimer()
     //engine.step();
 
     this->update();
-    timer.singleShot(visualisator.STEP,this,SLOT(stepTimer()));
+    timer.singleShot(visualisator->STEP,this,SLOT(stepTimer()));
     //timer.singleShot(1,this,SLOT(stepTimer()));
 }
+
+
 
 void View::mouseMoveEvent(QMouseEvent* mouseEvent) {
     //visualisator.mousePosOnScreen = QPointF(mouseEvent->pos().x()/scale, mouseEvent->pos().y()/scale);
@@ -68,7 +70,7 @@ void View::initializeGL() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    visualisator.init();
+    visualisator->init();
     //spriteBase.directionSprite = 0;
 }
 
@@ -113,5 +115,5 @@ void View::paintGL()
     glPopMatrix();
     glColor3f(1,1,1);
 
-    visualisator.draw();
+    visualisator->draw();
 }
