@@ -2,10 +2,23 @@
 
 #include "core/Network/Network.h"
 
+#ifdef debug_mode
+#include "core/Node/InterfaceNode.h"
+#include "core/test/alltests.h"
+#endif
+
+namespace core {
+
 void Node::fire()
 {
-    transmitExpectationForward();
-    addNewBendAsActive();
+#ifdef debug_mode
+    if (
+            core::input_iteration != test::i_iteration
+            ) {
+        bool errorCatched = true;
+    }
+#endif
+    add_new_bend_as_active();
 
     //createNewAndExpandOldFigures();
     //createHighNodes();
@@ -13,19 +26,10 @@ void Node::fire()
 
 
 
-void Node::transmitExpectationForward()
-{
-    /*for (unsigned int i=0;i<bend.size();i++) {
-        if (bend[i]->isExpected) {
-            bend[i]->fire();
-        }
-    }*/
-}
-
-
-void Node::addNewBendAsActive() {
-    /*Bend* newBend = new Bend(this);
-    network.saveNewActivatedBend(newBend);*/
+void Node::add_new_bend_as_active() {
+    Bend* newBend = new Bend(this);
+    bend.push_back(newBend);
+    network->save_new_activated_bend(newBend);
 }
 
 
@@ -37,4 +41,6 @@ bool Node::isLowest()
 void Node::expectLowerBends()
 {
     lowerChainBend->fire();
+}
+
 }

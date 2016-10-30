@@ -5,16 +5,23 @@
 
 #include <vector>
 
-using namespace std;
+namespace core {
 
 class InterfaceNode: public Node
 {
 public:
-    InterfaceNode(): Node() {}
+    InterfaceNode();
 
     void prepareToFire();
 	void fire();
 
+
+
     bool isPreparedToFire;
     
+    std::size_t get_index_in_interface_array();
+    std::size_t index_in_interface_array;
 };
+
+
+}

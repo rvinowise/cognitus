@@ -4,7 +4,7 @@
 #include <vector>
 #include <set>
 
-using namespace std;
+namespace core {
 
 class Node;
 
@@ -24,16 +24,19 @@ public:
     void expectedBy(Bend* expectingBend);
     void connectTo(Bend* toBend);
 
-
-private:
     // essential
-    vector<Bend*> prevBend;
-    vector<Bend*> nextBend;
-
+    std::vector<Bend*> prevBend;
+    std::vector<Bend*> nextBend;
     Node* node;
+private:
 
     // volatile
-    set<Bend*> firedBend;
+    std::set<Bend*> firedBend;
 
+#ifdef debug_mode
+    std::size_t indexInput;
+#endif
 };
 
+
+}

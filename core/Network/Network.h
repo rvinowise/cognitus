@@ -7,6 +7,16 @@
 #include <vector>
 #include <thread>
 
+#ifdef debug_mode
+#include <atomic>
+#endif
+
+namespace core {
+
+#ifdef debug_mode
+    extern std::atomic_size_t input_iteration;
+#endif
+
 class Network
 {
 
@@ -18,6 +28,11 @@ public:
 
     void step();
 
+    ActiveBends* getLastActiveBends();
+
+    void prepare_to_new_input_iteration();
+    void save_new_activated_bend(Bend* inBend);
+
 
 
 private:
@@ -28,17 +43,19 @@ private:
     void registerActivationOfExistingNodes();
     void extendNodesAndCreateNewOnes();
 
-    void connectLastBendsToNewOnes();
-    void saveNewActivatedBend(Bend* inBend);
+    void connect_last_bends_to_new_ones();
+
     void createNewHighNodes();
     void saveLastFreeBend(Bend* inBend);
 
 
-    ActiveBends lastActiveBends;
-    ActiveBends newActiveBends;
+    ActiveBends* lastActiveBends;
+    ActiveBends* newActiveBends;
 
     std::thread* threadProcessInput;
 };
 
 
-extern Network network;
+extern Network* network;
+
+}

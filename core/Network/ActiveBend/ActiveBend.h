@@ -3,7 +3,9 @@
 #include "../../Bend/Bend.h"
 
 #include <vector>
-using namespace std;
+
+
+namespace core {
 
 
 class ActiveBends
@@ -13,5 +15,7 @@ public:
 
     void connectThisBendsToOthers(ActiveBends* nextActiveBend);
 
-    vector<Bend*> bend;
+    std::vector<Bend*> bend;
 };
+
+}

@@ -2,13 +2,13 @@
 
 #include "../Bend/Bend.h"
 
+#include "core/debugStuff.h"
 #include <vector>
 
-using namespace std;
+namespace core {
 
 class Node
 {
-//friend class Bend;
 public:
     void fire();
 
@@ -16,17 +16,23 @@ public:
     void expectLowerBends();
 
     friend Bend::Bend(Node* masterNode);
-private:
+
     // essential
-    vector<Bend* > bend;
+    std::vector<Bend* > bend;
+private:
+
     Bend* lowerChainBend;
 
     // volatile
 
-
-    void transmitExpectationForward();
-    void addNewBendAsActive();
+    void add_new_bend_as_active();
     void createHighNodes();
 
-    void addBend();
+    void addBend();    
+
+
+
+
 };
+
+}

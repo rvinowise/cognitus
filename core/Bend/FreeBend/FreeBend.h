@@ -4,6 +4,7 @@
 
 /// @image html C:/ydisk/program/cognitus/core/Bend/FreeBend/position1.png
 
+namespace core {
 
 class FreeBend: public Bend
 {
@@ -12,5 +13,7 @@ public:
 
 private:
     // essential
-    vector<Bend*> bendOfFigure;
+    std::vector<Bend*> bendOfFigure;
 };
+
+}

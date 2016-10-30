@@ -1,11 +1,19 @@
-//#include <QtGui/QApplication> // old qt
 #include <QtWidgets/QApplication>
 
-//#include "view.h"
 #include "interface/InterfaceWindow.h"
 #include "core/Network/Network.h"
 
-//using namespace interface;
+
+
+#ifdef test_itself
+
+#include "core/test/allTests.h"
+
+using namespace test;
+QTEST_MAIN(test::Network)
+//QTEST_MAIN(test::Input)
+
+#else
 
 int main(int argc, char *argv[])
 {
@@ -18,3 +26,6 @@ int main(int argc, char *argv[])
     interfaceWindow->show();
     return a.exec();
 }
+
+
+#endif

@@ -5,6 +5,8 @@
 
 #include "../gameEngine/spriteEngine/SpriteView.h"
 
+using namespace core;
+
 class Visualisator
 {
 public:

@@ -1,5 +1,7 @@
 #include "ActiveBend.h"
 
+namespace core {
+
 void ActiveBends::connectThisBendsToOthers(ActiveBends *nextActiveBend)
 {
     for (int i_bendFrom = 0; i_bendFrom < bend.size(); i_bendFrom++) {
@@ -10,4 +12,6 @@ void ActiveBends::connectThisBendsToOthers(ActiveBends *nextActiveBend)
             bendFrom->connectTo(bendTo);
         }
     }
+}
+
 }

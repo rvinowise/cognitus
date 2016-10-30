@@ -4,9 +4,8 @@
 
 #include <vector>
 
-using namespace std;
 
-
+namespace core {
 
 class Interface
 {
@@ -15,12 +14,15 @@ public:
 	Interface();
 
     void initNodes(int inQty);
+    void prepareToFire(int index);
+    std::size_t getNodesQty();
+    std::vector<InterfaceNode*> node;
+protected:
     void firePreparedNodes();
 
-    vector<InterfaceNode*> node;
-	
 private:
 
 	
 };
 
+}

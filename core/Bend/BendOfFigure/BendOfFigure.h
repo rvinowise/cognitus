@@ -4,6 +4,7 @@
 
 /// @image html position2.png
 
+namespace core {
 
 class BendOfFigure: public Bend
 {
@@ -13,6 +14,9 @@ public:
 private:
     // essential
     Node* nodeOfWholeFigure;
-    vector<Bend*> freeBend;
+    std::vector<Bend*> freeBend;
 
 };
+
+
+}

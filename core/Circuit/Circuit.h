@@ -2,6 +2,8 @@
 
 #include "core/Bend/Bend.h"
 
+namespace core {
+
 class LineOfCircuit
 {
 public:
@@ -25,3 +27,4 @@ private:
     LineOfCircuit secondLine;
 };
 
+}

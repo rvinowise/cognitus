@@ -6,9 +6,10 @@
 
 QMAKE_CXXFLAGS += -std=c++11
 
-QT += widgets core gui opengl network
+QT += widgets core gui opengl network testlib
 
 #CONFIG += c++11
+DEFINES += test_itself debug_mode debug_msg_core
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,10 +18,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    view.cpp \
     core/Bend/Bend.cpp \
     core/Network/Interface/Input/Input.cpp \
-    core/Network/Interface/interface.cpp \
     core/Network/Network.cpp \
     core/Node/Node.cpp \
     Visualisator/Visualisator.cpp \
@@ -41,7 +40,11 @@ SOURCES += main.cpp \
     core/Circuit/Circuit.cpp \
     core/Network/Interface/Output/Output.cpp \
     interface/InterfaceWindow.cpp \
-    core/threadSynchronization/WaiterForCondition.cpp
+    core/threadSynchronization/WaiterForCondition.cpp \
+    core/Network/Interface/Interface.cpp \
+    core/Network/Interface/Input/test/qtTest.cpp \
+    core/Network/test/testNetwork.cpp \
+    core/debugstuff.cpp
 
 
 
@@ -63,7 +66,6 @@ HEADERS  += \
     ../gameEngine/spriteEngine/SpriteBase.h \
     ../gameEngine/spriteEngine/spriteFunctions.h \
     ../gameEngine/spriteEngine/SpriteView.h \
-    view.h \
     sprites/spriteIndexes.h \
     core/Network/ActiveBend/ActiveBend.h \
     core/Node/InterfaceNode.h \
@@ -71,7 +73,9 @@ HEADERS  += \
     core/Bend/FreeBend/FreeBend.h \
     core/Circuit/Circuit.h \
     interface/InterfaceWindow.h \
-    core/threadSynchronization/WaiterForCondition.h
+    core/threadSynchronization/WaiterForCondition.h \
+    core/test/alltests.h \
+    core/debugStuff.h
 
 
 

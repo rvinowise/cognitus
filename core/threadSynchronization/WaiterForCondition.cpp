@@ -1,36 +1,53 @@
 #include "WaiterForCondition.h"
+#include <qdebug.h>
+
+/*std::mutex g_mutexExtra;
+std::mutex g_mutexIntra;
+bool needToProceed;
+std::condition_variable condition;*/
+namespace core {
 
 WaiterForTask::WaiterForTask()
 {
-
+    //qDebug("WaiterForTask()");
 }
 
-void WaiterForTask::waitForTask()
+WaiterForTask::~WaiterForTask()
 {
-    std::unique_lock<std::mutex> uniqueLock(mutex);
-    //mutex.lock();
+    //qDebug("~WaiterForTask()");
+}
+
+void WaiterForTask::worker_wait_for_task(std::unique_lock<std::mutex>* uniqueLock)
+{
     while (!needToProceed) {
-        condition.wait(uniqueLock);
+        qDebug("waitForTask :: condition.wait(uniqueLock) (unlocks the mutexIntra)");
+        condition.wait(*uniqueLock);
+        qDebug("waitForTask :: I'm notifyed (OK-mutexIntra.lock)");
     }
+}
+void WaiterForTask::worker_prepare_for_next_task()
+{
     needToProceed = false;
+    //qDebug("prepareToNextTask :: mutexExtra.unlock");
+    //mutex.unlock();
+    //qDebug("prepareToNextTask :: OK-mutexExtra.unlock");
 }
 
-void WaiterForTask::prepareToNextTask()
-{
-    //std::unique_lock<std::mutex> uniqueLock(mutex);
 
-    mutex.unlock();
-}
-
-void WaiterForTask::waitForTaskCompletion()
+void WaiterForTask::master_wait_for_task_completion()
 {
-    //std::unique_lock<std::mutex> uniqueLock(mutex);
+    qDebug("waitForTaskCompletion :: mutexExtra.lock");
     mutex.lock();
+    qDebug("waitForTaskCompletion :: OK-mutexExtra.lock");
 }
-
-void WaiterForTask::proceedWithTask()
+void WaiterForTask::master_gave_task()
 {
     needToProceed = true;
+    qDebug("proceedWithTask :: mutexExtra.unlock()");
     mutex.unlock();
-    condition.notify_all();
+    qDebug("proceedWithTask :: before notify");
+    condition.notify_one();
+    qDebug("proceedWithTask :: notifyed");
+}
+
 }

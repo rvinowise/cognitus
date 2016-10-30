@@ -3,10 +3,20 @@
 
 #include "core/Node/Node.h"
 
+#ifdef debug_mode
+#include "core/Node/InterfaceNode.h"
+#include "core/Network/Network.h"
+#include "core/test/alltests.h"
+#endif
+
+namespace core {
+
 Bend::Bend(Node *masterNode)
 {
     node = masterNode;
-    node->bend.push_back(this);
+#ifdef debug_mode
+    indexInput = static_cast<InterfaceNode*>(masterNode)->get_index_in_interface_array();
+#endif
 }
 
 /*void Bend::expectedFire()
@@ -25,7 +35,7 @@ void Bend::fire()
 }
 
 bool Bend::isThisLastBendInChain() {
-    //return nextBend == nullptr;
+    return nextBend.empty();
 }
 
 
@@ -41,12 +51,21 @@ void Bend::expect() {
     }
 }*/
 
+
+
 void Bend::connectTo(Bend *toBend)
 {
-    /*this->nextBend = toBend;
-    toBend->prevBend.push_back(this);*/
+#ifdef debug_mode
+    if (
+            core::input_iteration != test::i_iteration
+            ) {
+        bool errorCatched = true;
+    }
+#endif
+    this->nextBend.push_back(toBend);
+    toBend->prevBend.push_back(this);
 }
 
-
+}
 
 

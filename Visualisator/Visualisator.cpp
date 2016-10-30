@@ -25,7 +25,7 @@ void Visualisator::draw()
     //glTranslate(QPointF(50,50));
     //glRotate(360);
     //spriteView.draw();
-    network->input.node.size();
+    network->input.getNodesQty();
     glPopMatrix();
 	
 }

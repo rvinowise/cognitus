@@ -5,14 +5,23 @@
 #include "core/threadSynchronization/WaiterForCondition.h"
 #include <thread>
 
+namespace core {
+
+
 class Input: public Interface
 {
 public:
     Input();
 
     void beginSettingInputFromOutside();
-    void prepareToFire(int index);
+#ifdef debug_mode
+    void endSettingInputFromOutside(std::size_t iter, std::size_t qtySignals);
+    std::size_t iter;
+    std::size_t qtySignals;
+#else
     void endSettingInputFromOutside();
+#endif
+    void wait_for_insertion_of_input();
 
 
 private:
@@ -27,3 +36,5 @@ private:
 
 };
 
+
+}
