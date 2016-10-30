@@ -11,13 +11,6 @@ namespace core {
 
 void Node::fire()
 {
-#ifdef debug_mode
-    if (
-            core::input_iteration != test::i_iteration
-            ) {
-        bool errorCatched = true;
-    }
-#endif
     add_new_bend_as_active();
 
     //createNewAndExpandOldFigures();

@@ -48,13 +48,13 @@ void Input::bringInputsToRepresentationOfNetwork()
 {
     while (inputSignalsAreExpected) {
         std::unique_lock<std::mutex> uniqueLock(waiterForChangeOfInput.mutex);
-        while (!waiterForChangeOfInput.needToProceed) {
+        /*while (!waiterForChangeOfInput.needToProceed) {
             qDebug("waitForTask :: condition.wait(uniqueLock) (unlocks the mutexIntra)");
             waiterForChangeOfInput.condition.wait(uniqueLock);
             debug_msg(QString("waitForTask :: I'm notifyed iter:%1 qtySign:%2").
                       arg(iter).arg(qtySignals));
-        }
-        //waiterForChangeOfInput.worker_wait_for_task(&uniqueLock);
+        }*/
+        waiterForChangeOfInput.worker_wait_for_task(&uniqueLock);
 
         debug_msg(QString("Input::bringInputsToRepresentationOfNetwork iter:%1 qtySign:%2").
                   arg(iter).arg(qtySignals));

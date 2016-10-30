@@ -10,7 +10,7 @@ namespace core {
 class Node
 {
 public:
-    void fire();
+    virtual void fire();
 
     bool isLowest();
     void expectLowerBends();

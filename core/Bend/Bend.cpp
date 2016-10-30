@@ -55,13 +55,6 @@ void Bend::expect() {
 
 void Bend::connectTo(Bend *toBend)
 {
-#ifdef debug_mode
-    if (
-            core::input_iteration != test::i_iteration
-            ) {
-        bool errorCatched = true;
-    }
-#endif
     this->nextBend.push_back(toBend);
     toBend->prevBend.push_back(this);
 }

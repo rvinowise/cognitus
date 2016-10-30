@@ -5,6 +5,11 @@
 std::mutex g_mutexIntra;
 bool needToProceed;
 std::condition_variable condition;*/
+
+#ifdef debug_mode
+#include "core/debugStuff.h"
+#endif
+
 namespace core {
 
 WaiterForTask::WaiterForTask()
@@ -22,7 +27,8 @@ void WaiterForTask::worker_wait_for_task(std::unique_lock<std::mutex>* uniqueLoc
     while (!needToProceed) {
         qDebug("waitForTask :: condition.wait(uniqueLock) (unlocks the mutexIntra)");
         condition.wait(*uniqueLock);
-        qDebug("waitForTask :: I'm notifyed (OK-mutexIntra.lock)");
+        debug_msg(QString("waitForTask :: I'm notifyed iter:%1 qtySign:%2").
+                  arg(iter).arg(qtySignals));
     }
 }
 void WaiterForTask::worker_prepare_for_next_task()
