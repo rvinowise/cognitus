@@ -7,14 +7,13 @@ namespace test {
 void Input::init_input_characteristics()
 {
     core::network = new core::Network();
-    qtyInputs = 50;
+    qtyInputs = 100;
     qtyIterations = 10000;
     network->input.initNodes(qtyInputs);
 }
 
 void Input::bring_inputs_to_representation_of_network()
 {
-    //size_t qtyInputs = qrand()*10000;
     init_input_characteristics();
     concoct_input_history();
     input_history_in_cycle();
@@ -29,9 +28,9 @@ void Input::concoct_input_history()
     for (size_t i_iter = 0; i_iter < qtyIterations; i_iter++) {
         QBitArray inputFromOutside(qtyInputs);
         for (size_t i_input = 0; i_input < qtyInputs; i_input++) {
-            if (random(50) == 0) {
+            if (random(10) == 0) {
                 inputFromOutside.setBit(i_input);
-                break;
+                //break;
             }
         }
         inputHistory.append(inputFromOutside);
@@ -42,14 +41,11 @@ std::atomic_size_t i_iteration;
 void Input::input_history_in_cycle()
 {
     i_iteration = -1;
-    for (int i_iter = 0; i_iter < qtyIterations; i_iter++) {
+    for (auto i_iter = 0; i_iter < qtyIterations; i_iter++) {
         i_iteration++;
-        debug_msg(QString("start input iteration %1").arg(i_iter).toLocal8Bit());
         network->input.beginSettingInputFromOutside();
 
-        debug_msg(QString("inside iteration %1").arg(i_iter).toLocal8Bit());
         QBitArray inputFromOutside = inputHistory[i_iter];
-        debug_msg("Mock::inputHistoryInCycle");
         for (size_t i_input=0; i_input < qtyInputs; i_input++) {
             if (inputFromOutside.testBit(i_input)) {
                 network->input.prepareToFire(i_input);
@@ -67,9 +63,7 @@ void Input::check_network_validity()
     std::vector<Bend*>* bendsOfIteration = &lastAddedBends->bend;
     for (size_t i_iter = qtyIterations-1; i_iter > 0; i_iter--) {
         if (inputHistory[i_iter].count(true) > 0) {
-            debug_msg(QString("start checking ineration %1").arg(i_iter).toLocal8Bit());
             check_if_all_bends_of_input_iteration_have_the_same_previous_bends(bendsOfIteration);
-            debug_msg(QString("#2 start checking ineration %1").arg(i_iter).toLocal8Bit());
             compare_inputted_array_with_nodes_in_network(inputHistory[i_iter], bendsOfIteration);
             bendsOfIteration = get_bends_of_previous_input_iteration(bendsOfIteration);
         }
@@ -77,7 +71,7 @@ void Input::check_network_validity()
 }
 
 void Input::check_if_all_bends_of_input_iteration_have_the_same_previous_bends
-(std::vector<Bend*>* bendsOfIteration)
+(const std::vector<Bend*>* bendsOfIteration)
 {
     QVERIFY(bendsOfIteration->size() > 0);
 
@@ -107,7 +101,6 @@ void Input::check_if_all_bends_of_input_iteration_have_the_same_previous_bends
 void Input::compare_inputted_array_with_nodes_in_network
 (QBitArray inputFromOutside, const std::vector<Bend*>* bendsOfInput)
 {
-    //for (Bend* bend : *bendsOfInput) {
     for (size_t i_bend=0; i_bend < bendsOfInput->size(); i_bend++) {
         Bend* bend = bendsOfInput->at(i_bend);
         InterfaceNode* node = static_cast<InterfaceNode*>(bend->node);
@@ -119,9 +112,8 @@ void Input::compare_inputted_array_with_nodes_in_network
 
         inputFromOutside.clearBit(nodeIndex);
     }
-    //QVERIFY(inputFromOutside.isNull());
     for (size_t i_possible_neglected_input_signal = 0;
-         i_possible_neglected_input_signal < inputFromOutside.size();
+         i_possible_neglected_input_signal < (size_t)inputFromOutside.size();
          i_possible_neglected_input_signal++) {
 
         QVERIFY(!inputFromOutside.testBit(i_possible_neglected_input_signal));

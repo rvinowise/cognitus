@@ -27,7 +27,7 @@ public:
 private:
     void initProcessingThread();
 
-    void bringInputsToRepresentationOfNetwork();
+    void bring_inputs_to_representation_of_network();
     void waitForNewInputs();
 
     bool inputSignalsAreExpected;

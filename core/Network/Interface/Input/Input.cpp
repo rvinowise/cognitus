@@ -17,7 +17,7 @@ Input::Input()
 void Input::initProcessingThread()
 {
     threadProcessInput = new std::thread(
-                &Input::bringInputsToRepresentationOfNetwork, this);
+                &Input::bring_inputs_to_representation_of_network, this);
 }
 
 void Input::beginSettingInputFromOutside()
@@ -44,20 +44,23 @@ void Input::wait_for_insertion_of_input()
     waiterForChangeOfInput.master_wait_for_task_completion();
 }
 
-void Input::bringInputsToRepresentationOfNetwork()
+void Input::bring_inputs_to_representation_of_network()
 {
     while (inputSignalsAreExpected) {
-        std::unique_lock<std::mutex> uniqueLock(waiterForChangeOfInput.mutex);
-        /*while (!waiterForChangeOfInput.needToProceed) {
-            qDebug("waitForTask :: condition.wait(uniqueLock) (unlocks the mutexIntra)");
-            waiterForChangeOfInput.condition.wait(uniqueLock);
-            debug_msg(QString("waitForTask :: I'm notifyed iter:%1 qtySign:%2").
-                      arg(iter).arg(qtySignals));
-        }*/
-        waiterForChangeOfInput.worker_wait_for_task(&uniqueLock);
 
-        debug_msg(QString("Input::bringInputsToRepresentationOfNetwork iter:%1 qtySign:%2").
-                  arg(iter).arg(qtySignals));
+        std::unique_lock<std::mutex> uniqueLock(waiterForChangeOfInput.worker_mutex);
+
+        while (!waiterForChangeOfInput.needToProceed) {
+
+            waiterForChangeOfInput.worker_wait_for_task(&uniqueLock);
+
+            debug_msg(boost::format{
+            "waitForTask :: I'm notifyed iter:%1 qtySign:%2"}% iter % qtySignals);
+        }
+
+        debug_msg(boost::format("waitForTask :: I'm notifyed iter:%1 qtySign:%2")
+                  % iter % qtySignals);
+
         network->prepare_to_new_input_iteration();
         firePreparedNodes();
         network->connect_last_bends_to_new_ones();

@@ -61,10 +61,7 @@ void Network::prepare_to_new_input_iteration()
 void Network::connect_last_bends_to_new_ones() {
     if (!newActiveBends->bend.empty()) {
         lastActiveBends->connectThisBendsToOthers(newActiveBends);
-        debug_msg(QString("delete lastActiveBends iterationIntra=%1").
-                  arg(core::input_iteration));
         delete lastActiveBends;
-        qDebug("deleted lastActiveBends");
         lastActiveBends = newActiveBends;
     } else {
         delete newActiveBends;
@@ -94,11 +91,6 @@ void Network::createNewHighNodes()
 void Network::save_new_activated_bend(Bend *inBend)
 {
     newActiveBends->bend.push_back(inBend);
-#ifdef debug_mode
-    if (newActiveBends->bend.size() > 1) {
-        bool testSituation = true;
-    }
-#endif
 }
 
 

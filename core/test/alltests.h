@@ -32,7 +32,7 @@ private:
     void concoct_input_history();
     void input_history_in_cycle();
     void check_network_validity();
-    void check_if_all_bends_of_input_iteration_have_the_same_previous_bends(std::vector<Bend*>* bendsOfIteration);
+    void check_if_all_bends_of_input_iteration_have_the_same_previous_bends(const std::vector<Bend*>* bendsOfIteration);
     void compare_inputted_array_with_nodes_in_network(QBitArray inputIteration, const std::vector<Bend*>* bendsOfIteration);
     std::vector<Bend*>* get_bends_of_previous_input_iteration(const std::vector<Bend*>* bendsOfIteration);
 

@@ -18,7 +18,7 @@ void Interface::initNodes(int inQty) {
 
 void Interface::firePreparedNodes()
 {
-    for (int i_node = 0; i_node < node.size(); i_node++) {
+    for (size_t i_node = 0; i_node < node.size(); i_node++) {
         if (node[i_node]->isPreparedToFire) {
             node[i_node]->fire();
         }

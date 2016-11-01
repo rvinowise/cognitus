@@ -81,3 +81,6 @@ HEADERS  += \
 
 FORMS    += \
     interface/InterfaceWindow.ui
+
+INCLUDEPATH += \
+    C:/ydisk/program/boost_1_62_0/

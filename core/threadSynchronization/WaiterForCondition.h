@@ -24,7 +24,8 @@ public:
     void master_wait_for_task_completion();
     void master_gave_task();
 
-    std::mutex mutex;
+    std::mutex master_mutex;
+    std::mutex worker_mutex;
     bool needToProceed;
     std::condition_variable condition;
 private:

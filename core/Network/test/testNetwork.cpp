@@ -5,8 +5,8 @@ namespace test {
 
 void Network::init_data_for_tests()
 {
-    uint randomSeed = 325025712;
-    //uint randomSeed = QDateTime::currentMSecsSinceEpoch();
+    //uint randomSeed = 325025712;
+    uint randomSeed = QDateTime::currentMSecsSinceEpoch();
     qsrand(randomSeed);
     qDebug(QString("random seed=%1").arg(randomSeed).toLocal8Bit());
 }
