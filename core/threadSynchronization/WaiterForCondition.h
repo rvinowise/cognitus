@@ -18,7 +18,7 @@ public:
     WaiterForTask();
     ~WaiterForTask();
 
-    void worker_wait_for_task(std::unique_lock<std::mutex>* uniqueLock);
+    void worker_wait_for_task();
     void worker_prepare_for_next_task();
 
     void master_wait_for_task_completion();
@@ -27,6 +27,7 @@ public:
     std::mutex master_mutex;
     std::mutex worker_mutex;
     bool needToProceed;
+	bool master_need_to_proceed;
     std::condition_variable condition;
 private:
 

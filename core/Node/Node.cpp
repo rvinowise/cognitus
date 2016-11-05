@@ -4,7 +4,7 @@
 
 #ifdef debug_mode
 #include "core/Node/InterfaceNode.h"
-#include "core/test/alltests.h"
+#include "core/test/allTests.h"
 #endif
 
 namespace core {
@@ -20,7 +20,7 @@ void Node::fire()
 
 
 void Node::add_new_bend_as_active() {
-    Bend* newBend = new Bend(this);
+    Bend newBend(*this);
     bend.push_back(newBend);
     network->save_new_activated_bend(newBend);
 }
@@ -28,12 +28,12 @@ void Node::add_new_bend_as_active() {
 
 bool Node::isLowest()
 {
-    return (lowerChainBend == nullptr);
+    return lowerChainBend.isEmpty();
 }
 
 void Node::expectLowerBends()
 {
-    lowerChainBend->fire();
+
 }
 
 }

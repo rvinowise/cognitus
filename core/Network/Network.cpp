@@ -3,7 +3,7 @@
 #include <QtDebug>
 
 #ifdef debug_mode
-#include "core/test/alltests.h"
+#include "core/test/allTests.h"
 #include <atomic>
 #endif
 
@@ -41,26 +41,19 @@ ActiveBends* Network::getLastActiveBends()
 
 
 void Network::constructCurrentStructureOfNodes() {
-
+	
     registerActivationOfExistingNodes();
     extendNodesAndCreateNewOnes();
 }
 
-#ifdef debug_mode
-extern std::atomic_size_t input_iteration;
-#endif
-
 void Network::prepare_to_new_input_iteration()
 {
-#ifdef debug_mode
-    input_iteration.store(test::i_iteration);
-#endif
     newActiveBends = new ActiveBends();
 }
 
 void Network::connect_last_bends_to_new_ones() {
     if (!newActiveBends->bend.empty()) {
-        lastActiveBends->connectThisBendsToOthers(newActiveBends);
+        lastActiveBends->connectThisBendsToOthers(*newActiveBends);
         delete lastActiveBends;
         lastActiveBends = newActiveBends;
     } else {
@@ -88,7 +81,7 @@ void Network::createNewHighNodes()
 
 
 
-void Network::save_new_activated_bend(Bend *inBend)
+void Network::save_new_activated_bend(Bend inBend)
 {
     newActiveBends->bend.push_back(inBend);
 }

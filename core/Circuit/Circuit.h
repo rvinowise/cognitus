@@ -4,11 +4,8 @@
 
 namespace core {
 
-class LineOfCircuit
+struct LineOfCircuit
 {
-public:
-    LineOfCircuit(){};
-private:
     Bend* start;
     Bend* end;
 };
@@ -22,6 +19,11 @@ public:
     Bend* getSecondStartBend();
     Bend* getFirstEndBend();
     Bend* getSecondEndBend();
+
+    void putFirstStartBend(Bend&);
+    void putSecondStartBend(Bend&);
+    void putFirstEndBend(Bend&);
+    void putSecondEndBend(Bend &);
 private:
     LineOfCircuit firstLine;
     LineOfCircuit secondLine;

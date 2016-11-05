@@ -2,7 +2,7 @@
 
 namespace core {
 
-BendOfFigure::BendOfFigure(): Bend(nullptr)
+BendOfFigure::BendOfFigure(): Bend()
 {
 
 }

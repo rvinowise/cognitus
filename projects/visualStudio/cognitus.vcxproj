@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D6E7111D-925E-36EB-99C8-C8A5F8A331EB}</ProjectGuid>
+    <RootNamespace>cognitus</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>release\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>cognitus</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>cognitus</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cognitus</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cognitus</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\cognitus;.;..\..\..\boost_1_62_0;C:\Qt\5.7\msvc2013_64\include;C:\Qt\5.7\msvc2013_64\include\QtOpenGL;C:\Qt\5.7\msvc2013_64\include\QtWidgets;C:\Qt\5.7\msvc2013_64\include\QtGui;C:\Qt\5.7\msvc2013_64\include\QtANGLE;C:\Qt\5.7\msvc2013_64\include\QtNetwork;C:\Qt\5.7\msvc2013_64\include\QtTest;C:\Qt\5.7\msvc2013_64\include\QtCore;release;.;C:\Qt\5.7\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-std=c++11 -Zc:strictStrings -w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_CONSOLE;UNICODE;WIN32;WIN64;test_itself;debug_mode;debug_msg_core;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_TESTLIB_LIB;QT_CORE_LIB;QT_TESTCASE_BUILDDIR="C:/ydisk/program/cognitus/projects/visualStudio";NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>C:\Qt\5.7\msvc2013_64\lib\Qt5OpenGL.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5Widgets.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5Gui.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5Network.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5Test.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Qt\5.7\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OutputFile>$(OutDir)\cognitus.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CONSOLE;UNICODE;WIN32;WIN64;test_itself;debug_mode;debug_msg_core;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_TESTLIB_LIB;QT_CORE_LIB;QT_TESTCASE_BUILDDIR="C:/ydisk/program/cognitus/projects/visualStudio";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\cognitus;.;..\..\..\boost_1_62_0;C:\Qt\5.7\msvc2013_64\include;C:\Qt\5.7\msvc2013_64\include\QtOpenGL;C:\Qt\5.7\msvc2013_64\include\QtWidgets;C:\Qt\5.7\msvc2013_64\include\QtGui;C:\Qt\5.7\msvc2013_64\include\QtANGLE;C:\Qt\5.7\msvc2013_64\include\QtNetwork;C:\Qt\5.7\msvc2013_64\include\QtTest;C:\Qt\5.7\msvc2013_64\include\QtCore;debug;.;C:\Qt\5.7\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-std=c++11 -w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CONSOLE;UNICODE;WIN32;WIN64;test_itself;debug_mode;debug_msg_core;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_TESTLIB_LIB;QT_CORE_LIB;QT_TESTCASE_BUILDDIR="C:/ydisk/program/cognitus/projects/visualStudio";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5OpenGLd.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5Widgetsd.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5Guid.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5Networkd.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5Testd.lib;C:\Qt\5.7\msvc2013_64\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Qt\5.7\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\cognitus.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CONSOLE;UNICODE;WIN32;WIN64;test_itself;debug_mode;debug_msg_core;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_TESTLIB_LIB;QT_CORE_LIB;QT_TESTCASE_BUILDDIR="C:/ydisk/program/cognitus/projects/visualStudio";_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\core\Network\ActiveBend\ActiveBend.cpp" />
+    <ClCompile Include="..\..\core\Bend\Bend.cpp" />
+    <ClCompile Include="..\..\core\Bend\BendOfFigure\BendOfFigure.cpp" />
+    <ClCompile Include="..\..\core\Circuit\Circuit.cpp" />
+    <ClCompile Include="..\..\core\Network\CircuitFinder\CircuitFinder.cpp" />
+    <ClCompile Include="..\..\..\gameEngine\spriteEngine\Frame.cpp" />
+    <ClCompile Include="..\..\core\Bend\FreeBend\FreeBend.cpp" />
+    <ClCompile Include="..\..\core\Network\Interface\Input\Input.cpp" />
+    <ClCompile Include="..\..\core\Network\Interface\Interface.cpp" />
+    <ClCompile Include="..\..\core\Node\InterfaceNode.cpp" />
+    <ClCompile Include="..\..\interface\InterfaceWindow.cpp" />
+    <ClCompile Include="..\..\core\Network\Network.cpp" />
+    <ClCompile Include="..\..\core\Node\Node.cpp" />
+    <ClCompile Include="..\..\core\Network\Interface\Output\Output.cpp" />
+    <ClCompile Include="..\..\..\gameEngine\functions\Point\Point.cpp" />
+    <ClCompile Include="..\..\..\gameEngine\spriteEngine\Screen.cpp" />
+    <ClCompile Include="..\..\..\gameEngine\spriteEngine\Sprite.cpp" />
+    <ClCompile Include="..\..\..\gameEngine\spriteEngine\SpriteBase.cpp" />
+    <ClCompile Include="..\..\..\gameEngine\spriteEngine\SpriteView.cpp" />
+    <ClCompile Include="..\..\Visualisator\Visualisator.cpp" />
+    <ClCompile Include="..\..\core\threadSynchronization\WaiterForCondition.cpp" />
+    <ClCompile Include="..\..\core\test\debugStuff.cpp" />
+    <ClCompile Include="..\..\main.cpp" />
+    <ClCompile Include="..\..\..\gameEngine\functions\posFunctions.cpp" />
+    <ClCompile Include="..\..\..\gameEngine\functions\random.cpp" />
+    <ClCompile Include="..\..\core\test\randomFunc.cpp" />
+    <ClCompile Include="..\..\..\gameEngine\spriteEngine\spriteFunctions.cpp" />
+    <ClCompile Include="..\..\sprites\spriteIndexes.cpp" />
+    <ClCompile Include="..\..\core\Network\CircuitFinder\test\testCircuitFinder.cpp" />
+    <ClCompile Include="..\..\core\Network\Interface\Input\test\testInput.cpp" />
+    <ClCompile Include="..\..\core\Network\test\testNetwork.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\core\Network\ActiveBend\ActiveBend.h" />
+    <ClInclude Include="..\..\core\Bend\Bend.h" />
+    <ClInclude Include="..\..\core\Bend\BendOfFigure\BendOfFigure.h" />
+    <ClInclude Include="..\..\core\Circuit\Circuit.h" />
+    <ClInclude Include="..\..\core\Network\CircuitFinder\CircuitFinder.h" />
+    <ClInclude Include="..\..\..\gameEngine\spriteEngine\Frame.h" />
+    <ClInclude Include="..\..\core\Bend\FreeBend\FreeBend.h" />
+    <ClInclude Include="..\..\core\Network\Interface\Input\Input.h" />
+    <ClInclude Include="..\..\core\Network\Interface\Interface.h" />
+    <ClInclude Include="..\..\core\Node\InterfaceNode.h" />
+    <CustomBuild Include="..\..\interface\InterfaceWindow.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\interface\InterfaceWindow.h;C:\Qt\5.7\msvc2013_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Qt\5.7\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -Dtest_itself -Ddebug_mode -Ddebug_msg_core -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR="C:/ydisk/program/cognitus/projects/visualStudio" -D_MSC_VER=1800 -D_WIN32 -D_WIN64 -IC:/Qt/5.7/msvc2013_64/mkspecs/win32-msvc2013 -IC:/ydisk/program/cognitus -IC:/ydisk/program/boost_1_62_0 -IC:/Qt/5.7/msvc2013_64/include -IC:/Qt/5.7/msvc2013_64/include/QtOpenGL -IC:/Qt/5.7/msvc2013_64/include/QtWidgets -IC:/Qt/5.7/msvc2013_64/include/QtGui -IC:/Qt/5.7/msvc2013_64/include/QtANGLE -IC:/Qt/5.7/msvc2013_64/include/QtNetwork -IC:/Qt/5.7/msvc2013_64/include/QtTest -IC:/Qt/5.7/msvc2013_64/include/QtCore -I. -IC:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/c++ -IC:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/c++/backward -IC:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include -IC:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include-fixed -IC:/Qt/minGW64/mingw64/x86_64-w64-mingw32/include ..\..\interface\InterfaceWindow.h -o release\moc_InterfaceWindow.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC ../../interface/InterfaceWindow.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_InterfaceWindow.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\interface\InterfaceWindow.h;C:\Qt\5.7\msvc2013_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Qt\5.7\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -Dtest_itself -Ddebug_mode -Ddebug_msg_core -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR="C:/ydisk/program/cognitus/projects/visualStudio" -D_MSC_VER=1800 -D_WIN32 -D_WIN64 -IC:/Qt/5.7/msvc2013_64/mkspecs/win32-msvc2013 -IC:/ydisk/program/cognitus -IC:/ydisk/program/boost_1_62_0 -IC:/Qt/5.7/msvc2013_64/include -IC:/Qt/5.7/msvc2013_64/include/QtOpenGL -IC:/Qt/5.7/msvc2013_64/include/QtWidgets -IC:/Qt/5.7/msvc2013_64/include/QtGui -IC:/Qt/5.7/msvc2013_64/include/QtANGLE -IC:/Qt/5.7/msvc2013_64/include/QtNetwork -IC:/Qt/5.7/msvc2013_64/include/QtTest -IC:/Qt/5.7/msvc2013_64/include/QtCore -I. -IC:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/c++ -IC:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/c++/backward -IC:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include -IC:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include-fixed -IC:/Qt/minGW64/mingw64/x86_64-w64-mingw32/include ..\..\interface\InterfaceWindow.h -o debug\moc_InterfaceWindow.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC ../../interface/InterfaceWindow.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\moc_InterfaceWindow.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="..\..\core\Network\Network.h" />
+    <ClInclude Include="..\..\core\Node\Node.h" />
+    <ClInclude Include="..\..\core\Network\Interface\Output\Output.h" />
+    <ClInclude Include="..\..\..\gameEngine\functions\Point\Point.h" />
+    <ClInclude Include="..\..\..\gameEngine\spriteEngine\Screen.h" />
+    <ClInclude Include="..\..\..\gameEngine\spriteEngine\Sprite.h" />
+    <ClInclude Include="..\..\..\gameEngine\spriteEngine\SpriteBase.h" />
+    <ClInclude Include="..\..\..\gameEngine\spriteEngine\SpriteView.h" />
+    <ClInclude Include="..\..\Visualisator\Visualisator.h" />
+    <ClInclude Include="..\..\core\threadSynchronization\WaiterForCondition.h" />
+    <ClInclude Include="..\..\core\test\allTests.h" />
+    <ClInclude Include="..\..\core\test\debugStuff.h" />
+    <ClInclude Include="..\..\..\gameEngine\functions\posFunctions.h" />
+    <ClInclude Include="..\..\..\gameEngine\functions\random.h" />
+    <ClInclude Include="..\..\core\test\randomFunc.h" />
+    <ClInclude Include="..\..\..\gameEngine\spriteEngine\spriteFunctions.h" />
+    <ClInclude Include="..\..\sprites\spriteIndexes.h" />
+    <ClInclude Include="..\..\core\Network\CircuitFinder\test\testCircuitFinder.h" />
+    <ClInclude Include="..\..\core\Network\Interface\Input\test\testInput.h" />
+    <ClInclude Include="..\..\core\Network\test\testNetwork.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="debug\moc_InterfaceWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_InterfaceWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClInclude Include="ui_InterfaceWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\interface\InterfaceWindow.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\interface\InterfaceWindow.ui;C:\Qt\5.7\msvc2013_64\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Qt\5.7\msvc2013_64\bin\uic.exe ..\..\interface\InterfaceWindow.ui -o ui_InterfaceWindow.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC ../../interface/InterfaceWindow.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui_InterfaceWindow.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\interface\InterfaceWindow.ui;C:\Qt\5.7\msvc2013_64\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Qt\5.7\msvc2013_64\bin\uic.exe ..\..\interface\InterfaceWindow.ui -o ui_InterfaceWindow.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC ../../interface/InterfaceWindow.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui_InterfaceWindow.h;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

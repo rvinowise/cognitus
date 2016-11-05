@@ -8,7 +8,6 @@ namespace core {
 
 Input::Input()
 {
-    inputSignalsAreExpected = true;
     initProcessingThread();
 
 }
@@ -20,24 +19,21 @@ void Input::initProcessingThread()
                 &Input::bring_inputs_to_representation_of_network, this);
 }
 
-void Input::beginSettingInputFromOutside()
+void Input::begin_setting_input_from_outside()
 {
     waiterForChangeOfInput.master_wait_for_task_completion();
 }
 
-#ifdef debug_mode
-void Input::endSettingInputFromOutside(std::size_t iter, std::size_t qtySignals)
+void Input::prepare_wire_for_input(std::size_t index)
 {
-    this->iter = iter;
-    this->qtySignals = qtySignals;
-    waiterForChangeOfInput.master_gave_task();
+    Interface::prepareToFire(index);
 }
-#else
-void Input::endSettingInputFromOutside()
+
+
+void Input::end_setting_input_from_outside()
 {
     waiterForChangeOfInput.master_gave_task();
 }
-#endif
 
 void Input::wait_for_insertion_of_input()
 {
@@ -46,20 +42,8 @@ void Input::wait_for_insertion_of_input()
 
 void Input::bring_inputs_to_representation_of_network()
 {
-    while (inputSignalsAreExpected) {
-
-        std::unique_lock<std::mutex> uniqueLock(waiterForChangeOfInput.worker_mutex);
-
-        while (!waiterForChangeOfInput.needToProceed) {
-
-            waiterForChangeOfInput.worker_wait_for_task(&uniqueLock);
-
-            debug_msg(boost::format{
-            "waitForTask :: I'm notifyed iter:%1 qtySign:%2"}% iter % qtySignals);
-        }
-
-        debug_msg(boost::format("waitForTask :: I'm notifyed iter:%1 qtySign:%2")
-                  % iter % qtySignals);
+    while (this) {
+        waiterForChangeOfInput.worker_wait_for_task();
 
         network->prepare_to_new_input_iteration();
         firePreparedNodes();

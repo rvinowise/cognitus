@@ -8,10 +8,19 @@
 #ifdef test_itself
 
 #include "core/test/allTests.h"
+#include "core/test/debugStuff.h"
 
 using namespace test;
-QTEST_MAIN(test::Network)
-//QTEST_MAIN(test::Input)
+//QTEST_MAIN(test::Network)
+
+int main()
+{
+    test::Network network;
+    network.init_data_for_tests();
+    network.work_of_network();
+    debug.writeResume();
+}
+
 
 #else
 

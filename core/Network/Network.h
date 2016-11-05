@@ -3,6 +3,7 @@
 #include "Interface/Input/Input.h"
 #include "Interface/Output/Output.h"
 #include "ActiveBend/ActiveBend.h"
+#include "CircuitFinder/CircuitFinder.h"
 
 #include <vector>
 #include <thread>
@@ -13,9 +14,6 @@
 
 namespace core {
 
-#ifdef debug_mode
-    extern std::atomic_size_t input_iteration;
-#endif
 
 class Network
 {
@@ -26,13 +24,14 @@ public:
     Input input;
     Output output;
 
+    CircuitFinder circuitFinder;
+
     void step();
 
     ActiveBends* getLastActiveBends();
 
     void prepare_to_new_input_iteration();
-    void save_new_activated_bend(Bend* inBend);
-
+    void save_new_activated_bend(Bend inBend);
 
 
 private:

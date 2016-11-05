@@ -1,27 +1,28 @@
-#include "core/test/alltests.h"
+#include "core/Network/test/testNetwork.h"
+#include "core/Network/Interface/Input/test/testInput.h"
+#include "core/Network/Network.h"
+
+#include <boost/format.hpp>
+#include "core/test/debugStuff.h"
 
 namespace test {
 
 
 void Network::init_data_for_tests()
 {
-    //uint randomSeed = 325025712;
-    uint randomSeed = QDateTime::currentMSecsSinceEpoch();
-    qsrand(randomSeed);
-    qDebug(QString("random seed=%1").arg(randomSeed).toLocal8Bit());
+    unsigned int randomSeed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::srand(randomSeed);
+    debug.message(boost::format("random seed=%1%")% randomSeed);
 }
 
 void Network::work_of_network()
 {
     test::Input input;
     input.bring_inputs_to_representation_of_network();
+
 }
 
 
-uint random(uint max)
-{
-    //return qrand();
-    return uint( qrand() / (RAND_MAX+1.0) * (max+1.0) );
-}
+
 
 }

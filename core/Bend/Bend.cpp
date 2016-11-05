@@ -6,57 +6,84 @@
 #ifdef debug_mode
 #include "core/Node/InterfaceNode.h"
 #include "core/Network/Network.h"
-#include "core/test/alltests.h"
+#include "core/test/allTests.h"
+#include "core/test/randomFunc.h"
 #endif
 
 namespace core {
 
-Bend::Bend(Node *masterNode)
+Bend::Bend()
 {
-    node = masterNode;
+
+}
+
+Bend::Bend(Node& masterNode)
+{
+    //data = std::unique_ptr<Bend_data>(new Bend_data);
+    //data.get()->node = std::shared_ptr<Node>(&masterNode);
+	
+    data = new Bend_data();
+    data->node = &masterNode;
+
 #ifdef debug_mode
-    indexInput = static_cast<InterfaceNode*>(masterNode)->get_index_in_interface_array();
+    //indexInput = static_cast<InterfaceNode*>(masterNode)->get_index_in_interface_array();
 #endif
 }
 
-/*void Bend::expectedFire()
+Bend::Bend(const Bend& other)
 {
-    transmitExpectationForward();
-}*/
-
-void Bend::fire()
-{
-    /*if (isThisLastBendInChain()) {
-        highNode->fire();
-    } else {
-        expectLastBend();
-    }
-    isExpected = false;*/
+    this->data = other.data;
 }
 
-bool Bend::isThisLastBendInChain() {
-    return nextBend.empty();
+Bend::~Bend()
+{
+
 }
 
 
-/*void Bend::expectLastBend() {
-    //nextBend[i_bend]->expect();
+bool Bend::operator==(const Bend &other)
+{
+    return this->data == other.data;
 }
 
 
-void Bend::expect() {
-    isExpected = true;
-    if (!node->isLowest()) {
-        node->expectLowerBends();
-    }
-}*/
+
+
+bool Bend::is_this_last_bend_in_chain() {
+    return data->nextBend.empty();
+}
 
 
 
-void Bend::connectTo(Bend *toBend)
+
+void Bend::connect_to(Bend& toBend)
 {
-    this->nextBend.push_back(toBend);
-    toBend->prevBend.push_back(this);
+    //this->data.get()->nextBend.push_back(toBend);
+    //toBend.data.get()->prevBend.push_back(*this);
+    //if ((int)test::random(10000)>0) {
+        this->data->nextBend.push_back(toBend);
+        toBend.data->prevBend.push_back(Bend(*this));
+    //}
+}
+
+bool Bend::isEmpty()
+{
+    return data == nullptr;
+}
+
+Node *Bend::getNode()
+{
+    return data->node;
+}
+
+std::vector<Bend> *Bend::getPrevBends()const
+{
+    return &data->prevBend;
+}
+
+std::vector<Bend> *Bend::getNextBends() const
+{
+    return &data->nextBend;
 }
 
 }

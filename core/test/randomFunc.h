@@ -1,11 +1,12 @@
-#ifndef RANDOM_H
-#define RANDOM_H
+#pragma once
+//#include <stdint.h>
 
+#ifndef uint
+#define uint unsigned int
+#endif
 
-class random
-{
-public:
-    random();
-};
+namespace test {
 
-#endif // RANDOM_H
+unsigned int random(unsigned int);
+
+}

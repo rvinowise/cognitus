@@ -1,0 +1,12 @@
+QMAKE_DEFAULT_INCDIRS = \
+    C:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/c++ \
+    C:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/c++/x86_64-w64-mingw32 \
+    C:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/c++/backward \
+    C:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include \
+    C:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0/include-fixed \
+    C:/Qt/minGW64/mingw64/x86_64-w64-mingw32/include
+QMAKE_DEFAULT_LIBDIRS = \
+    C:/Qt/minGW64/mingw64/lib/gcc/x86_64-w64-mingw32/6.2.0 \
+    C:/Qt/minGW64/mingw64/lib/gcc \
+    C:/Qt/minGW64/mingw64/x86_64-w64-mingw32/lib \
+    C:/Qt/minGW64/mingw64/lib

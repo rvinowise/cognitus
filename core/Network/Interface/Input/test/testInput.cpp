@@ -1,16 +1,9 @@
-#include "core/test/alltests.h"
+#include "core/test/allTests.h"
 
+#include "core/test/debugStuff.h"
 
 namespace test {
 
-
-void Input::init_input_characteristics()
-{
-    core::network = new core::Network();
-    qtyInputs = 100;
-    qtyIterations = 10000;
-    network->input.initNodes(qtyInputs);
-}
 
 void Input::bring_inputs_to_representation_of_network()
 {
@@ -18,22 +11,27 @@ void Input::bring_inputs_to_representation_of_network()
     concoct_input_history();
     input_history_in_cycle();
     check_network_validity();
-
-
-
 }
+
+void Input::init_input_characteristics()
+{
+    core::network = new core::Network();
+    //qtyInputs = 5000;
+    //qtyIterations = 10000;
+    network->input.initNodes(qtyInputs);
+}
+
 
 void Input::concoct_input_history()
 {
     for (size_t i_iter = 0; i_iter < qtyIterations; i_iter++) {
-        QBitArray inputFromOutside(qtyInputs);
+        std::bitset<qtyInputs> inputIterationFromOutside;
         for (size_t i_input = 0; i_input < qtyInputs; i_input++) {
             if (random(10) == 0) {
-                inputFromOutside.setBit(i_input);
-                //break;
+                inputIterationFromOutside.set(i_input);
             }
         }
-        inputHistory.append(inputFromOutside);
+        inputHistory.push_back(inputIterationFromOutside);
     }
 }
 
@@ -41,17 +39,22 @@ std::atomic_size_t i_iteration;
 void Input::input_history_in_cycle()
 {
     i_iteration = -1;
-    for (auto i_iter = 0; i_iter < qtyIterations; i_iter++) {
+    for (std::size_t i_iter = 0; i_iter < qtyIterations; i_iter++) {
         i_iteration++;
-        network->input.beginSettingInputFromOutside();
+        network->input.begin_setting_input_from_outside();
+        debug.message(boost::format("master:: inside iteration %1%")%i_iter);
 
-        QBitArray inputFromOutside = inputHistory[i_iter];
+        std::bitset<qtyInputs> inputFromOutside = inputHistory[i_iter];
         for (size_t i_input=0; i_input < qtyInputs; i_input++) {
-            if (inputFromOutside.testBit(i_input)) {
-                network->input.prepareToFire(i_input);
+            if (inputFromOutside.test(i_input)) {
+                network->input.prepare_wire_for_input(i_input);
             }
         }
-        network->input.endSettingInputFromOutside(i_iteration, inputFromOutside.count(true));
+        try {
+            network->input.end_setting_input_from_outside();
+        } catch (std::bad_alloc) {
+            debug.error(boost::format("not enought memory to save input data #%1%")%i_iter);
+        }
     }
     network->input.wait_for_insertion_of_input();
 }
@@ -60,70 +63,68 @@ void Input::check_network_validity()
 {
     ActiveBends* lastAddedBends = network->getLastActiveBends();
 
-    std::vector<Bend*>* bendsOfIteration = &lastAddedBends->bend;
+    std::vector<Bend>* bendsOfIteration = &lastAddedBends->bend;
     for (size_t i_iter = qtyIterations-1; i_iter > 0; i_iter--) {
-        if (inputHistory[i_iter].count(true) > 0) {
-            check_if_all_bends_of_input_iteration_have_the_same_previous_bends(bendsOfIteration);
-            compare_inputted_array_with_nodes_in_network(inputHistory[i_iter], bendsOfIteration);
-            bendsOfIteration = get_bends_of_previous_input_iteration(bendsOfIteration);
+        if (inputHistory[i_iter].count() > 0) {
+            debug.message(boost::format("master:: check iteration %1%")%i_iter);
+            check_if_all_bends_of_input_iteration_have_the_same_previous_bends(*bendsOfIteration);
+            compare_inputted_array_with_nodes_in_network(inputHistory[i_iter], *bendsOfIteration);
+            bendsOfIteration = get_bends_of_previous_input_iteration(*bendsOfIteration);
         }
     }
 }
 
 void Input::check_if_all_bends_of_input_iteration_have_the_same_previous_bends
-(const std::vector<Bend*>* bendsOfIteration)
+(const std::vector<Bend>& bendsOfIteration)
 {
-    QVERIFY(bendsOfIteration->size() > 0);
+    VERIFY(bendsOfIteration.size() > 0);
 
     size_t any_from_equal_ones = 0;
-    std::vector<Bend*>* etalonPrevBends = &bendsOfIteration->at(any_from_equal_ones)->prevBend;
+    std::vector<Bend>* etalonPrevBends = bendsOfIteration.at(any_from_equal_ones).getPrevBends();
     size_t etalonQtyPrevBends = etalonPrevBends->size();
 
     size_t first_brother_bend_of_iteration = 1;
     for (size_t i_this_iteration_bend = first_brother_bend_of_iteration;
-         i_this_iteration_bend < bendsOfIteration->size();
+         i_this_iteration_bend < bendsOfIteration.size();
          i_this_iteration_bend++)
     {
-        auto prevBendsOfBrothers = &bendsOfIteration->at(i_this_iteration_bend)->prevBend;
-        QVERIFY(etalonPrevBends->size() == prevBendsOfBrothers->size());
+        auto prevBendsOfBrothers = bendsOfIteration.at(i_this_iteration_bend).getPrevBends();
+        VERIFY(etalonPrevBends->size() == prevBendsOfBrothers->size());
 
         for (size_t i_prevBend = 0; i_prevBend < etalonQtyPrevBends; i_prevBend++) {
-            QVERIFY2(etalonPrevBends->at(i_prevBend) == prevBendsOfBrothers->at(i_prevBend),
-                     QString("i_prevBend=%1 i_this_iteration_bend=%2\n"
-                             "etalonPrevBends[i_prevBend]=%3 prevBendsOfBrothers[i_prevBend]=%4").
-                     arg(i_prevBend).arg(i_this_iteration_bend).
-                     arg((size_t)&etalonPrevBends[i_prevBend]).arg((size_t)&prevBendsOfBrothers[i_prevBend]).toLocal8Bit());
+            VERIFY2(etalonPrevBends->at(i_prevBend) == prevBendsOfBrothers->at(i_prevBend),
+                     boost::str(boost::format("i_prevBend=%1% i_this_iteration_bend=%2%\n"
+                             "etalonPrevBends[i_prevBend]=%3% prevBendsOfBrothers[i_prevBend]=%4%")
+                     % i_prevBend % i_this_iteration_bend
+                     % (size_t)&etalonPrevBends[i_prevBend] % (size_t)&prevBendsOfBrothers[i_prevBend]).c_str());
         }
     }
 }
 
 
 void Input::compare_inputted_array_with_nodes_in_network
-(QBitArray inputFromOutside, const std::vector<Bend*>* bendsOfInput)
+(std::bitset<qtyInputs> inputFromOutside, const std::vector<Bend>& bendsOfInput)
 {
-    for (size_t i_bend=0; i_bend < bendsOfInput->size(); i_bend++) {
-        Bend* bend = bendsOfInput->at(i_bend);
-        InterfaceNode* node = static_cast<InterfaceNode*>(bend->node);
+    for (size_t i_bend=0; i_bend < bendsOfInput.size(); i_bend++) {
+        Bend bend = bendsOfInput.at(i_bend);
+        InterfaceNode* node = static_cast<InterfaceNode*>(bend.getNode());
         size_t nodeIndex = node->get_index_in_interface_array();
-        if (inputFromOutside.testBit(nodeIndex) == false) {
-            bool errorFound = true;
-        }
-        QVERIFY(inputFromOutside.testBit(nodeIndex) == true);
+        VERIFY(inputFromOutside.test(nodeIndex) == true);
 
-        inputFromOutside.clearBit(nodeIndex);
+        inputFromOutside.reset(nodeIndex);
     }
     for (size_t i_possible_neglected_input_signal = 0;
          i_possible_neglected_input_signal < (size_t)inputFromOutside.size();
          i_possible_neglected_input_signal++) {
 
-        QVERIFY(!inputFromOutside.testBit(i_possible_neglected_input_signal));
+        VERIFY(!inputFromOutside.test(i_possible_neglected_input_signal));
     }
 }
 
-std::vector<Bend*>* Input::get_bends_of_previous_input_iteration(const std::vector<Bend*>* bendsOfIteration)
+std::vector<Bend>* Input::get_bends_of_previous_input_iteration(const std::vector<Bend>& bendsOfIteration)
 {
     size_t anyFromEqualOnes = 0;
-    return &bendsOfIteration->at(anyFromEqualOnes)->prevBend;
+    return bendsOfIteration.at(anyFromEqualOnes).getPrevBends();
 }
 
 

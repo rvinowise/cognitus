@@ -2,7 +2,6 @@
 
 #include "../Bend/Bend.h"
 
-#include "core/debugStuff.h"
 #include <vector>
 
 namespace core {
@@ -15,13 +14,13 @@ public:
     bool isLowest();
     void expectLowerBends();
 
-    friend Bend::Bend(Node* masterNode);
+    friend Bend::Bend(Node& masterNode);
 
     // essential
-    std::vector<Bend* > bend;
+    std::vector<Bend > bend;
 private:
 
-    Bend* lowerChainBend;
+    Bend lowerChainBend;
 
     // volatile
 

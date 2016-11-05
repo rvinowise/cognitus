@@ -13,14 +13,10 @@ class Input: public Interface
 public:
     Input();
 
-    void beginSettingInputFromOutside();
-#ifdef debug_mode
-    void endSettingInputFromOutside(std::size_t iter, std::size_t qtySignals);
-    std::size_t iter;
-    std::size_t qtySignals;
-#else
-    void endSettingInputFromOutside();
-#endif
+    void begin_setting_input_from_outside();
+    void prepare_wire_for_input(std::size_t index);
+    void end_setting_input_from_outside();
+
     void wait_for_insertion_of_input();
 
 
@@ -30,7 +26,6 @@ private:
     void bring_inputs_to_representation_of_network();
     void waitForNewInputs();
 
-    bool inputSignalsAreExpected;
     WaiterForTask waiterForChangeOfInput;
     std::thread*  threadProcessInput;
 

@@ -1,11 +1,18 @@
-#ifndef CIRCUITFINDER_H
-#define CIRCUITFINDER_H
+#pragma once
 
+#include <vector>
+
+#include "core/Circuit/Circuit.h"
+
+namespace core {
 
 class CircuitFinder
 {
 public:
     CircuitFinder();
+
+    std::vector<Circuit> find_circuits(const Bend& initialBend);
 };
 
-#endif // CIRCUITFINDER_H
+
+}

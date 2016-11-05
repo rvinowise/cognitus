@@ -119,7 +119,7 @@ QBitArray InterfaceWindow::getArrayOfInputsFromClient(QTcpSocket* clientSocket) 
 }
 
 QString InterfaceWindow::getErrorOfInput(QBitArray input) {
-    if (input.size() != network->input.getNodesQty()) {
+    if ((std::size_t)input.size() != network->input.getNodesQty()) {
         return QString("wrong input size: client sent %1, but core needs %2")
                     .arg(input.size()).arg(network->input.getNodesQty());
     }
@@ -127,14 +127,12 @@ QString InterfaceWindow::getErrorOfInput(QBitArray input) {
 }
 
 void InterfaceWindow::inputToCore(QBitArray input) {
-    network->input.beginSettingInputFromOutside();
+    network->input.begin_setting_input_from_outside();
     for (uint i_input = 0; i_input < network->input.getNodesQty(); i_input++) {
         if (input.testBit(i_input)) {
-            network->input.prepareToFire(i_input);
+            network->input.prepare_wire_for_input(i_input);
         }
     }
-#ifndef debug_mode
-    network->input.endSettingInputFromOutside();
-#endif
+    network->input.end_setting_input_from_outside();
 
 }

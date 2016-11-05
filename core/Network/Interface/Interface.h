@@ -9,19 +9,18 @@ namespace core {
 
 class Interface
 {
-friend class Network;
 public:
 	Interface();
 
-    void initNodes(int inQty);
-    void prepareToFire(int index);
+    void initNodes(std::size_t inQty);
     std::size_t getNodesQty();
-    std::vector<InterfaceNode*> node;
+
 protected:
     void firePreparedNodes();
+    void prepareToFire(int index);
 
 private:
-
+    std::vector<InterfaceNode*> node;
 	
 };
 

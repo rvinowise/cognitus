@@ -15,7 +15,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = cognitus
 TEMPLATE = app
-
+#TEMPLATE=vcapp
 
 SOURCES += main.cpp \
     core/Bend/Bend.cpp \
@@ -42,9 +42,12 @@ SOURCES += main.cpp \
     interface/InterfaceWindow.cpp \
     core/threadSynchronization/WaiterForCondition.cpp \
     core/Network/Interface/Interface.cpp \
-    core/Network/Interface/Input/test/qtTest.cpp \
     core/Network/test/testNetwork.cpp \
-    core/debugstuff.cpp
+    core/Network/CircuitFinder/CircuitFinder.cpp \
+    core/Network/Interface/Input/test/testInput.cpp \
+    core/Network/CircuitFinder/test/testCircuitFinder.cpp \
+    core/test/randomFunc.cpp \
+    core/test/debugStuff.cpp
 
 
 
@@ -74,8 +77,13 @@ HEADERS  += \
     core/Circuit/Circuit.h \
     interface/InterfaceWindow.h \
     core/threadSynchronization/WaiterForCondition.h \
-    core/test/alltests.h \
-    core/debugStuff.h
+    core/Network/CircuitFinder/CircuitFinder.h \
+    core/Network/Interface/Input/test/testInput.h \
+    core/Network/test/testNetwork.h \
+    core/test/allTests.h \
+    core/Network/CircuitFinder/test/testCircuitFinder.h \
+    core/test/randomFunc.h \
+    core/test/debugStuff.h
 
 
 
