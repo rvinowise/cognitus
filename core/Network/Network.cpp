@@ -34,9 +34,9 @@ void Network::step() {
 
 }
 
-ActiveBends* Network::getLastActiveBends()
+ActiveBends& Network::getLastActiveBends()
 {
-    return lastActiveBends;
+    return *lastActiveBends;
 }
 
 

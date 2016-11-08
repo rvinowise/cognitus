@@ -18,6 +18,7 @@ public:
 protected:
     void firePreparedNodes();
     void prepareToFire(int index);
+    bool isPreparedToFire(int index);
 
 private:
     std::vector<InterfaceNode*> node;

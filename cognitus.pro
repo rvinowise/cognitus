@@ -6,7 +6,7 @@
 
 QMAKE_CXXFLAGS += -std=c++11
 
-QT += widgets core gui opengl network testlib
+QT += widgets core gui network testlib
 
 #CONFIG += c++11
 DEFINES += test_itself debug_mode debug_msg_core
@@ -22,18 +22,7 @@ SOURCES += main.cpp \
     core/Network/Interface/Input/Input.cpp \
     core/Network/Network.cpp \
     core/Node/Node.cpp \
-    Visualisator/Visualisator.cpp \
-    ../gameEngine/functions/Point/Point.cpp \
-    ../gameEngine/functions/posFunctions.cpp \
-    ../gameEngine/functions/random.cpp \
-    ../gameEngine/spriteEngine/Frame.cpp \
-    ../gameEngine/spriteEngine/Screen.cpp \
-    ../gameEngine/spriteEngine/Sprite.cpp \
-    ../gameEngine/spriteEngine/SpriteBase.cpp \
-    ../gameEngine/spriteEngine/spriteFunctions.cpp \
-    ../gameEngine/spriteEngine/SpriteView.cpp \
-    sprites/spriteIndexes.cpp \
-    core/Network/ActiveBend/ActiveBend.cpp \
+	core/Network/ActiveBend/ActiveBend.cpp \
     core/Node/InterfaceNode.cpp \
     core/Bend/BendOfFigure/BendOfFigure.cpp \
     core/Bend/FreeBend/FreeBend.cpp \
@@ -47,7 +36,8 @@ SOURCES += main.cpp \
     core/Network/Interface/Input/test/testInput.cpp \
     core/Network/CircuitFinder/test/testCircuitFinder.cpp \
     core/test/randomFunc.cpp \
-    core/test/debugStuff.cpp
+    core/test/Debug_inspector.cpp \
+    core/test/Speed_profiler.cpp
 
 
 
@@ -59,17 +49,6 @@ HEADERS  += \
     core/Network/Interface/Interface.h \
     core/Network/Network.h \
     core/Node/Node.h \
-    Visualisator/Visualisator.h \
-    ../gameEngine/functions/Point/Point.h \
-    ../gameEngine/functions/posFunctions.h \
-    ../gameEngine/functions/random.h \
-    ../gameEngine/spriteEngine/Frame.h \
-    ../gameEngine/spriteEngine/Screen.h \
-    ../gameEngine/spriteEngine/Sprite.h \
-    ../gameEngine/spriteEngine/SpriteBase.h \
-    ../gameEngine/spriteEngine/spriteFunctions.h \
-    ../gameEngine/spriteEngine/SpriteView.h \
-    sprites/spriteIndexes.h \
     core/Network/ActiveBend/ActiveBend.h \
     core/Node/InterfaceNode.h \
     core/Bend/BendOfFigure/BendOfFigure.h \
@@ -83,7 +62,8 @@ HEADERS  += \
     core/test/allTests.h \
     core/Network/CircuitFinder/test/testCircuitFinder.h \
     core/test/randomFunc.h \
-    core/test/debugStuff.h
+    core/test/Debug_inspector.h \
+    core/test/Speed_profiler.h
 
 
 

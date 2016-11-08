@@ -28,7 +28,7 @@ public:
 
     void step();
 
-    ActiveBends* getLastActiveBends();
+    ActiveBends& getLastActiveBends();
 
     void prepare_to_new_input_iteration();
     void save_new_activated_bend(Bend inBend);

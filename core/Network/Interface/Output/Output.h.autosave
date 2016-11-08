@@ -19,7 +19,6 @@ public:
 
 private:
     void prepare_wire_for_output(std::size_t index);
-
     void init_processing_thread();
 
     void produce_outputs_for_representation_of_client();

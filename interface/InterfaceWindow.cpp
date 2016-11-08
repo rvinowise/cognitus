@@ -1,7 +1,7 @@
 #include "InterfaceWindow.h"
 #include "ui_InterfaceWindow.h"
 //using namespace interface;
-#include "core/Network/network.h"
+#include "core/Network/Network.h"
 
 using namespace core;
 
@@ -67,7 +67,6 @@ void InterfaceWindow::processNewConnection()
             this,          SLOT(processInputFromClient())
            );
 
-    //sendToClient(clientSocket, "Server Response: Connected!");
     outputLog(QString("client is connected: %1:%2").arg(
                   clientSocket->peerAddress().toString()).arg(
                   clientSocket->peerPort()));
@@ -75,7 +74,6 @@ void InterfaceWindow::processNewConnection()
 
 void InterfaceWindow::processDisonnectionOfClient()
 {
-    //QTcpSocket* clientSocket = (QTcpSocket*)sender();
     QTcpSocket* clientSocket = static_cast<QTcpSocket*>(sender());
     clientSocket->deleteLater();
     outputLog(QString("client is disconnected: %1:%2").arg(
@@ -126,7 +124,7 @@ QString InterfaceWindow::getErrorOfInput(QBitArray input) {
     return QString();
 }
 
-void InterfaceWindow::inputToCore(QBitArray input) {
+void InterfaceWindow::inputToCore(const QBitArray& input) {
     network->input.begin_setting_input_from_outside();
     for (uint i_input = 0; i_input < network->input.getNodesQty(); i_input++) {
         if (input.testBit(i_input)) {
@@ -134,5 +132,18 @@ void InterfaceWindow::inputToCore(QBitArray input) {
         }
     }
     network->input.end_setting_input_from_outside();
+
+}
+
+QBitArray InterfaceWindow::getArrayOfOutputsFromCore() {
+    QBitArray output;
+    network->output.begin_getting_output_from_outside();
+    for (uint i_output = 0; i_output < network->output.getNodesQty(); i_output++) {
+        if (network->output.is_prepared_for_output(i_output)) {
+            output.setBit(i_output);
+        }
+    }
+    network->output.end_getting_output_from_outside();
+    return output;
 
 }

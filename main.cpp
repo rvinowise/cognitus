@@ -8,7 +8,7 @@
 #ifdef test_itself
 
 #include "core/test/allTests.h"
-#include "core/test/debugStuff.h"
+#include "core/test/Debug_inspector.h"
 
 using namespace test;
 //QTEST_MAIN(test::Network)

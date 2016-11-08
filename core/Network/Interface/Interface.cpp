@@ -35,6 +35,11 @@ void Interface::prepareToFire(int index)
     node[index]->prepareToFire();
 }
 
+bool Interface::isPreparedToFire(int index)
+{
+    return node[index]->isPreparedToFire;
+}
+
 std::size_t Interface::getNodesQty()
 {
     return node.size();

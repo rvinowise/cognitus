@@ -1,6 +1,6 @@
 #include "testCircuitFinder.h"
 
-#include "core/Network/Interface/Input/test/testinput.h"
+#include "core/Network/Interface/Input/test/testInput.h"
 #include "core/Circuit/Circuit.h"
 #include "core/Network/CircuitFinder/CircuitFinder.h"
 #include "core/test/randomFunc.h"

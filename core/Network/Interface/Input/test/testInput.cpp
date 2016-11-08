@@ -1,6 +1,6 @@
 #include "core/test/allTests.h"
 
-#include "core/test/debugStuff.h"
+#include "core/test/Debug_inspector.h"
 
 namespace test {
 
@@ -61,15 +61,17 @@ void Input::input_history_in_cycle()
 
 void Input::check_network_validity()
 {
-    ActiveBends* lastAddedBends = network->getLastActiveBends();
+    ActiveBends& lastAddedBends = network->getLastActiveBends();
 
-    std::vector<Bend>* bendsOfIteration = &lastAddedBends->bend;
+    const std::vector<Bend>* bendsOfIteration = &lastAddedBends.bend;
     for (size_t i_iter = qtyIterations-1; i_iter > 0; i_iter--) {
         if (inputHistory[i_iter].count() > 0) {
+            debug.profiler.startTimer("check_network_validity iteration");
             debug.message(boost::format("master:: check iteration %1%")%i_iter);
             check_if_all_bends_of_input_iteration_have_the_same_previous_bends(*bendsOfIteration);
             compare_inputted_array_with_nodes_in_network(inputHistory[i_iter], *bendsOfIteration);
-            bendsOfIteration = get_bends_of_previous_input_iteration(*bendsOfIteration);
+            bendsOfIteration = &get_bends_of_previous_input_iteration(*bendsOfIteration);
+            debug.profiler.stopTimer("check_network_validity iteration");
         }
     }
 }
@@ -80,19 +82,19 @@ void Input::check_if_all_bends_of_input_iteration_have_the_same_previous_bends
     VERIFY(bendsOfIteration.size() > 0);
 
     size_t any_from_equal_ones = 0;
-    std::vector<Bend>* etalonPrevBends = bendsOfIteration.at(any_from_equal_ones).getPrevBends();
-    size_t etalonQtyPrevBends = etalonPrevBends->size();
+    std::vector<Bend> etalonPrevBends = bendsOfIteration.at(any_from_equal_ones).get_array_of_prev_bends();
+    size_t etalonQtyPrevBends = etalonPrevBends.size();
 
     size_t first_brother_bend_of_iteration = 1;
     for (size_t i_this_iteration_bend = first_brother_bend_of_iteration;
          i_this_iteration_bend < bendsOfIteration.size();
          i_this_iteration_bend++)
     {
-        auto prevBendsOfBrothers = bendsOfIteration.at(i_this_iteration_bend).getPrevBends();
-        VERIFY(etalonPrevBends->size() == prevBendsOfBrothers->size());
+        auto prevBendsOfBrothers = bendsOfIteration.at(i_this_iteration_bend).get_array_of_prev_bends();
+        VERIFY(etalonPrevBends.size() == prevBendsOfBrothers.size());
 
         for (size_t i_prevBend = 0; i_prevBend < etalonQtyPrevBends; i_prevBend++) {
-            VERIFY2(etalonPrevBends->at(i_prevBend) == prevBendsOfBrothers->at(i_prevBend),
+            VERIFY2(etalonPrevBends[i_prevBend] == prevBendsOfBrothers[i_prevBend],
                      boost::str(boost::format("i_prevBend=%1% i_this_iteration_bend=%2%\n"
                              "etalonPrevBends[i_prevBend]=%3% prevBendsOfBrothers[i_prevBend]=%4%")
                      % i_prevBend % i_this_iteration_bend
@@ -121,10 +123,10 @@ void Input::compare_inputted_array_with_nodes_in_network
     }
 }
 
-std::vector<Bend>* Input::get_bends_of_previous_input_iteration(const std::vector<Bend>& bendsOfIteration)
+const std::vector<Bend>& Input::get_bends_of_previous_input_iteration(const std::vector<Bend>& bendsOfIteration)
 {
     size_t anyFromEqualOnes = 0;
-    return bendsOfIteration.at(anyFromEqualOnes).getPrevBends();
+    return bendsOfIteration[anyFromEqualOnes].get_array_of_prev_bends();
 }
 
 

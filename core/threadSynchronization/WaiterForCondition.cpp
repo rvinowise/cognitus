@@ -2,15 +2,15 @@
 #include <qdebug.h>
 
 #ifdef debug_mode
-#include "core/test/debugStuff.h"
+#include "core/test/Debug_inspector.h"
 #endif
 
 namespace core {
 
 WaiterForTask::WaiterForTask()
 {
-	needToProceed = false;
-	master_need_to_proceed = true;
+    worker_needs_to_proceed = false;
+    master_needs_to_proceed = true;
 }
 
 WaiterForTask::~WaiterForTask()
@@ -21,7 +21,7 @@ WaiterForTask::~WaiterForTask()
 void WaiterForTask::worker_wait_for_task()
 {
 	std::unique_lock<std::mutex> uniqueLock(worker_mutex);
-	while (!needToProceed) {
+    while (!worker_needs_to_proceed) {
         try {
             condition.wait(uniqueLock);
         } catch (const std::exception& e) {
@@ -37,8 +37,8 @@ void WaiterForTask::worker_prepare_for_next_task()
 {
     
 	master_mutex.lock();
-	needToProceed = false;
-	master_need_to_proceed = true;
+    worker_needs_to_proceed = false;
+    master_needs_to_proceed = true;
 	master_mutex.unlock();
 
 	condition.notify_one();
@@ -48,7 +48,7 @@ void WaiterForTask::worker_prepare_for_next_task()
 void WaiterForTask::master_wait_for_task_completion()
 {
 	std::unique_lock<std::mutex> uniqueLock(master_mutex);
-	while (!master_need_to_proceed) {
+    while (!master_needs_to_proceed) {
 		condition.wait(uniqueLock);
 	}
 	
@@ -56,8 +56,8 @@ void WaiterForTask::master_wait_for_task_completion()
 void WaiterForTask::master_gave_task()
 {
     worker_mutex.lock();
-    needToProceed = true;
-	master_need_to_proceed = false;
+    worker_needs_to_proceed = true;
+    master_needs_to_proceed = false;
     worker_mutex.unlock();
 
     condition.notify_one();

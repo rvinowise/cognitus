@@ -3,7 +3,7 @@
 #include "core/Network/Network.h"
 
 #include <boost/format.hpp>
-#include "core/test/debugStuff.h"
+#include "core/test/Debug_inspector.h"
 
 namespace test {
 

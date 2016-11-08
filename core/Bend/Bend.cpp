@@ -40,8 +40,16 @@ Bend::~Bend()
 
 }
 
+Bend& Bend::operator=(const Bend &other)
+{
+    if (this != &other) {
+        this->data = other.data;
+    }
+    return *this;
+}
 
-bool Bend::operator==(const Bend &other)
+
+bool Bend::operator==(const Bend &other) const
 {
     return this->data == other.data;
 }
@@ -49,7 +57,7 @@ bool Bend::operator==(const Bend &other)
 
 
 
-bool Bend::is_this_last_bend_in_chain() {
+bool Bend::is_this_last_bend_in_chain() const {
     return data->nextBend.empty();
 }
 
@@ -66,25 +74,50 @@ void Bend::connect_to(Bend& toBend)
     //}
 }
 
-bool Bend::isEmpty()
+bool Bend::isEmpty() const
 {
     return data == nullptr;
 }
 
-Node *Bend::getNode()
+Node* Bend::getNode() const
 {
     return data->node;
 }
 
-std::vector<Bend> *Bend::getPrevBends()const
+std::size_t Bend::getPrevBendsSize() const
 {
-    return &data->prevBend;
+    return data->prevBend.size();
+}
+std::size_t Bend::getNextBendsSize() const
+{
+    return data->nextBend.size();
 }
 
-std::vector<Bend> *Bend::getNextBends() const
+Bend& Bend::getPrevBend(std::size_t index) const
 {
-    return &data->nextBend;
+    if (index >= data->prevBend.size()) {
+        throw std::out_of_range("Bend::getPrevBend gets wrong index of Bend");
+    }
+    return data->prevBend[index];
 }
+Bend Bend::getNextBend(std::size_t index) const
+{
+    if (index >= data->nextBend.size()) {
+        throw std::out_of_range("Bend::getNextBend gets wrong index of Bend");
+    }
+    return data->nextBend[index];
+}
+
+const std::vector<Bend>& Bend::get_array_of_prev_bends() const
+{
+    return data->prevBend;
+}
+const std::vector<Bend>& Bend::get_array_of_next_bends() const
+{
+    return data->nextBend;
+}
+
+
 
 }
 

@@ -24,7 +24,6 @@ private:
     void initProcessingThread();
 
     void bring_inputs_to_representation_of_network();
-    void waitForNewInputs();
 
     WaiterForTask waiterForChangeOfInput;
     std::thread*  threadProcessInput;

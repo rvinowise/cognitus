@@ -1,6 +1,6 @@
 #include "InterfaceNode.h"
 
-#include "core/Network/network.h"
+#include "core/Network/Network.h"
 
 #include <algorithm>
 

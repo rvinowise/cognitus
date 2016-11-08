@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <core/test/Speed_profiler.h>
 
 namespace test {
 
@@ -30,9 +31,13 @@ public:
                 const char *file, unsigned int line);
 
     void writeResume();
+
+    Speed_profiler profiler;
+
+
 private:
     std::vector<std::string> errors;
-    std::map<std::string,uint32_t> passedStatements;
+    std::unordered_map<const char*, uint32_t> passedStatements;
 
 };
 

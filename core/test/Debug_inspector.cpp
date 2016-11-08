@@ -1,4 +1,4 @@
-#include "debugStuff.h"
+#include "Debug_inspector.h"
 
 #include <QDebug>
 #include <iostream>
@@ -67,7 +67,7 @@ void Debug_inspector::verify(bool statement, const char *statementStr, const cha
         errors.push_back(error);
     } else {
         uint32_t qtySameStatements = passedStatements.count(statementStr);
-        passedStatements.emplace(std::string(statementStr), qtySameStatements+1);
+        passedStatements[statementStr] = qtySameStatements;
     }
 
 }
@@ -82,11 +82,13 @@ void Debug_inspector::writeResume()
             error(_message);
         }
     } else {
-        message(boost::format("%1% verifications are passed") %passedStatements.size());
+        message(boost::format("all %1% verifications are passed") %passedStatements.size());
         for (auto _message: passedStatements) {
             message(_message.first);
         }
     }
+
+    profiler.write_resume();
 }
 
 

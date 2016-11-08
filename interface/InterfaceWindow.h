@@ -31,7 +31,9 @@ private:
 
     QBitArray getArrayOfInputsFromClient(QTcpSocket* clientSocket);
     QString getErrorOfInput(QBitArray input);
-    void inputToCore(QBitArray input);
+    void inputToCore(const QBitArray& inputt);
+
+    QBitArray getArrayOfOutputsFromCore();
 
     QTcpServer* tcpServer;
     quint16 nextBlockSize;

@@ -22,7 +22,7 @@ void Node::fire()
 void Node::add_new_bend_as_active() {
     Bend newBend(*this);
     bend.push_back(newBend);
-    network->save_new_activated_bend(newBend);
+    network->save_new_activated_bend(newBend); //error
 }
 
 

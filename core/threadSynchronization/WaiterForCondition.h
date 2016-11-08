@@ -26,8 +26,8 @@ public:
 
     std::mutex master_mutex;
     std::mutex worker_mutex;
-    bool needToProceed;
-	bool master_need_to_proceed;
+    bool worker_needs_to_proceed;
+    bool master_needs_to_proceed;
     std::condition_variable condition;
 private:
 

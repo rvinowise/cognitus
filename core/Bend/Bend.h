@@ -42,15 +42,21 @@ public:
     Bend(Node& masterNode);
     Bend(const Bend& other);
     ~Bend();
-    bool operator==(const Bend& other);
+    Bend& operator=(const Bend& other);
+    bool operator==(const Bend& other) const;
 
-    bool is_this_last_bend_in_chain();
+    bool is_this_last_bend_in_chain() const;
     void connect_to(Bend& toBend);
-    bool isEmpty();
-    Node* getNode();
+    bool isEmpty() const;
+    Node* getNode() const;
 
-    std::vector<Bend>* getPrevBends() const;
-    std::vector<Bend> *getNextBends()const;
+    std::size_t getPrevBendsSize() const;
+    std::size_t getNextBendsSize() const;
+    Bend &getPrevBend(std::size_t index) const;
+    Bend getNextBend(std::size_t index) const;
+
+    const std::vector<Bend>& get_array_of_prev_bends() const;
+    const std::vector<Bend>& get_array_of_next_bends() const;
 
 private:
     Bend_data* data;

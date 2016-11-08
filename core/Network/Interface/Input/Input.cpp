@@ -1,8 +1,6 @@
 #include "Input.h"
 
 #include "core/Network/Network.h"
-#include <QtCore>
-#include <QtTest/QtTest>
 
 namespace core {
 
