@@ -51,9 +51,10 @@ void Network::prepare_to_new_input_iteration()
     newActiveBends = new ActiveBends();
 }
 
-void Network::connect_last_bends_to_new_ones() {
+void Network::prolongate_history_of_inputs() {
+    // incapsulate?
     if (!newActiveBends->bend.empty()) {
-        lastActiveBends->connectThisBendsToOthers(*newActiveBends);
+        lastActiveBends->connect_this_bends_to_others(*newActiveBends);
         delete lastActiveBends;
         lastActiveBends = newActiveBends;
     } else {

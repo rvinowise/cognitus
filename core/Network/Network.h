@@ -42,7 +42,7 @@ private:
     void registerActivationOfExistingNodes();
     void extendNodesAndCreateNewOnes();
 
-    void connect_last_bends_to_new_ones();
+    void prolongate_history_of_inputs();
 
     void createNewHighNodes();
     void saveLastFreeBend(Bend* inBend);

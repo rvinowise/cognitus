@@ -39,7 +39,7 @@ void Output::produce_outputs_for_representation_of_client()
 
         network->prepare_to_new_input_iteration();
         firePreparedNodes();
-        network->connect_last_bends_to_new_ones();
+        network->prolongate_history_of_inputs();
 
         waiterForChangeOfOutput.worker_prepare_for_next_task();
     }

@@ -13,7 +13,7 @@ class ActiveBends
 public:
     ActiveBends(){}
 
-    void connectThisBendsToOthers(ActiveBends& nextActiveBend);
+    void connect_this_bends_to_others(ActiveBends& nextActiveBend);
 
     std::vector<Bend> bend;
 };

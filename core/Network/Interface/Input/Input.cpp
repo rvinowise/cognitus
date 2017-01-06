@@ -45,7 +45,7 @@ void Input::bring_inputs_to_representation_of_network()
 
         network->prepare_to_new_input_iteration();
         firePreparedNodes();
-        network->connect_last_bends_to_new_ones();
+        network->prolongate_history_of_inputs();
 
         waiterForChangeOfInput.worker_prepare_for_next_task();
     }

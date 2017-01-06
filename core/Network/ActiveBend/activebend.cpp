@@ -2,7 +2,7 @@
 
 namespace core {
 
-void ActiveBends::connectThisBendsToOthers(ActiveBends& nextActiveBend)
+void ActiveBends::connect_this_bends_to_others(ActiveBends& nextActiveBend)
 {
     for (std::size_t i_bendFrom = 0; i_bendFrom < bend.size(); i_bendFrom++) {
         Bend bendFrom = bend[i_bendFrom];
