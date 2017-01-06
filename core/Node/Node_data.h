@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Core/Bend/Bend.h"
+#include "core/Bend/Bend.h"
 
 
 namespace core {

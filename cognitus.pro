@@ -22,7 +22,7 @@ SOURCES += main.cpp \
     core/Network/Interface/Input/Input.cpp \
     core/Network/Network.cpp \
     core/Node/Node.cpp \
-	core/Network/ActiveBend/ActiveBend.cpp \
+    core/Network/ActiveBend/ActiveBend.cpp \
     core/Node/InterfaceNode.cpp \
     core/Bend/BendOfFigure/BendOfFigure.cpp \
     core/Bend/FreeBend/FreeBend.cpp \
