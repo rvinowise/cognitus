@@ -35,21 +35,18 @@ public:
 
 
 private:
-    friend Input;
-    friend Output;
-    void constructCurrentStructureOfNodes();
+    friend class Input;
+    friend class Output;
     void prepareOutputOnMotors();
-    void registerActivationOfExistingNodes();
-    void extendNodesAndCreateNewOnes();
 
     void prolongate_history_of_inputs();
-
-    void createNewHighNodes();
-    void saveLastFreeBend(Bend* inBend);
-
+    void find_and_memorize_patterns_of_inputs();
+    void memorize_minimal_repeated_pattern(Circuit inCircuit);
+    Node create_higher_node_for(Circuit inCircuit);
 
     ActiveBends* lastActiveBends;
     ActiveBends* newActiveBends;
+    std::vector<Node> node;
 
     std::thread* threadProcessInput;
 };

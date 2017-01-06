@@ -23,10 +23,6 @@ Network::Network()
 
 }
 
-/*void Network::initProcessingThreads()
-{
-    //threadProcessInput = new std::thread(checkAndProcessInputSignals);
-}*/
 
 void Network::step() {
 
@@ -40,15 +36,15 @@ ActiveBends& Network::getLastActiveBends()
 }
 
 
-void Network::constructCurrentStructureOfNodes() {
-	
-    registerActivationOfExistingNodes();
-    extendNodesAndCreateNewOnes();
-}
 
 void Network::prepare_to_new_input_iteration()
 {
     newActiveBends = new ActiveBends();
+}
+
+void Network::save_new_activated_bend(Bend inBend)
+{
+    newActiveBends->bend.push_back(inBend);
 }
 
 void Network::prolongate_history_of_inputs() {
@@ -62,30 +58,27 @@ void Network::prolongate_history_of_inputs() {
     }
 }
 
-void Network::registerActivationOfExistingNodes() {
-
-}
-
-void Network::extendNodesAndCreateNewOnes() {
-    //Circuits circuits = findCircuits(newActiveBends);
-    //extendNodesAndCreateNewOnes(circuits);
-}
-
-
-
-
-
-void Network::createNewHighNodes()
+void Network::find_and_memorize_patterns_of_inputs()
 {
 
 }
 
-
-
-void Network::save_new_activated_bend(Bend inBend)
+void Network::memorize_minimal_repeated_pattern(Circuit inCircuit)
 {
-    newActiveBends->bend.push_back(inBend);
+    if (inCircuit.is_first_consequence_placed_inside_one_higher_node()) {
+
+    } else {
+        create_higher_node_for(inCircuit);
+    }
 }
+
+Node Network::create_higher_node_for(Circuit inCircuit) {
+    Node higherNode(inCircuit);
+    node.push_back(higherNode);
+
+    return higherNode;
+}
+
 
 
 void Network::prepareOutputOnMotors() {

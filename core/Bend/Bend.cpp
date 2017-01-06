@@ -17,13 +17,18 @@ Bend::Bend()
 
 }
 
-Bend::Bend(Node& masterNode)
+Bend::Bend(Node masterNode)
 {	
     data = new Bend_data();
-    data->node = &masterNode;
+    data->node = masterNode;
 }
 
 Bend::Bend(const Bend& other)
+{
+    this->data = other.data;
+}
+
+Bend::Bend(Bend &&other)
 {
     this->data = other.data;
 }
@@ -68,33 +73,52 @@ bool Bend::isEmpty() const
     return data == nullptr;
 }
 
-Node* Bend::getNode() const
+Node Bend::getNode()
 {
     return data->node;
 }
 
-std::size_t Bend::getPrevBendsSize() const
+std::size_t Bend::get_prev_bends_qty() const
 {
     return data->prevBend.size();
 }
-std::size_t Bend::getNextBendsSize() const
+std::size_t Bend::get_next_bends_qty() const
 {
     return data->nextBend.size();
 }
 
-Bend& Bend::getPrevBend(std::size_t index) const
+Bend Bend::get_prev_bend(std::size_t index) const
 {
     if (index >= data->prevBend.size()) {
         throw std::out_of_range("Bend::getPrevBend gets wrong index of Bend");
     }
     return data->prevBend[index];
 }
-Bend Bend::getNextBend(std::size_t index) const
+Bend Bend::get_next_bend(std::size_t index) const
 {
     if (index >= data->nextBend.size()) {
         throw std::out_of_range("Bend::getNextBend gets wrong index of Bend");
     }
     return data->nextBend[index];
+}
+
+std::size_t Bend::get_higher_nodes_qty() const
+{
+    return data->place_in_node.size();
+}
+
+std::vector<Node> Bend::get_common_higher_nodes_with(Bend otherBend)
+{
+    std::vector<Node> commonNodes;
+    for(Place_in_node this_place: data->place_in_node) {
+        for (Place_in_node other_place: otherBend.data->place_in_node) {
+            if (this_place.node == other_place.node) {
+                commonNodes.push_back(this_place.node);
+            }
+        }
+    }
+
+    return commonNodes;
 }
 
 const std::vector<Bend>& Bend::get_array_of_prev_bends() const

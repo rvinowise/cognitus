@@ -21,7 +21,7 @@ protected:
     bool isPreparedToFire(int index);
 
 private:
-    std::vector<InterfaceNode*> node;
+    std::vector<InterfaceNode> node;
 	
 };
 

@@ -1,4 +1,5 @@
 #include "Node.h"
+#include "Node_data.h"
 
 #include "core/Network/Network.h"
 
@@ -9,31 +10,56 @@
 
 namespace core {
 
+Node::Node()
+{
+    data = new Node_data;
+
+}
+
+Node::Node(const Node &other)
+{
+    data = other.data;
+}
+
+Node::Node(Node &&other)
+{
+    data = other.data;
+}
+
+Node& Node::operator=(const Node &other)
+{
+    data = other.data;
+    return *this;
+}
+
+bool Node::operator==(const Node &other) const
+{
+    return data==other.data;
+}
+
+Node::Node(Circuit inCircuit)
+{
+
+}
+
 void Node::fire()
 {
     add_new_bend_as_active();
-
-    //createNewAndExpandOldFigures();
-    //createHighNodes();
 }
 
 
 
 void Node::add_new_bend_as_active() {
     Bend newBend(*this);
-    bend.push_back(newBend);
+    data->bend.push_back(newBend);
     network->save_new_activated_bend(newBend);
 }
 
 
 bool Node::isLowest()
 {
-    return lowerChainBend.isEmpty();
+    return data->lowerChainBend.isEmpty();
 }
 
-void Node::expectLowerBends()
-{
-
-}
 
 }

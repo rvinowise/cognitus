@@ -63,7 +63,8 @@ HEADERS  += \
     core/Network/CircuitFinder/test/testCircuitFinder.h \
     core/test/randomFunc.h \
     core/test/Debug_inspector.h \
-    core/test/Speed_profiler.h
+    core/test/Speed_profiler.h \
+    core/Node/Node_data.h
 
 
 

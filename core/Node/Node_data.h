@@ -1,4 +1,20 @@
-#ifndef NODE_DATA_H
-#define NODE_DATA_H
+#pragma once
 
-#endif // NODE_DATA_H
+#include <vector>
+
+#include "Core/Bend/Bend.h"
+
+
+namespace core {
+
+class Node_data
+{
+    friend class Node;
+private:
+    std::vector<Bend> bend;
+    Bend lowerChainBend;
+};
+
+
+
+}

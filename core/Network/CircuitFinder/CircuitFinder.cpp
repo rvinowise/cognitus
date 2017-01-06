@@ -9,7 +9,7 @@ CircuitFinder::CircuitFinder()
 
 std::vector<Circuit> CircuitFinder::find_circuits_backward(const Bend& initialBend)
 {
-    if (initialBend.getPrevBendsSize()==0) {
+    if (initialBend.get_prev_bends_qty()==0) {
         return std::vector<Circuit>();
     }
 

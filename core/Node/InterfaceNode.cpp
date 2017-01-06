@@ -7,24 +7,51 @@
 namespace core {
 
 
+InterfaceNode_data::InterfaceNode_data()
+{
+    is_prepared_to_fire = false;
+}
+
+
 InterfaceNode::InterfaceNode()
     :Node()
 {
-    isPreparedToFire = false;
+    interface_data = new InterfaceNode_data();
 }
 
-void InterfaceNode::prepareToFire() {
-	isPreparedToFire = true;
+InterfaceNode::InterfaceNode(const Node &other)
+    :Node(other)
+{
+    interface_data = new InterfaceNode_data();
+}
+InterfaceNode::InterfaceNode(const InterfaceNode &other)
+    :Node(other)
+{
+    interface_data = other.interface_data;
+}
+
+void InterfaceNode::prepare_to_fire() {
+    interface_data->is_prepared_to_fire = true;
+}
+bool InterfaceNode::is_prepared_to_fire() {
+    return interface_data->is_prepared_to_fire;
 }
 
 void InterfaceNode::fire() {
-	isPreparedToFire = false;
+    interface_data->is_prepared_to_fire = false;
     Node::fire();
 }
 
-size_t InterfaceNode::get_index_in_interface_array()
+void InterfaceNode::set_index_in_interface_array(std::size_t index)
 {
-    return index_in_interface_array;
+    interface_data->index_in_interface_array = index;
 }
+
+std::size_t InterfaceNode::get_index_in_interface_array() const
+{
+    return interface_data->index_in_interface_array;
+}
+
+
 
 }

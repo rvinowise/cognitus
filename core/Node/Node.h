@@ -1,30 +1,32 @@
 #pragma once
 
-#include "../Bend/Bend.h"
-
 #include <vector>
 
 namespace core {
 
+class Circuit;
+class Bend;
+class Node_data;
+
 class Node
 {
+friend class InterfaceNode;
 public:
+    Node();
+    Node(const Node& other);
+    Node(Node&& other);
+    Node& operator=(const Node& other);
+    bool operator==(const Node& other) const;
+    Node(Circuit inCircuit);
+
     virtual void fire();
 
     bool isLowest();
-    void expectLowerBends();
 
-    friend Bend::Bend(Node& masterNode);
-
-    std::vector<Bend > bend;
 private:
+    Node_data* data;
 
-    Bend lowerChainBend;
-
-    void add_new_bend_as_active();
-    void createHighNodes();
-
-    void addBend();    
+    void add_new_bend_as_active();  
 };
 
 
