@@ -12,15 +12,19 @@
 
 namespace core {
 
-Bend::Bend()
+
+Bend_data::Bend_data(Node& masterNode)
+    :node(masterNode)
 {
 
 }
 
-Bend::Bend(Node masterNode)
+
+
+
+Bend::Bend(Node& masterNode)
 {	
-    data = new Bend_data();
-    data->node = masterNode;
+    data = new Bend_data(masterNode);
 }
 
 Bend::Bend(const Bend& other)
@@ -73,7 +77,7 @@ bool Bend::isEmpty() const
     return data == nullptr;
 }
 
-Node Bend::getNode()
+Node& Bend::getNode()
 {
     return data->node;
 }
@@ -121,6 +125,12 @@ std::vector<Node> Bend::get_common_higher_nodes_with(Bend otherBend)
     return commonNodes;
 }
 
+void Bend::append_to_higher_node(Node &inNode)
+{
+    data->place_in_node.push_back(Place_in_node());
+    data->place_in_node.back()
+}
+
 const std::vector<Bend>& Bend::get_array_of_prev_bends() const
 {
     return data->prevBend;
@@ -129,6 +139,8 @@ const std::vector<Bend>& Bend::get_array_of_next_bends() const
 {
     return data->nextBend;
 }
+
+
 
 
 

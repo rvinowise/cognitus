@@ -28,18 +28,20 @@ struct Place_in_node
 {
 public:
     Place_in_node() {};
+    is_start_of_node();
+    is_end_of_node();
+private:
     Node node;
 };
 
 class Bend_data
 {
 public:
-    Bend_data() {}
-    //Bend_data(const Bend_data& other) = default;
+    Bend_data(Node& masterNode);
 
     std::vector<Bend> prevBend;
     std::vector<Bend> nextBend;
-    Node node;
+    Node& node;
     std::vector<Place_in_node> place_in_node;
     Activation_interval interval;
 
@@ -51,8 +53,7 @@ private:
 class Bend
 {
 public:
-    Bend();
-    Bend(Node masterNode);
+    Bend(Node &masterNode);
     Bend(const Bend& other);
     Bend(Bend&& other);
     ~Bend();
@@ -62,7 +63,7 @@ public:
     bool is_this_last_bend_in_chain() const;
     void connect_to(Bend& toBend);
     bool isEmpty() const;
-    Node getNode();
+    Node& getNode();
 
     std::size_t get_prev_bends_qty() const;
     std::size_t get_next_bends_qty() const;
@@ -73,7 +74,7 @@ public:
     Node get_higher_node(std::size_t index) const;
     std::vector<Node> get_common_higher_nodes_with(Bend otherBend);
 
-
+    void append_to_higher_node(Node& inNode);
 
     const std::vector<Bend>& get_array_of_prev_bends() const;
     const std::vector<Bend>& get_array_of_next_bends() const;

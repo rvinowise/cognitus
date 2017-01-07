@@ -109,8 +109,7 @@ void Input::compare_inputted_array_with_nodes_in_network
 {
     for (size_t i_bend=0; i_bend < bendsOfInput.size(); i_bend++) {
         Bend bend = bendsOfInput.at(i_bend);
-        //const InterfaceNode& node = dynamic_cast<const InterfaceNode&>(bend.getNode());
-        InterfaceNode node(bend.getNode());
+        InterfaceNode& node = static_cast<InterfaceNode&>(bend.getNode());
         size_t nodeIndex = node.get_index_in_interface_array();
         VERIFY(inputFromOutside.test(nodeIndex) == true);
 
