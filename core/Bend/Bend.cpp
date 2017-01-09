@@ -12,15 +12,17 @@
 
 namespace core {
 
-
 Bend_data::Bend_data(Node& masterNode)
-    :node(masterNode)
+    :master_node(masterNode)
 {
 
 }
 
 
-
+Bend::Bend()
+{
+    data = nullptr;
+}
 
 Bend::Bend(Node& masterNode)
 {	
@@ -56,6 +58,39 @@ bool Bend::operator==(const Bend &other) const
     return this->data == other.data;
 }
 
+bool Bend::operator!=(const Bend &other) const
+{
+    return this->data != other.data;
+}
+
+void Bend::remove()
+{
+    for (std::vector<Bend>::iterator i_prevBend = data->prevBend.begin();
+         i_prevBend != data->prevBend.end();
+         i_prevBend++) {
+        for (std::vector<Bend>::iterator i_nextOfPrevBend = i_prevBend->data->nextBend.begin();
+             i_nextOfPrevBend != i_prevBend->data->nextBend.end();
+             i_nextOfPrevBend++) {
+            if (*i_nextOfPrevBend == *this) {
+                i_prevBend->data->nextBend.erase(i_nextOfPrevBend);
+                break;
+            }
+        }
+    }
+    for (std::vector<Bend>::iterator i_nextBend = data->nextBend.begin();
+         i_nextBend != data->nextBend.end();
+         i_nextBend++) {
+        for (std::vector<Bend>::iterator i_prevOfNextBend = i_nextBend->data->prevBend.begin();
+             i_prevOfNextBend != i_nextBend->data->prevBend.end();
+             i_prevOfNextBend++) {
+            if (*i_prevOfNextBend == *this) {
+                i_nextBend->data->prevBend.erase(i_prevOfNextBend);
+                break;
+            }
+        }
+    }
+}
+
 
 
 
@@ -72,15 +107,21 @@ void Bend::connect_to(Bend& toBend)
     toBend.data->prevBend.push_back(Bend(*this));
 }
 
-bool Bend::isEmpty() const
+bool Bend::is_empty() const
 {
     return data == nullptr;
 }
 
-Node& Bend::getNode()
+Node& Bend::get_master_node()
 {
-    return data->node;
+    return data->master_node;
 }
+
+Node& Bend::get_node_of_whole_figure()
+{
+    return data->node_of_whole_figure;
+}
+
 
 std::size_t Bend::get_prev_bends_qty() const
 {
@@ -108,16 +149,19 @@ Bend Bend::get_next_bend(std::size_t index) const
 
 std::size_t Bend::get_higher_nodes_qty() const
 {
-    return data->place_in_node.size();
+    return data->higher_figure_bends.size();
 }
 
 std::vector<Node> Bend::get_common_higher_nodes_with(Bend otherBend)
 {
     std::vector<Node> commonNodes;
-    for(Place_in_node this_place: data->place_in_node) {
-        for (Place_in_node other_place: otherBend.data->place_in_node) {
-            if (this_place.node == other_place.node) {
-                commonNodes.push_back(this_place.node);
+    for(Bend this_place: data->higher_figure_bends) {
+        for (Bend other_place: otherBend.data->higher_figure_bends) {
+            if (this_place.get_node_of_whole_figure()
+                ==
+                other_place.get_node_of_whole_figure())
+            {
+                commonNodes.push_back(this_place.get_node_of_whole_figure());
             }
         }
     }
@@ -127,8 +171,32 @@ std::vector<Node> Bend::get_common_higher_nodes_with(Bend otherBend)
 
 void Bend::append_to_higher_node(Node &inNode)
 {
-    data->place_in_node.push_back(Place_in_node());
-    data->place_in_node.back()
+
+}
+
+void Bend::copy_prev_bends_from(Bend otherBend)
+{
+    for(Bend bend: otherBend.data->prevBend) {
+        data->prevBend.push_back(bend);
+    }
+}
+void Bend::copy_next_bends_from(Bend otherBend)
+{
+    for(Bend bend: otherBend.data->nextBend) {
+        data->nextBend.push_back(bend);
+    }
+}
+
+void Bend::attach_to_bend_of_figure(Bend figureBend)
+{
+    this->data->higher_figure_bends.push_back(figureBend);
+}
+
+Bend Bend::add_next_bend()
+{
+    Bend newBend(this->get_master_node());
+    data->nextBend.push_back(newBend);
+    return newBend;
 }
 
 const std::vector<Bend>& Bend::get_array_of_prev_bends() const
@@ -138,6 +206,15 @@ const std::vector<Bend>& Bend::get_array_of_prev_bends() const
 const std::vector<Bend>& Bend::get_array_of_next_bends() const
 {
     return data->nextBend;
+}
+
+void Bend::erase_prev_bend(std::size_t index)
+{
+    data->prevBend.erase(data->prevBend.begin() + index);
+}
+void Bend::erase_next_bend(std::size_t index)
+{
+    data->nextBend.erase(data->nextBend.begin() + index);
 }
 
 

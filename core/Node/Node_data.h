@@ -10,10 +10,13 @@ namespace core {
 class Node_data
 {
     friend class Node;
+    Node_data();
 private:
     std::vector<Bend> bend;
-    Bend lowerChainBend;
+    Bend lower_chain_bend;
 };
+
+
 
 
 

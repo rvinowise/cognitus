@@ -4,6 +4,29 @@
 
 namespace core {
 
+bool LineOfCircuit::is_has_noise_bends_inside()
+{
+    if (
+            (start.get_next_bends_qty() == 0) ||
+            (end.get_prev_bends_qty() == 0)
+            )
+    {
+        throw("not connected Bends inside one Line_of_circuit");
+    }
+
+    if (
+            (start.get_next_bends_qty() > 0) ||
+            (end.get_prev_bends_qty() > 0) ||
+            (start.get_next_bend(0) != end.get_prev_bend(0))
+            )
+    {
+        return true;
+    }
+    return false;
+}
+
+
+
 Circuit::Circuit()
 {
 
@@ -55,6 +78,29 @@ bool Circuit::is_first_consequence_placed_inside_one_higher_node()
 Node Circuit::create_higher_node_for_it()
 {
 
+}
+
+bool Circuit::is_complete()
+{
+    return !
+            (
+                getFirstStartBend().is_empty() ||
+                getFirstEndBend().is_empty() ||
+                getSecondStartBend().is_empty() ||
+                getSecondEndBend().is_empty()
+                );
+}
+
+
+
+LineOfCircuit Circuit::get_first_line()
+{
+    return firstLine;
+}
+
+LineOfCircuit Circuit::get_second_line()
+{
+    return secondLine;
 }
 
 

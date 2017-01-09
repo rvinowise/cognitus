@@ -2,9 +2,5 @@
 
 namespace core {
 
-BendOfFigure::BendOfFigure(): Bend()
-{
-
-}
 
 }

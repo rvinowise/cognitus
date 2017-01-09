@@ -2,9 +2,7 @@
 
 namespace core {
 
-FreeBend::FreeBend(): Bend()
-{
 
-}
+
 
 }
