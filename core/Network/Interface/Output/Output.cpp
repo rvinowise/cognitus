@@ -16,7 +16,7 @@ void Output::begin_getting_output_from_outside()
 
 void Output::end_getting_output_from_outside()
 {
-    waiterForChangeOfOutput.master_gave_task();
+    waiterForChangeOfOutput.master_has_given_a_task();
 }
 
 bool Output::is_prepared_for_output(std::size_t index)

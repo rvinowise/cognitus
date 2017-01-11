@@ -53,7 +53,7 @@ void WaiterForTask::master_wait_for_task_completion()
 	}
 	
 }
-void WaiterForTask::master_gave_task()
+void WaiterForTask::master_has_given_a_task()
 {
     worker_mutex.lock();
     worker_needs_to_proceed = true;

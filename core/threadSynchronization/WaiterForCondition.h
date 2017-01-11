@@ -22,7 +22,7 @@ public:
     void worker_prepare_for_next_task();
 
     void master_wait_for_task_completion();
-    void master_gave_task();
+    void master_has_given_a_task();
 
     std::mutex master_mutex;
     std::mutex worker_mutex;

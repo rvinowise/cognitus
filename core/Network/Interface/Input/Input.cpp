@@ -30,7 +30,7 @@ void Input::prepare_wire_for_input(std::size_t index)
 
 void Input::end_setting_input_from_outside()
 {
-    waiterForChangeOfInput.master_gave_task();
+    waiterForChangeOfInput.master_has_given_a_task();
 }
 
 void Input::wait_for_insertion_of_input()
