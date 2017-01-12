@@ -14,11 +14,15 @@ class Node
 friend class InterfaceNode;
 public:
     Node();
+    Node(Circuit inCircuit);
     Node(const Node& other);
     Node(Node&& other);
+    ~Node();
+
     Node& operator=(const Node& other);
     bool operator==(const Node& other) const;
-    Node(Circuit inCircuit);
+
+
     void incorporate_circuit_to_this_node(Circuit inCircuit);
 
     virtual void fire();

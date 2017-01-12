@@ -32,6 +32,11 @@ Node::Node(Node &&other)
     data = other.data;
 }
 
+Node::~Node()
+{
+    //delete data;
+}
+
 Node& Node::operator=(const Node &other)
 {
     data = other.data;
@@ -42,6 +47,8 @@ bool Node::operator==(const Node &other) const
 {
     return data==other.data;
 }
+
+
 
 Node::Node(Circuit inCircuit)
 {

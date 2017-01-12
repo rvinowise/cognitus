@@ -46,9 +46,7 @@ Bend::~Bend()
 
 Bend& Bend::operator=(const Bend &other)
 {
-    if (this != &other) { // is it necessery?
-        this->data = other.data;
-    }
+    this->data = other.data;
     return *this;
 }
 

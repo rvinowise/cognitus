@@ -81,16 +81,18 @@ void Input::check_if_all_bends_of_input_iteration_have_the_same_previous_bends
 {
     VERIFY(bendsOfIteration.size() > 0);
 
-    size_t any_from_equal_ones = 0;
-    std::vector<Bend> etalonPrevBends = bendsOfIteration.at(any_from_equal_ones).get_array_of_prev_bends();
+    const size_t any_from_equal_ones = 0;
+    const auto etalonPrevBends =
+            bendsOfIteration.at(any_from_equal_ones).get_array_of_prev_bends();
     size_t etalonQtyPrevBends = etalonPrevBends.size();
 
-    size_t first_brother_bend_of_iteration = 1;
+    const size_t first_brother_bend_of_iteration = 1;
     for (size_t i_this_iteration_bend = first_brother_bend_of_iteration;
          i_this_iteration_bend < bendsOfIteration.size();
          i_this_iteration_bend++)
     {
-        auto prevBendsOfBrothers = bendsOfIteration.at(i_this_iteration_bend).get_array_of_prev_bends();
+        auto prevBendsOfBrothers =
+                bendsOfIteration.at(i_this_iteration_bend).get_array_of_prev_bends();
         VERIFY(etalonPrevBends.size() == prevBendsOfBrothers.size());
 
         for (size_t i_prevBend = 0; i_prevBend < etalonQtyPrevBends; i_prevBend++) {
@@ -107,9 +109,8 @@ void Input::check_if_all_bends_of_input_iteration_have_the_same_previous_bends
 void Input::compare_inputted_array_with_nodes_in_network
 (std::bitset<qtyInputs> inputFromOutside, const std::vector<Bend>& bendsOfInput)
 {
-    for (size_t i_bend=0; i_bend < bendsOfInput.size(); i_bend++) {
-        Bend bend = bendsOfInput.at(i_bend);
-        InterfaceNode& node = static_cast<InterfaceNode&>(bend.get_master_node());
+    for (auto bend: bendsOfInput) {
+        auto node = static_cast<InterfaceNode&>(bend.get_master_node());
         size_t nodeIndex = node.get_index_in_interface_array();
         VERIFY(inputFromOutside.test(nodeIndex) == true);
 

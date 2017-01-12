@@ -24,15 +24,6 @@ public:
     Input_iteration end;
 };
 
-/*struct Place_in_node
-{
-public:
-    Place_in_node() {};
-    is_start_of_node();
-    is_end_of_node();
-private:
-    Bend bend;
-};*/
 
 class Bend_data
 {
