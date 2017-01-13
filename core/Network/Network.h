@@ -20,6 +20,8 @@ class Network
 
 public:
     Network();
+    ~Network();
+    void deallocate_all_entities_of_network();
 
     Input input;
     Output output;

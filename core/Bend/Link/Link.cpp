@@ -1,6 +1,6 @@
 #include "Link.h"
 
-Link::Link()
+Linked::Linked()
 {
 
 }

@@ -61,6 +61,13 @@ bool Bend::operator!=(const Bend &other) const
     return this->data != other.data;
 }
 
+void Bend::deallocate_all_connected_entities_upward()
+{
+    for (auto bend_of_figure: this->data->bend_of_figure) {
+
+    }
+}
+
 void Bend::remove()
 {
     for (std::vector<Bend>::iterator i_prevBend = data->prevBend.begin();
@@ -99,7 +106,7 @@ bool Bend::is_this_last_bend_in_chain() const {
 
 
 
-void Bend::connect_to(Bend& toBend)
+void Bend::connect_to(Bend &toBend)
 {
     this->data->nextBend.push_back(toBend);
     toBend.data->prevBend.push_back(Bend(*this));
@@ -121,7 +128,7 @@ Node& Bend::get_node_of_whole_figure()
 }
 
 
-std::size_t Bend::get_prev_bends_qty() const
+std::size_t Bend::get_prev_links_qty() const
 {
     return data->prevBend.size();
 }
@@ -130,14 +137,14 @@ std::size_t Bend::get_next_bends_qty() const
     return data->nextBend.size();
 }
 
-Bend Bend::get_prev_bend(std::size_t index) const
+Bend Bend::get_prev_link(std::size_t index) const
 {
     if (index >= data->prevBend.size()) {
         throw std::out_of_range("Bend::getPrevBend gets wrong index of Bend");
     }
     return data->prevBend[index];
 }
-Bend Bend::get_next_bend(std::size_t index) const
+Bend Bend::get_next_link(std::size_t index) const
 {
     if (index >= data->nextBend.size()) {
         throw std::out_of_range("Bend::getNextBend gets wrong index of Bend");

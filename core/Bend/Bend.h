@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "core/Node/Node.h"
+#include "./Link/Link.h"
 
 namespace core {
 
@@ -41,12 +42,13 @@ public:
 
     // free_bend
     std::vector<Bend> higher_figure_bends;
+    std::vector<Bend> bend_of_figure;
 
 private:
     std::set<Bend> firedBend;
 };
 
-class Bend
+class Bend: Linked
 {
 public:
     Bend();
@@ -59,31 +61,32 @@ public:
     bool operator!=(const Bend& other) const;
 
 
-    void remove();
-
-    bool is_this_last_bend_in_chain() const;
-    void connect_to(Bend& toBend);
     bool is_empty() const;
-    Node& get_master_node();
-    Node& get_node_of_whole_figure();
 
-    std::size_t get_prev_bends_qty() const;
-    std::size_t get_next_bends_qty() const;
-    Bend get_prev_bend(std::size_t index) const;
-    Bend get_next_bend(std::size_t index) const;
+    Node& get_master_node();
+
+    std::size_t get_prev_links_qty() const override;
+    std::size_t get_next_links_qty() const override;
+    Linked get_prev_link(std::size_t index) const override;
+    Linked get_next_link(std::size_t index) const override;
+
+    const std::vector<Bend>& get_array_of_prev_bends() const;
+    const std::vector<Bend>& get_array_of_next_bends() const;
 
     std::size_t get_higher_nodes_qty() const;
     Node get_higher_node(std::size_t index) const;
     std::vector<Node> get_common_higher_nodes_with(Bend otherBend);
+
 
     void append_to_higher_node(Node& inNode);
     void copy_prev_bends_from(Bend otherBend);
     void copy_next_bends_from(Bend otherBend);
     void attach_to_bend_of_figure(Bend figureBend);
     Bend add_next_bend();
+    void connect_to(Bend& toBend);
 
-    const std::vector<Bend>& get_array_of_prev_bends() const;
-    const std::vector<Bend>& get_array_of_next_bends() const;
+    void deallocate_all_connected_entities_upward();
+    void remove();
 
 protected:
     void erase_next_bend(std::size_t index);
@@ -92,9 +95,6 @@ protected:
 private:
     Bend_data* data;
 
-#ifdef debug_mode
-    std::size_t indexInput;
-#endif
 };
 
 

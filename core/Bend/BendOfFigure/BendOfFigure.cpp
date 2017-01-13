@@ -1,4 +1,4 @@
-#include "BendOfFigure.h"
+#include "Figure_bend.h"
 
 namespace core {
 

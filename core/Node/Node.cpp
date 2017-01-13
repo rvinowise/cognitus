@@ -34,7 +34,14 @@ Node::Node(Node &&other)
 
 Node::~Node()
 {
-    //delete data;
+}
+
+void Node::deallocate_with_all_connected_entities_upward()
+{
+    for (auto bend: this->data->bend) {
+        bend.
+    }
+    delete data;
 }
 
 Node& Node::operator=(const Node &other)

@@ -37,7 +37,8 @@ SOURCES += main.cpp \
     core/Network/CircuitFinder/test/testCircuitFinder.cpp \
     core/test/randomFunc.cpp \
     core/test/Debug_inspector.cpp \
-    core/test/Speed_profiler.cpp
+    core/test/Speed_profiler.cpp \
+    core/Bend/Link/Link.cpp
 
 
 
@@ -51,8 +52,6 @@ HEADERS  += \
     core/Node/Node.h \
     core/Network/ActiveBend/ActiveBend.h \
     core/Node/InterfaceNode.h \
-    core/Bend/BendOfFigure/BendOfFigure.h \
-    core/Bend/FreeBend/FreeBend.h \
     core/Circuit/Circuit.h \
     interface/InterfaceWindow.h \
     core/threadSynchronization/WaiterForCondition.h \
@@ -64,7 +63,10 @@ HEADERS  += \
     core/test/randomFunc.h \
     core/test/Debug_inspector.h \
     core/test/Speed_profiler.h \
-    core/Node/Node_data.h
+    core/Node/Node_data.h \
+    core/Bend/BendOfFigure/Figure_bend.h \
+    core/Bend/FreeBend/Free_bend.h \
+    core/Bend/Link/Link.h
 
 
 

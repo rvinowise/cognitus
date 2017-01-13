@@ -45,5 +45,12 @@ std::size_t Interface::getNodesQty()
     return node.size();
 }
 
+void Interface::deallocate_all_connected_entities()
+{
+    for (auto node: this->node ) {
+        node.deallocate_all_connected_entities();
+    }
+}
+
 
 }

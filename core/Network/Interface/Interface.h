@@ -15,6 +15,7 @@ public:
     void initNodes(std::size_t inQty);
     std::size_t getNodesQty();
 
+    void deallocate_all_connected_entities();
 protected:
     void firePreparedNodes();
     void prepareToFire(int index);

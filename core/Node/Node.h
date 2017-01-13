@@ -18,6 +18,7 @@ public:
     Node(const Node& other);
     Node(Node&& other);
     ~Node();
+    void deallocate_with_all_connected_entities_upward();
 
     Node& operator=(const Node& other);
     bool operator==(const Node& other) const;

@@ -23,6 +23,17 @@ Network::Network()
 
 }
 
+Network::~Network()
+{
+    deallocate_all_entities_of_network();
+}
+
+void Network::deallocate_all_entities_of_network()
+{
+    input.deallocate_all_connected_entities();
+    output.deallocate_all_connected_entities();
+}
+
 
 void Network::step() {
 

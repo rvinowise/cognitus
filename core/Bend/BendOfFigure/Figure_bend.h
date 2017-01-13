@@ -6,15 +6,18 @@
 
 namespace core {
 
-class BendOfFigure: public Bend
+class Figure_bend: Linked
 {
 public:
-    BendOfFigure();
+    Figure_bend();
 
+    Node& get_node_of_whole_figure();
+
+    bool is_this_last_bend_in_chain() const;
 private:
     // essential
-    Node* nodeOfWholeFigure;
-    std::vector<Bend*> freeBend;
+    Node nodeOfWholeFigure;
+    std::vector<Bend> freeBend;
 
 };
 
