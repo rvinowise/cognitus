@@ -12,9 +12,23 @@ namespace core {
 
 Node_data::Node_data()
 {
-
+    handles_qty = 1;
 }
 
+void Node_data::connect_a_handle()
+{
+    handles_qty++;
+}
+void Node_data::disconnect_a_handle()
+{
+    handles_qty--;
+    if (handles_qty == 0) {
+        delete this;
+    }
+}
+void Node_data::~Node_data()
+{
+}
 
 Node::Node()
 {
@@ -25,6 +39,7 @@ Node::Node()
 Node::Node(const Node &other)
 {
     data = other.data;
+    data->connect_a_handle();
 }
 
 Node::Node(Node &&other)
@@ -34,6 +49,7 @@ Node::Node(Node &&other)
 
 Node::~Node()
 {
+    data->disconnect_a_handle();
 }
 
 void Node::deallocate_with_all_connected_entities_upward()
