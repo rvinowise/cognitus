@@ -7,6 +7,7 @@ namespace core {
 class LineOfCircuit;
 class Circuit;
 class Bend;
+class Figure_bend;
 class Node_data;
 
 class Node
@@ -30,12 +31,13 @@ public:
 
     bool isLowest();
     Bend add_bend();
-    Bend get_lower_chain_bend();
+    Figure_bend get_lower_chain_bend();
 private:
     Node_data* data;
 
     void add_new_bend_as_active();  
-    void carefully_preserve_initial_chain_because_of_its_context(LineOfCircuit inLine, Bend first_chain_bend, Bend second_chain_bend);
+    void carefully_preserve_initial_chain_because_of_its_context(
+            LineOfCircuit inLine, Figure_bend first_chain_bend, Figure_bend second_chain_bend);
 };
 
 

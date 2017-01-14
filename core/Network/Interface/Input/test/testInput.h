@@ -14,14 +14,18 @@ extern std::atomic_size_t i_iteration;
 class Input
 {
 public:
+    Input(core::Network& inNetwork);
+
     void bring_inputs_to_representation_of_network();
 
     void concoct_input_history();
     void input_history_in_cycle();
 
 private:
-    static const size_t qtyInputs = 100;
-    static const size_t qtyIterations = 500;
+    static const size_t qtyInputs = 2;
+    static const size_t qtyIterations = 2;
+
+    core::Network& network;
 
     void init_input_characteristics();
     void check_network_validity();

@@ -4,7 +4,8 @@
 
 namespace core {
 
-Input::Input()
+Input::Input(Network &inNetwork):
+    Interface(inNetwork)
 {
     initProcessingThread();
 
@@ -43,9 +44,9 @@ void Input::bring_inputs_to_representation_of_network()
     while (this) {
         waiterForChangeOfInput.worker_wait_for_task();
 
-        network->prepare_to_new_input_iteration();
+        network.prepare_to_new_input_iteration();
         firePreparedNodes();
-        network->prolongate_history_of_inputs();
+        network.prolongate_history_of_inputs();
 
         waiterForChangeOfInput.worker_prepare_for_next_task();
     }

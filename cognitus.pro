@@ -24,7 +24,6 @@ SOURCES += main.cpp \
     core/Node/Node.cpp \
     core/Network/ActiveBend/ActiveBend.cpp \
     core/Node/InterfaceNode.cpp \
-    core/Bend/BendOfFigure/BendOfFigure.cpp \
     core/Bend/FreeBend/FreeBend.cpp \
     core/Circuit/Circuit.cpp \
     core/Network/Interface/Output/Output.cpp \
@@ -38,7 +37,9 @@ SOURCES += main.cpp \
     core/test/randomFunc.cpp \
     core/test/Debug_inspector.cpp \
     core/test/Speed_profiler.cpp \
-    core/Bend/Link/Link.cpp
+    core/Bend/Link/Link.cpp \
+    core/auxiliary/Acquiring_handles/Acquiring_handles.cpp \
+    core/Bend/Figure_bend/Figure_bend.cpp
 
 
 
@@ -64,9 +65,12 @@ HEADERS  += \
     core/test/Debug_inspector.h \
     core/test/Speed_profiler.h \
     core/Node/Node_data.h \
-    core/Bend/BendOfFigure/Figure_bend.h \
     core/Bend/FreeBend/Free_bend.h \
-    core/Bend/Link/Link.h
+    core/auxiliary/Acquiring_handles/Acquiring_handles.h \
+    core/Bend/Link/Linked.h \
+    core/Bend/Figure_bend/Figure_bend.h \
+    core/Bend/Figure_bend/Figure_bend_data.h \
+    core/Bend/Bend_data.h
 
 
 

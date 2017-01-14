@@ -13,8 +13,8 @@ InterfaceWindow::InterfaceWindow(QWidget *parent) :
 
     nextBlockSize = 0;
 
-    network->input.initNodes(40);
-    network->output.initNodes(40);
+    global_network->input.initNodes(40);
+    global_network->output.initNodes(40);
 }
 
 InterfaceWindow::~InterfaceWindow()
@@ -117,33 +117,33 @@ QBitArray InterfaceWindow::getArrayOfInputsFromClient(QTcpSocket* clientSocket) 
 }
 
 QString InterfaceWindow::getErrorOfInput(QBitArray input) {
-    if ((std::size_t)input.size() != network->input.getNodesQty()) {
+    if ((std::size_t)input.size() != global_network->input.getNodesQty()) {
         return QString("wrong input size: client sent %1, but core needs %2")
-                    .arg(input.size()).arg(network->input.getNodesQty());
+                    .arg(input.size()).arg(global_network->input.getNodesQty());
     }
     return QString();
 }
 
 void InterfaceWindow::inputToCore(const QBitArray& input) {
-    network->input.begin_setting_input_from_outside();
-    for (uint i_input = 0; i_input < network->input.getNodesQty(); i_input++) {
+    global_network->input.begin_setting_input_from_outside();
+    for (uint i_input = 0; i_input < global_network->input.getNodesQty(); i_input++) {
         if (input.testBit(i_input)) {
-            network->input.prepare_wire_for_input(i_input);
+            global_network->input.prepare_wire_for_input(i_input);
         }
     }
-    network->input.end_setting_input_from_outside();
+    global_network->input.end_setting_input_from_outside();
 
 }
 
 QBitArray InterfaceWindow::getArrayOfOutputsFromCore() {
     QBitArray output;
-    network->output.begin_getting_output_from_outside();
-    for (uint i_output = 0; i_output < network->output.getNodesQty(); i_output++) {
-        if (network->output.is_prepared_for_output(i_output)) {
+    global_network->output.begin_getting_output_from_outside();
+    for (uint i_output = 0; i_output < global_network->output.getNodesQty(); i_output++) {
+        if (global_network->output.is_prepared_for_output(i_output)) {
             output.setBit(i_output);
         }
     }
-    network->output.end_getting_output_from_outside();
+    global_network->output.end_getting_output_from_outside();
     return output;
 
 }

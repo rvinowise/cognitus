@@ -2,25 +2,17 @@
 
 #include <QtDebug>
 
-#ifdef debug_mode
-#include "core/test/allTests.h"
-#include <atomic>
-#endif
 
 namespace core {
 
-
-#ifdef debug_mode
-    std::atomic_size_t input_iteration;
-#endif
-
-Network *network;
+Network* global_network;
 
 
-Network::Network()
+Network::Network():
+    input(*this), output(*this)
 {
     lastActiveBends = new ActiveBends();
-
+    global_network = this;
 }
 
 Network::~Network()

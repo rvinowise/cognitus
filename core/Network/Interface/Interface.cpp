@@ -7,7 +7,9 @@
 namespace core {
 
 
-Interface::Interface()
+
+Interface::Interface(Network &inNetwork):
+    network{inNetwork}
 {
 
 }
@@ -48,8 +50,17 @@ std::size_t Interface::getNodesQty()
 void Interface::deallocate_all_connected_entities()
 {
     for (auto node: this->node ) {
-        node.deallocate_all_connected_entities();
+        //node.deallocate_all_connected_entities();
+
     }
+}
+
+InterfaceNode Interface::getNode(std::size_t index)
+{
+    if (node.size() <= index) {
+        throw("Interface::getNode out of range");
+    }
+    return node[index];
 }
 
 

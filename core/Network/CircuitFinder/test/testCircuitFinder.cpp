@@ -22,7 +22,7 @@ void testCircuitFinder::init_test_characteristics()
     /*core::network = new core::Network();
     qtyInputs = 100;
     qtyIterations = 1000;
-    network->input.initNodes(qtyInputs);*/
+    network.input.initNodes(qtyInputs);*/
 
     core::CircuitFinder circuitFinder;
     //circuitFinder.find_circuits();
@@ -53,7 +53,7 @@ void testCircuitFinder::concoct_input_signals()
 
 void testCircuitFinder::check_if_circuits_are_found()
 {
-    //core::network->circuitFinder.find_circuits()
+    //core::network.circuitFinder.find_circuits()
 }
 
 }

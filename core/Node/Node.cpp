@@ -3,32 +3,13 @@
 
 #include "core/Network/Network.h"
 
-#ifdef debug_mode
-#include "core/Node/InterfaceNode.h"
-#include "core/test/allTests.h"
-#endif
 
 namespace core {
 
 Node_data::Node_data()
 {
-    handles_qty = 1;
 }
 
-void Node_data::connect_a_handle()
-{
-    handles_qty++;
-}
-void Node_data::disconnect_a_handle()
-{
-    handles_qty--;
-    if (handles_qty == 0) {
-        delete this;
-    }
-}
-void Node_data::~Node_data()
-{
-}
 
 Node::Node()
 {
@@ -55,7 +36,7 @@ Node::~Node()
 void Node::deallocate_with_all_connected_entities_upward()
 {
     for (auto bend: this->data->bend) {
-        bend.
+        //bend.
     }
     delete data;
 }
@@ -91,8 +72,8 @@ void delete_initial_chain_which_is_redundant_now(LineOfCircuit inChain) {
 
 void Node::carefully_preserve_initial_chain_because_of_its_context(
         LineOfCircuit inLine,
-        Bend first_chain_bend,
-        Bend second_chain_bend) {
+        Figure_bend first_chain_bend,
+        Figure_bend second_chain_bend) {
     inLine.get_start().attach_to_bend_of_figure(first_chain_bend);
     inLine.get_end().attach_to_bend_of_figure(second_chain_bend);
 }
@@ -100,10 +81,10 @@ void Node::carefully_preserve_initial_chain_because_of_its_context(
 void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
 {
     if (data->bend.size() > 0) {
-        assert("incorporating circuit is only for _new_ Nodes");
+        throw("incorporating circuit is only for _new_ Nodes");
     }
     if (!inCircuit.is_complete()) {
-        assert("trying to incorporate an _incomplete_ Circuit to Node");
+        throw("trying to incorporate an _incomplete_ Circuit to Node");
     }
     Bend firstHigherBend = this->add_bend();
     firstHigherBend.copy_prev_bends_from(inCircuit.getFirstStartBend());
@@ -112,13 +93,13 @@ void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
     secondHigherBend.copy_prev_bends_from(inCircuit.getSecondStartBend());
     secondHigherBend.copy_next_bends_from(inCircuit.getSecondEndBend());
 
-    Bend first_chain_bend = this->get_lower_chain_bend().add_next_bend();
-    Bend second_chain_bend = first_chain_bend.add_next_bend();
+    Figure_bend first_figure_bend = this->get_lower_chain_bend().add_next_bend();
+    Figure_bend second_figure_bend = first_figure_bend.add_next_bend();
 
     if (there_are_other_bends_inside_this_line(inCircuit.get_first_line())) {
         carefully_preserve_initial_chain_because_of_its_context(
                     inCircuit.get_first_line(),
-                    first_chain_bend, second_chain_bend);
+                    first_figure_bend, second_figure_bend);
     } else {
         delete_initial_chain_which_is_redundant_now(inCircuit.get_first_line());
     }
@@ -134,14 +115,10 @@ void Node::fire()
 void Node::add_new_bend_as_active() {
     Bend newBend(*this);
     data->bend.push_back(newBend);
-    network->save_new_activated_bend(newBend);
+    global_network->save_new_activated_bend(newBend);
 }
 
 
-bool Node::isLowest()
-{
-    //return data->lowerChainBend.isEmpty();
-}
 
 Bend Node::add_bend()
 {
@@ -149,7 +126,7 @@ Bend Node::add_bend()
     return data->bend.back();
 }
 
-Bend Node::get_lower_chain_bend()
+Figure_bend Node::get_lower_chain_bend()
 {
     return data->lower_chain_bend;
 }

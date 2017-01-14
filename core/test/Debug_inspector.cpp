@@ -75,7 +75,7 @@ void Debug_inspector::verify(bool statement, const char *statementStr, const cha
 
 void Debug_inspector::writeResume()
 {
-    message("\nresume");
+    message("\nRESUME: ");
     if (errors.size() > 0) {
         message(boost::format("%1% errors catched")% errors.size());
         for (auto _message : errors) {

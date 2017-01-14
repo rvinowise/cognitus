@@ -5,50 +5,16 @@
 #include <set>
 #include <memory>
 
-#include "core/Node/Node.h"
-#include "./Link/Link.h"
+#include "core/Bend/Link/Linked.h"
+#include "core/auxiliary/Acquiring_handles/Acquiring_handles.h"
 
 namespace core {
 
-class Bend;
+class Bend_data;
+class Node;
+class Figure_bend;
 
-
-typedef std::size_t Input_iteration;
-
-struct Activation_interval
-{
-public:
-    Input_iteration when_does_the_bend_becomes_active() {return start;}
-    Input_iteration when_does_the_bend_turns_off() {return end;}
-
-    Input_iteration start;
-    Input_iteration end;
-};
-
-
-class Bend_data
-{
-public:
-    Bend_data(Node& masterNode);
-
-    //common
-    std::vector<Bend> prevBend;
-    std::vector<Bend> nextBend;
-    Node& master_node;
-    Activation_interval interval;
-
-    // bend_of_figure
-    Node node_of_whole_figure;
-
-    // free_bend
-    std::vector<Bend> higher_figure_bends;
-    std::vector<Bend> bend_of_figure;
-
-private:
-    std::set<Bend> firedBend;
-};
-
-class Bend: Linked
+class Bend: public Linked
 {
 public:
     Bend();
@@ -65,10 +31,10 @@ public:
 
     Node& get_master_node();
 
-    std::size_t get_prev_links_qty() const override;
-    std::size_t get_next_links_qty() const override;
-    Linked get_prev_link(std::size_t index) const override;
-    Linked get_next_link(std::size_t index) const override;
+    std::size_t get_prev_links_qty() const;
+    std::size_t get_next_links_qty() const;
+    Bend get_prev_bend(std::size_t index) const;
+    Bend get_next_bend(std::size_t index) const;
 
     const std::vector<Bend>& get_array_of_prev_bends() const;
     const std::vector<Bend>& get_array_of_next_bends() const;
@@ -81,7 +47,7 @@ public:
     void append_to_higher_node(Node& inNode);
     void copy_prev_bends_from(Bend otherBend);
     void copy_next_bends_from(Bend otherBend);
-    void attach_to_bend_of_figure(Bend figureBend);
+    void attach_to_bend_of_figure(Figure_bend figureBend);
     Bend add_next_bend();
     void connect_to(Bend& toBend);
 

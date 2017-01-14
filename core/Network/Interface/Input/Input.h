@@ -11,7 +11,7 @@ namespace core {
 class Input: public Interface
 {
 public:
-    Input();
+    Input(Network &inNetwork);
 
     void begin_setting_input_from_outside();
     void prepare_wire_for_input(std::size_t index);
@@ -27,6 +27,7 @@ private:
 
     WaiterForTask waiterForChangeOfInput;
     std::thread*  threadProcessInput;
+
 
 };
 

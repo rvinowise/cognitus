@@ -8,11 +8,10 @@
 #include <vector>
 #include <thread>
 
-#ifdef debug_mode
-#include <atomic>
-#endif
 
 namespace core {
+
+
 
 
 class Network
@@ -53,7 +52,6 @@ private:
     std::thread* threadProcessInput;
 };
 
-
-extern Network* network;
+extern Network* global_network;
 
 }

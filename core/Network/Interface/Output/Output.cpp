@@ -4,7 +4,8 @@
 
 namespace core {
 
-Output::Output()
+Output::Output(Network &inNetwork):
+    Interface(inNetwork)
 {
     init_processing_thread();
 }
@@ -35,13 +36,7 @@ void Output::init_processing_thread()
 void Output::produce_outputs_for_representation_of_client()
 {
     while (this) {
-        waiterForChangeOfOutput.worker_wait_for_task();
 
-        network->prepare_to_new_input_iteration();
-        firePreparedNodes();
-        network->prolongate_history_of_inputs();
-
-        waiterForChangeOfOutput.worker_prepare_for_next_task();
     }
 }
 

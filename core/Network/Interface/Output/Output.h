@@ -11,7 +11,8 @@ namespace core {
 class Output: public Interface
 {
 public:
-    Output();
+    Output(Network &inNetwork);
+
     void begin_getting_output_from_outside();
     bool is_prepared_for_output(std::size_t index);
     void end_getting_output_from_outside();

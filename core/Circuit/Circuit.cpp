@@ -7,16 +7,16 @@ namespace core {
 bool LineOfCircuit::is_has_noise_bends_inside()
 {
     if (
-            (start.get_next_bends_qty() == 0) ||
-            (end.get_prev_bends_qty() == 0)
+            (start.get_next_links_qty() == 0) ||
+            (end.get_prev_links_qty() == 0)
             )
     {
         throw("not connected Bends inside one Line_of_circuit");
     }
 
     if (
-            (start.get_next_bends_qty() > 0) ||
-            (end.get_prev_bends_qty() > 0) ||
+            (start.get_next_links_qty() > 0) ||
+            (end.get_prev_links_qty() > 0) ||
             (start.get_next_bend(0) != end.get_prev_bend(0))
             )
     {

@@ -5,6 +5,12 @@
 namespace test {
 
 
+Input::Input(core::Network& inNetwork):
+    network{inNetwork}
+{
+
+}
+
 void Input::bring_inputs_to_representation_of_network()
 {
     init_input_characteristics();
@@ -15,10 +21,7 @@ void Input::bring_inputs_to_representation_of_network()
 
 void Input::init_input_characteristics()
 {
-    core::network = new core::Network();
-    //qtyInputs = 5000;
-    //qtyIterations = 10000;
-    network->input.initNodes(qtyInputs);
+    network.input.initNodes(qtyInputs);
 }
 
 
@@ -27,9 +30,9 @@ void Input::concoct_input_history()
     for (size_t i_iter = 0; i_iter < qtyIterations; i_iter++) {
         std::bitset<qtyInputs> inputIterationFromOutside;
         for (size_t i_input = 0; i_input < qtyInputs; i_input++) {
-            if (random(10) == 0) {
+            //if (random(10) == 0) {
                 inputIterationFromOutside.set(i_input);
-            }
+            //}
         }
         inputHistory.push_back(inputIterationFromOutside);
     }
@@ -41,27 +44,27 @@ void Input::input_history_in_cycle()
     i_iteration = -1;
     for (std::size_t i_iter = 0; i_iter < qtyIterations; i_iter++) {
         i_iteration++;
-        network->input.begin_setting_input_from_outside();
+        network.input.begin_setting_input_from_outside();
         debug.message(boost::format("master:: inside iteration %1%")%i_iter);
 
         std::bitset<qtyInputs> inputFromOutside = inputHistory[i_iter];
         for (size_t i_input=0; i_input < qtyInputs; i_input++) {
             if (inputFromOutside.test(i_input)) {
-                network->input.prepare_wire_for_input(i_input);
+                network.input.prepare_wire_for_input(i_input);
             }
         }
         try {
-            network->input.end_setting_input_from_outside();
+            network.input.end_setting_input_from_outside();
         } catch (std::bad_alloc) {
             debug.error(boost::format("not enought memory to save input data #%1%")%i_iter);
         }
     }
-    network->input.wait_for_insertion_of_input();
+    network.input.wait_for_insertion_of_input();
 }
 
 void Input::check_network_validity()
 {
-    ActiveBends& lastAddedBends = network->getLastActiveBends();
+    ActiveBends& lastAddedBends = network.getLastActiveBends();
 
     const std::vector<Bend>* bendsOfIteration = &lastAddedBends.bend;
     for (size_t i_iter = qtyIterations-1; i_iter > 0; i_iter--) {

@@ -3,21 +3,19 @@
 #include <vector>
 
 #include "core/Bend/Bend.h"
-
+#include "core/Bend/Figure_bend/Figure_bend.h"
+#include "core/auxiliary/Acquiring_handles/Acquiring_handles.h"
 
 namespace core {
 
-class Node_data
+class Node_data: public Acquiring_handles
 {
     friend class Node;
     Node_data();
 
-    void connect_a_handle();
-    void disconnect_a_handle();
 private:
     std::vector<Bend> bend;
-    Bend lower_chain_bend;
-    std::size_t handles_qty;
+    Figure_bend lower_chain_bend;
 };
 
 
