@@ -47,7 +47,7 @@ public:
     void append_to_higher_node(Node& inNode);
     void copy_prev_bends_from(Bend otherBend);
     void copy_next_bends_from(Bend otherBend);
-    void attach_to_bend_of_figure(Figure_bend figureBend);
+    void attach_to_figure(Figure_bend figureBend);
     Bend add_next_bend();
     void connect_to(Bend& toBend);
 

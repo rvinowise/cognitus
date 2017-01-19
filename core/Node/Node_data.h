@@ -10,12 +10,12 @@ namespace core {
 
 class Node_data: public Acquiring_handles
 {
-    friend class Node;
+public:
     Node_data();
 
-private:
+    size_t level;
     std::vector<Bend> bend;
-    Figure_bend lower_chain_bend;
+    std::vector<Figure_bend> figure_bends;
 };
 
 

@@ -39,7 +39,8 @@ SOURCES += main.cpp \
     core/test/Speed_profiler.cpp \
     core/Bend/Link/Link.cpp \
     core/auxiliary/Acquiring_handles/Acquiring_handles.cpp \
-    core/Bend/Figure_bend/Figure_bend.cpp
+    core/Bend/Figure_bend/Figure_bend.cpp \
+    core/Bend/Figure_bend/Iterator/Iterator_BFS.cpp
 
 
 
@@ -70,7 +71,8 @@ HEADERS  += \
     core/Bend/Link/Linked.h \
     core/Bend/Figure_bend/Figure_bend.h \
     core/Bend/Figure_bend/Figure_bend_data.h \
-    core/Bend/Bend_data.h
+    core/Bend/Bend_data.h \
+    core/Bend/Figure_bend/Iterator/Iterator_BFS.h
 
 
 

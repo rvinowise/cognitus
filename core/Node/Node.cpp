@@ -2,11 +2,16 @@
 #include "Node_data.h"
 
 #include "core/Network/Network.h"
+#include "core/Bend/Figure_bend/Iterator/Iterator_BFS.h"
 
+#ifdef debug_mode
+#include "core/test/randomFunc.h"
+#endif
 
 namespace core {
 
-Node_data::Node_data()
+Node_data::Node_data():
+    Acquiring_handles()
 {
 }
 
@@ -17,20 +22,33 @@ Node::Node()
 
 }
 
+Node::Node(Node_data& in_node_data)
+{
+    data = &in_node_data;
+    if (data) {
+        data->connect_a_handle();
+    }
+}
+
 Node::Node(const Node &other)
 {
     data = other.data;
-    data->connect_a_handle();
+    if(data) {
+        data->connect_a_handle();
+    }
 }
 
 Node::Node(Node &&other)
 {
     data = other.data;
+    other.data = nullptr;
 }
 
 Node::~Node()
 {
-    data->disconnect_a_handle();
+    if (data) {
+        data->disconnect_a_handle();
+    }
 }
 
 void Node::deallocate_with_all_connected_entities_upward()
@@ -74,8 +92,8 @@ void Node::carefully_preserve_initial_chain_because_of_its_context(
         LineOfCircuit inLine,
         Figure_bend first_chain_bend,
         Figure_bend second_chain_bend) {
-    inLine.get_start().attach_to_bend_of_figure(first_chain_bend);
-    inLine.get_end().attach_to_bend_of_figure(second_chain_bend);
+    inLine.get_start().attach_to_figure(first_chain_bend);
+    inLine.get_end().attach_to_figure(second_chain_bend);
 }
 
 void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
@@ -93,7 +111,7 @@ void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
     secondHigherBend.copy_prev_bends_from(inCircuit.getSecondStartBend());
     secondHigherBend.copy_next_bends_from(inCircuit.getSecondEndBend());
 
-    Figure_bend first_figure_bend = this->get_lower_chain_bend().add_next_bend();
+    Figure_bend first_figure_bend = this->add_figure_bend();
     Figure_bend second_figure_bend = first_figure_bend.add_next_bend();
 
     if (there_are_other_bends_inside_this_line(inCircuit.get_first_line())) {
@@ -126,10 +144,75 @@ Bend Node::add_bend()
     return data->bend.back();
 }
 
-Figure_bend Node::get_lower_chain_bend()
+void Node::append_bend(const Bend& bend)
 {
-    return data->lower_chain_bend;
+    data->bend.push_back(bend);
 }
+
+std::vector<Figure_bend>& Node::get_arr_figure_bends()
+{
+    return data->figure_bends;
+}
+
+Figure_bend Node::add_figure_bend()
+{
+    data->figure_bends.push_back(Figure_bend(*this));
+    return data->figure_bends.back();
+}
+
+Node::iterator_BFS Node::begin()
+{
+    return iterator_BFS(*this);
+}
+Node::iterator_BFS Node::end()
+{
+    return iterator_BFS();
+}
+
+#ifdef debug_mode
+
+//using test::random;
+
+bool Node::has_it_as_progeny(Node in_node)
+{
+    for (Figure_bend figure: *this) {
+        for (Bend child_bend: figure.get_arr_free_bends()) {
+            Node child_node = child_bend.get_master_node();
+            if (child_node == in_node) {
+                return true;
+            }
+            return child_node.has_it_as_progeny(in_node);
+        }
+    }
+    return false;
+}
+
+bool Node::is_progeny_of(Node node)
+{
+    return node.has_it_as_progeny(*this);
+}
+
+void Node::generate_random_empty_figure(std::size_t figure_size)
+{
+
+    std::vector<Figure_bend> figures(figure_size);
+    for (size_t i_figure=0; i_figure<figure_size; i_figure++) {
+        figures[i_figure] = Figure_bend(*this);
+    }
+    for (Figure_bend figure: figures) {
+        std::vector<Figure_bend> potential_next_figures=
+                figure.get_arr_not_linked_figures(figures);
+        unsigned int figure_picking_step = potential_next_figures.size()-2;
+        for (
+             size_t i_potential_next = 0;
+             i_potential_next < potential_next_figures.size();
+             i_potential_next += (1+test::random(figure_picking_step))
+             ) {
+            figure.push_next_bend(potential_next_figures[i_potential_next]);
+        }
+    }
+}
+#endif
 
 
 }

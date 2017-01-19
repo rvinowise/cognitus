@@ -4,9 +4,14 @@
 
 #include <boost/format.hpp>
 #include "core/test/Debug_inspector.h"
+#include "core/test/randomFunc.h"
+#include "core/Bend/Figure_bend/Figure_bend.h"
+#include "core/Bend/Figure_bend/Iterator/Iterator_BFS.h"
 
 namespace test {
 
+using std::size_t;
+using std::vector;
 
 void Network::init_data_for_tests()
 {
@@ -17,27 +22,37 @@ void Network::init_data_for_tests()
 
 void Network::work_of_network()
 {
-    test::Input input(network);
-    input.bring_inputs_to_representation_of_network();
+    //test::Input input(network);
+    //input.bring_inputs_to_representation_of_network();
 
     deallocation_of_all_entities();
 }
 
 void Network::construct_network_ignoring_interface()
 {
-    network.input.initNodes(10);
-    network.output.initNodes(10);
+    network.input.initNodes(2+random(10));
+    network.output.initNodes(2+random(10));
+
+    vector<Node> nodes(random(100));
+
+    for (Node node: nodes) {
+        size_t figure_size = random(100);
+        node.generate_random_empty_figure(figure_size);
+        for (Figure_bend figure: node) {
+
+        }
+    }
 
     Node node = network.input.getNode(0);
     Bend bend = node.add_bend();
 
 
-    Node node1_lvl2();
+    /*Node node1_lvl2();
     Figure_bend figure1_node1_lvl2 = node1_lvl2.get_lower_chain_bend();
     figure1_node1_lvl2.
 
 
-    Node node_2_lvl_2();
+    Node node_2_lvl_2();*/
 
 }
 

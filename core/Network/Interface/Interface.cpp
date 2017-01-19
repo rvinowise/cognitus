@@ -1,12 +1,9 @@
 #include "Interface.h"
 
-#ifdef debug_mode
-#include "core/test/allTests.h"
-#endif
 
 namespace core {
 
-
+using std::size_t;
 
 Interface::Interface(Network &inNetwork):
     network{inNetwork}

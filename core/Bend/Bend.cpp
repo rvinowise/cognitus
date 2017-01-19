@@ -21,6 +21,7 @@ Bend::Bend()
 Bend::Bend(Node& masterNode)
 {	
     data = new Bend_data(masterNode);
+    masterNode.append_bend(*this);
 }
 
 Bend::Bend(const Bend& other)
@@ -32,11 +33,14 @@ Bend::Bend(const Bend& other)
 Bend::Bend(Bend &&other)
 {
     this->data = other.data;
+    other.data = nullptr;
 }
 
 Bend::~Bend()
 {
-    data->disconnect_a_handle();
+    if (data) {
+        data->disconnect_a_handle();
+    }
 }
 
 Bend& Bend::operator=(const Bend &other)
@@ -180,7 +184,7 @@ void Bend::copy_next_bends_from(Bend otherBend)
     }
 }
 
-void Bend::attach_to_bend_of_figure(Figure_bend figureBend)
+void Bend::attach_to_figure(Figure_bend figureBend)
 {
     this->data->higher_figure_bends.push_back(figureBend);
 }

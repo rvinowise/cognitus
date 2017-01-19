@@ -1,9 +1,6 @@
 #include "WaiterForCondition.h"
 #include <qdebug.h>
 
-#ifdef debug_mode
-#include "core/test/Debug_inspector.h"
-#endif
 
 namespace core {
 
@@ -25,10 +22,10 @@ void WaiterForTask::worker_wait_for_task()
         try {
             condition.wait(uniqueLock);
         } catch (const std::exception& e) {
-            std::string errorInfo = e.what();
-            test::debug.error(boost::format(errorInfo));
+            //std::string errorInfo = e.what();
+            //test::debug.error(boost::format(errorInfo));
         } catch (...) {
-            test::debug.error(boost::format("unknown"));
+            //test::debug.error(boost::format("unknown"));
         }
 
     }

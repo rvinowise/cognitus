@@ -2,6 +2,8 @@
 
 #include <vector>
 
+
+
 namespace core {
 
 class LineOfCircuit;
@@ -15,6 +17,7 @@ class Node
 friend class InterfaceNode;
 public:
     Node();
+    Node(Node_data &in_node_data);
     Node(Circuit inCircuit);
     Node(const Node& other);
     Node(Node&& other);
@@ -31,7 +34,21 @@ public:
 
     bool isLowest();
     Bend add_bend();
-    Figure_bend get_lower_chain_bend();
+    void append_bend(const Bend& bend);
+    std::vector<Figure_bend>& get_arr_figure_bends();
+    Figure_bend add_figure_bend();
+
+    class iterator_BFS;
+    iterator_BFS begin();
+    iterator_BFS end();
+
+#ifdef debug_mode
+    bool has_it_as_progeny(Node node);
+    bool is_progeny_of(Node node);
+    void generate_random_empty_figure(std::size_t figure_size);
+#endif
+
+    //Figure_bend figure
 private:
     Node_data* data;
 
