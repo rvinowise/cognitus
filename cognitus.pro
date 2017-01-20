@@ -6,7 +6,7 @@
 
 QMAKE_CXXFLAGS += -std=c++11
 
-QT += widgets core gui network testlib
+QT += widgets core gui network testlib opengl
 
 #CONFIG += c++11
 DEFINES += test_itself debug_mode debug_msg_core
@@ -40,7 +40,8 @@ SOURCES += main.cpp \
     core/Bend/Link/Link.cpp \
     core/auxiliary/Acquiring_handles/Acquiring_handles.cpp \
     core/Bend/Figure_bend/Figure_bend.cpp \
-    core/Bend/Figure_bend/Iterator/Iterator_BFS.cpp
+    core/Bend/Figure_bend/Iterator/Iterator_BFS.cpp \
+    interface/RenderingWindow.cpp
 
 
 
@@ -72,7 +73,8 @@ HEADERS  += \
     core/Bend/Figure_bend/Figure_bend.h \
     core/Bend/Figure_bend/Figure_bend_data.h \
     core/Bend/Bend_data.h \
-    core/Bend/Figure_bend/Iterator/Iterator_BFS.h
+    core/Bend/Figure_bend/Iterator/Iterator_BFS.h \
+    interface/RenderingWindow.h
 
 
 

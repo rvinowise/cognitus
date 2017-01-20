@@ -1,5 +1,5 @@
-#ifndef INTERFACE_H
-#define INTERFACE_H
+#pragma once
+
 
 #include <QMainWindow>
 #include <QtNetwork>
@@ -44,4 +44,3 @@ private:
 
 //}
 
-#endif // INTERFACE_H
