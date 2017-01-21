@@ -74,7 +74,8 @@ HEADERS  += \
     core/Bend/Figure_bend/Figure_bend_data.h \
     core/Bend/Bend_data.h \
     core/Bend/Figure_bend/Iterator/Iterator_BFS.h \
-    interface/RenderingWindow.h
+    interface/RenderingWindow.h \
+    interface/graphic_resources.h
 
 
 
@@ -82,4 +83,5 @@ FORMS    += \
     interface/InterfaceWindow.ui
 
 INCLUDEPATH += \
-    C:/ydisk/program/boost_1_62_0/
+    C:/ydisk/program/boost_1_62_0/ \
+    D:/program/glm/

@@ -21,7 +21,10 @@ int main(int argc, char *argv[])
     //QSurfaceFormat format;
     //format.setSamples(16);
 
-    RenderingWindow renderingWindow;
+    test::Network network;
+    network.init_data_for_tests();
+
+    RenderingWidget renderingWindow(network.network);
     //renderingWindow.setFormat(format);
     //renderingWindow.resize(640, 480);
     renderingWindow.show();
@@ -29,8 +32,7 @@ int main(int argc, char *argv[])
     return app.exec();
 
 
-    test::Network network;
-    network.init_data_for_tests();
+
     network.work_of_network();
     debug.writeResume();
 }

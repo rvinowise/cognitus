@@ -3,15 +3,18 @@
 #include <QtGui>
 #include <QOpenGLWindow>
 #include <QOpenGLFunctions>
+namespace core {
+    class Network;
+}
 
-class RenderingWindow: public QOpenGLWindow,
+class RenderingWidget: public QOpenGLWidget,
                         protected QOpenGLFunctions
 {
-    //Q_OBJECT
 public:
-    RenderingWindow();
-    ~RenderingWindow();
+    RenderingWidget(core::Network &inNetwork);
+    ~RenderingWidget();
 
+    void prepare_rendering_resources();
     void initializeGL();
     void resizeGL(int width, int height);
     void paintGL();
@@ -25,7 +28,15 @@ public:
     QPaintDevice *redirected(QPoint *) const {}*/
 
 private:
-    void printContextInformation();
+    void print_context_information();
+
+    std::vector<QOpenGLTexture> textures;
+    QOpenGLShaderProgram shader_program;
+    QOpenGLBuffer vertex_buffer;
+
+
+    core::Network& network;
+
 
 };
 
