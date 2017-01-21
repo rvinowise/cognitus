@@ -1,6 +1,6 @@
 #include "Figure_bend.h"
 
-#include "figure_bend_data.h"
+#include "Figure_bend_data.h"
 
 #include "core/Node/Node_data.h"
 #include "core/Bend/Figure_bend/Iterator/Iterator_BFS.h"

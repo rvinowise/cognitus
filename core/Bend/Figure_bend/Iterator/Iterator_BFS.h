@@ -5,7 +5,7 @@
 
 #include "core/Node/Node.h"
 #include "core/Bend/Figure_bend/Figure_bend.h"
-#include "core/Bend/Figure_bend/figure_bend_data.h"
+#include "core/Bend/Figure_bend/Figure_bend_data.h"
 
 namespace core {
 
@@ -20,7 +20,7 @@ public:
     {
 
     }
-    void set_to_figure(Figure_bend in_figure);
+    void continue_with_figure(Figure_bend in_figure);
     bool is_end();
 
     iterator_BFS& operator++();
