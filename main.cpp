@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     format.setDepthBufferSize(24);
     QSurfaceFormat::setDefaultFormat(format);
 
-    RenderingWidget renderingWindow(network.network);
+    render::RenderingWidget renderingWindow(network.network);
     renderingWindow.show();
 
     InterfaceWindow interfaceWindow(network.network);

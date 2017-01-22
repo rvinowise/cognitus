@@ -13,6 +13,8 @@ namespace core {
     class Network;
 }
 
+namespace render {
+
 class RenderingWidget: public QOpenGLWidget,
                         protected QOpenGLFunctions
 {
@@ -53,5 +55,6 @@ private:
 
 };
 
-
 extern RenderingWidget* renderingWidget;
+
+}

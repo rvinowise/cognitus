@@ -5,17 +5,13 @@
 
 #include "core/Network/Network.h"
 
-//std::shared_ptr<RenderingWidget> renderingWidget;
 
-const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
+namespace render {
+
+//const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
+const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
 RenderingWidget* renderingWidget;
 
-
-/*RenderingWidget::RenderingWidget(RenderingWidget *other):
-    network(other->network)
-{
-    throw("bad constructor");
-}*/
 
 RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *parent):
     network(rendering_network),
@@ -174,4 +170,7 @@ void RenderingWidget::print_context_information()
 
     GLint glParam; glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &glParam);
     qDebug() << glParam;
+}
+
+
 }

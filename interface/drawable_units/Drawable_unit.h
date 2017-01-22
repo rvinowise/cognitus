@@ -4,9 +4,9 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
-#include <string>
-#include <glm/glm.hpp>
 #include <memory>
+
+namespace render {
 
 class Drawable_unit: protected QOpenGLFunctions
 {
@@ -17,8 +17,8 @@ public:
     void draw_link_to(const Drawable_unit& other);
 //protected:
     QVector2D position;
-    //QVector2D position;
     std::shared_ptr<QOpenGLTexture> texture;
 
 };
 
+}

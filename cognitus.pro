@@ -42,7 +42,10 @@ SOURCES += main.cpp \
     core/Bend/Figure_bend/Figure_bend.cpp \
     core/Bend/Figure_bend/Iterator/Iterator_BFS.cpp \
     interface/RenderingWidget.cpp \
-    interface/drawable_units/Drawable_unit.cpp
+    interface/drawable_units/Drawable_unit.cpp \
+    interface/drawable_units/draw_Bend.cpp \
+    interface/drawable_units/draw_Hub.cpp \
+    interface/drawable_units/draw_Node.cpp
 
 
 
@@ -77,7 +80,10 @@ HEADERS  += \
     core/Bend/Figure_bend/Iterator/Iterator_BFS.h \
     interface/graphic_resources.h \
     interface/RenderingWidget.h \
-    interface/drawable_units/Drawable_unit.h
+    interface/drawable_units/Drawable_unit.h \
+    interface/drawable_units/draw_Bend.h \
+    interface/drawable_units/draw_Hub.h \
+    interface/drawable_units/draw_Node.h
 
 
 

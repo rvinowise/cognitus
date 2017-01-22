@@ -3,6 +3,8 @@
 #include "interface/RenderingWidget.h"
 
 
+namespace render {
+
 Drawable_unit::Drawable_unit()
 {
 
@@ -21,5 +23,8 @@ void Drawable_unit::draw()
 
 void Drawable_unit::draw_link_to(const Drawable_unit &other)
 {
+
+}
+
 
 }
