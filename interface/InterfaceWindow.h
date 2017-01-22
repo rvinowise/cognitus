@@ -3,8 +3,13 @@
 
 #include <QMainWindow>
 #include <QtNetwork>
-
+#include <QOpenGLWidget>
+#include <QOpenGLFunctions>
 //namespace interface {
+
+namespace core {
+    class Network;
+}
 
 namespace Ui {
 class InterfaceWindow;
@@ -16,6 +21,7 @@ class InterfaceWindow : public QMainWindow
 
 public:
     explicit InterfaceWindow(QWidget *parent = 0);
+    InterfaceWindow(core::Network& inNetwork, QWidget *parent = 0);
     ~InterfaceWindow();
 
 public slots:

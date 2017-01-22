@@ -60,5 +60,14 @@ InterfaceNode Interface::getNode(std::size_t index)
     return node[index];
 }
 
+std::vector<InterfaceNode>::iterator Interface::begin()
+{
+    return node.begin();
+}
+std::vector<InterfaceNode>::iterator Interface::end()
+{
+    return node.end();
+}
+
 
 }

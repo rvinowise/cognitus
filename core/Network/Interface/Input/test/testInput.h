@@ -20,14 +20,14 @@ public:
 
     void concoct_input_history();
     void input_history_in_cycle();
-
+    void init_input_characteristics();
 private:
-    static const size_t qtyInputs = 2;
-    static const size_t qtyIterations = 2;
+    static const size_t qtyInputs = 10;
+    static const size_t qtyIterations = 100;
 
     core::Network& network;
 
-    void init_input_characteristics();
+
     void check_network_validity();
     void check_if_all_bends_of_input_iteration_have_the_same_previous_bends(const std::vector<Bend>& bendsOfIteration);
     void compare_inputted_array_with_nodes_in_network(std::bitset<qtyInputs> inputIteration, const std::vector<Bend>& bendsOfIteration);

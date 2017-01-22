@@ -2,7 +2,7 @@
 #include <QGuiApplication>
 
 #include "interface/InterfaceWindow.h"
-#include "interface/RenderingWindow.h"
+#include "interface/RenderingWidget.h"
 #include "core/Network/Network.h"
 
 
@@ -23,11 +23,20 @@ int main(int argc, char *argv[])
 
     test::Network network;
     network.init_data_for_tests();
+    test::Input input(network.network);
+    input.init_input_characteristics();
+
+    //RenderingWidget renderingWindow(network.network);
+    //renderingWindow.show();
+    QSurfaceFormat format;
+    format.setDepthBufferSize(24);
+    QSurfaceFormat::setDefaultFormat(format);
 
     RenderingWidget renderingWindow(network.network);
-    //renderingWindow.setFormat(format);
-    //renderingWindow.resize(640, 480);
     renderingWindow.show();
+
+    InterfaceWindow interfaceWindow(network.network);
+    interfaceWindow.show();
 
     return app.exec();
 

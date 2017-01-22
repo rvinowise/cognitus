@@ -3,18 +3,29 @@
 //using namespace interface;
 #include "core/Network/Network.h"
 
+#include "interface/RenderingWidget.h"
+
 using namespace core;
 
-InterfaceWindow::InterfaceWindow(QWidget *parent) :
+InterfaceWindow::InterfaceWindow(core::Network &inNetwork, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::InterfaceWindow)
 {
     ui->setupUi(this);
 
-    nextBlockSize = 0;
+    /*RenderingWidget* renderingWidget = new RenderingWidget(inNetwork);
+    ui->layRendering->addWidget(renderingWidget, 0, 0);
+    ui->layRendering->activate();*/
 
-    global_network->input.initNodes(40);
-    global_network->output.initNodes(40);
+    /*QGridLayout *mainLayout = new QGridLayout;
+    RenderingWidget* renderingWidget = new RenderingWidget(inNetwork);
+    mainLayout->addWidget(renderingWidget, 0, 0);
+
+    connect(grenderingWidget, &GLWidget::clicked,
+            this, &InterfaceWindow::setCurrentGlWidget);
+
+    setLayout(mainLayout);*/
+
 }
 
 InterfaceWindow::~InterfaceWindow()

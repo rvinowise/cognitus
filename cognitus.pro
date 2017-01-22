@@ -41,7 +41,8 @@ SOURCES += main.cpp \
     core/auxiliary/Acquiring_handles/Acquiring_handles.cpp \
     core/Bend/Figure_bend/Figure_bend.cpp \
     core/Bend/Figure_bend/Iterator/Iterator_BFS.cpp \
-    interface/RenderingWindow.cpp
+    interface/RenderingWidget.cpp \
+    interface/drawable_units/Drawable_unit.cpp
 
 
 
@@ -74,8 +75,9 @@ HEADERS  += \
     core/Bend/Figure_bend/Figure_bend_data.h \
     core/Bend/Bend_data.h \
     core/Bend/Figure_bend/Iterator/Iterator_BFS.h \
-    interface/RenderingWindow.h \
-    interface/graphic_resources.h
+    interface/graphic_resources.h \
+    interface/RenderingWidget.h \
+    interface/drawable_units/Drawable_unit.h
 
 
 
@@ -85,3 +87,7 @@ FORMS    += \
 INCLUDEPATH += \
     C:/ydisk/program/boost_1_62_0/ \
     D:/program/glm/
+
+#DISTFILES += \
+#    interface/shaders/sprite.frag \
+#    interface/shaders/sprite.vert

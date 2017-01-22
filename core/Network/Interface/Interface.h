@@ -20,6 +20,8 @@ public:
     void deallocate_all_connected_entities();
     InterfaceNode getNode(std::size_t index);
 
+    std::vector<InterfaceNode>::iterator begin();
+    std::vector<InterfaceNode>::iterator end();
 protected:
     void firePreparedNodes();
     void prepareToFire(int index);
