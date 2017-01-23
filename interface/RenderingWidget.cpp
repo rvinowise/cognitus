@@ -8,8 +8,8 @@
 
 namespace render {
 
-//const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
-const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
+const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
+//const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
 RenderingWidget* renderingWidget;
 
 
@@ -44,7 +44,6 @@ void RenderingWidget::draw_unit_rect()
 void RenderingWidget::initializeGL()
 {
     initializeOpenGLFunctions();
-    //print_context_information();
 
     prepare_rendering_resources();
     prepare_graphic_settings();
@@ -90,11 +89,15 @@ void RenderingWidget::prepare_rendering_resources()
     shader_program.bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
     shader_program.bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
     shader_program.link();
-
-    shader_program.bind();
     shader_program.setUniformValue("texture", 0);
 
+    shader_program.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
+    shader_program.enableAttributeArray(PROGRAM_TEXCOORD_ATTRIBUTE);
+    shader_program.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
+    shader_program.setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 2 * sizeof(GLfloat), 2, 4 * sizeof(GLfloat));
 
+
+    shader_program.bind();
 
     initialize_units();
 }
@@ -108,10 +111,6 @@ void RenderingWidget::prepare_graphic_settings()
 
     glClearColor(clear_color.redF(), clear_color.greenF(), clear_color.blueF(), clear_color.alphaF());
 
-    shader_program.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
-    shader_program.enableAttributeArray(PROGRAM_TEXCOORD_ATTRIBUTE);
-    shader_program.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
-    shader_program.setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 2 * sizeof(GLfloat), 2, 4 * sizeof(GLfloat));
 
     projection_matrix.ortho(-50.0f, +50.0f, -50.0f, +50.0f, -1.0f, 1.0f);
 }
@@ -161,16 +160,6 @@ void RenderingWidget::paintGL()
 }
 
 
-
-void RenderingWidget::print_context_information()
-{
-    QString glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-
-    qDebug() << "OpenGL " << glVersion;
-
-    GLint glParam; glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &glParam);
-    qDebug() << glParam;
-}
 
 
 }

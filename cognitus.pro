@@ -78,7 +78,6 @@ HEADERS  += \
     core/Bend/Figure_bend/Figure_bend_data.h \
     core/Bend/Bend_data.h \
     core/Bend/Figure_bend/Iterator/Iterator_BFS.h \
-    interface/graphic_resources.h \
     interface/RenderingWidget.h \
     interface/drawable_units/Drawable_unit.h \
     interface/drawable_units/draw_Bend.h \
