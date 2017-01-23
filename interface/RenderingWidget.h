@@ -49,7 +49,9 @@ private:
     QOpenGLBuffer vertex_buffer;
     QColor clear_color;
 
-    std::vector<Drawable_unit> drawables;
+    Human_control human_control;
+
+    std::vector<Drawable_unit> units;
     core::Network& network;
 
 

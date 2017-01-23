@@ -45,7 +45,8 @@ SOURCES += main.cpp \
     interface/drawable_units/Drawable_unit.cpp \
     interface/drawable_units/draw_Bend.cpp \
     interface/drawable_units/draw_Hub.cpp \
-    interface/drawable_units/draw_Node.cpp
+    interface/drawable_units/draw_Node.cpp \
+    interface/Human_control/Human_control.cpp
 
 
 
@@ -82,7 +83,8 @@ HEADERS  += \
     interface/drawable_units/Drawable_unit.h \
     interface/drawable_units/draw_Bend.h \
     interface/drawable_units/draw_Hub.h \
-    interface/drawable_units/draw_Node.h
+    interface/drawable_units/draw_Node.h \
+    interface/Human_control/Human_control.h
 
 
 

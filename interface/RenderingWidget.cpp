@@ -122,17 +122,17 @@ void RenderingWidget::resizeGL(int width, int height)
 
 void RenderingWidget::mousePressEvent(QMouseEvent *event)
 {
-
+    human_control.mouse_press(event);
 }
 
 void RenderingWidget::mouseMoveEvent(QMouseEvent *event)
 {
-
+    human_control.mouse_move(event);
 }
 
 void RenderingWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-
+    human_control.mouse_release(event);
 }
 
 void RenderingWidget::initialize_units()
@@ -142,9 +142,9 @@ void RenderingWidget::initialize_units()
     QVector2D position(0,0);
     QVector2D offset(2,0);
     for (auto input_node: network.input) {
-        drawables.push_back(Drawable_unit());
-        drawables.back().texture = textures[0];
-        drawables.back().position = position;
+        units.push_back(Drawable_unit());
+        units.back().texture = textures[0];
+        units.back().position = position;
         position += offset;
     }
 }
@@ -154,7 +154,7 @@ void RenderingWidget::paintGL()
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    for (Drawable_unit& drawable: drawables) {
+    for (Drawable_unit& drawable: units) {
         drawable.draw();
     }
 }
