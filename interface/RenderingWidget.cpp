@@ -8,8 +8,10 @@
 
 namespace render {
 
-const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
+//const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
 //const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
+const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
+
 RenderingWidget* renderingWidget;
 
 
@@ -49,18 +51,14 @@ void RenderingWidget::initializeGL()
     prepare_graphic_settings();
 }
 
-struct Vertex
-{
-    GLfloat position[2];
-    GLfloat texture_coordinates[2];
-};
+
 
 void RenderingWidget::prepare_rendering_resources()
 {
     static const GLfloat sprite_coordinates[4][2] = {
          { -1, -1}, { +1, -1}, { +1, +1}, { -1, +1 }
     };
-    static GLfloat sprite_scale = 1;
+    static GLfloat sprite_scale = 10;
 
     QVector<Vertex> vertices;
     for (int j = 0; j < 4; ++j) {
@@ -76,9 +74,9 @@ void RenderingWidget::prepare_rendering_resources()
     vertex_buffer.allocate(vertices.constData(), vertices.count() * sizeof(Vertex));
 
     textures = {
-        std::make_shared<QOpenGLTexture>(QImage(resource_path+"sprites/node.png")),
-        std::make_shared<QOpenGLTexture>(QImage(resource_path+"sprites/bend.png")),
-        std::make_shared<QOpenGLTexture>(QImage(resource_path+"sprites/hub.png"))
+        new QOpenGLTexture(QImage(resource_path+"sprites/node.png")),
+        new QOpenGLTexture(QImage(resource_path+"sprites/bend.png")),
+        new QOpenGLTexture(QImage(resource_path+"sprites/hub.png"))
     };
 
     shader_program.addShaderFromSourceFile(
@@ -117,7 +115,23 @@ void RenderingWidget::prepare_graphic_settings()
 
 void RenderingWidget::resizeGL(int width, int height)
 {
+    window_rect.setWidth(width);
+    window_rect.setHeight(height);
 
+    projection_matrix = QMatrix4x4();
+    projection_matrix.ortho(
+        -window_rect.width()/2,
+         window_rect.width(),
+        -window_rect.height()/2,
+         window_rect.height(), -1.0f, 1.0f);
+
+
+    GLfloat aspect_ratio = 1.5;
+    if (width > height) {
+        //
+    } else {
+
+    }
 }
 
 void RenderingWidget::mousePressEvent(QMouseEvent *event)
@@ -140,7 +154,7 @@ void RenderingWidget::initialize_units()
     int test = network.input.getNodesQty();
 
     QVector2D position(0,0);
-    QVector2D offset(2,0);
+    QVector2D offset(20,0);
     for (auto input_node: network.input) {
         units.push_back(Drawable_unit());
         units.back().texture = textures[0];
@@ -149,14 +163,30 @@ void RenderingWidget::initialize_units()
     }
 }
 
+QMatrix4x4 set_projection_according_to_observer_position(const QRectF& screen_rect)
+{
+    QMatrix4x4 matrix;
+    matrix.ortho(
+        -screen_rect.width()/2,
+         screen_rect.width(),
+        -screen_rect.height()/2,
+         screen_rect.height(), -1.0f, 1.0f);
+    matrix.translate(screen_rect.x()*1.5,
+                       -screen_rect.y()*1.5);
+    return matrix;
+}
+
 void RenderingWidget::paintGL()
 {
+    human_control.draw();
+    projection_matrix = set_projection_according_to_observer_position(window_rect);
 
     glClear(GL_COLOR_BUFFER_BIT);
 
     for (Drawable_unit& drawable: units) {
         drawable.draw();
     }
+    //human_control.draw();
 }
 
 
