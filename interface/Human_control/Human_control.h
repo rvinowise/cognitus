@@ -42,7 +42,7 @@ public:
     void draw();
 
     QOpenGLBuffer selection_vertices;
-private:
+//private:
     std::vector<Drawable_unit> get_units_under_mouse();
     void draw_selection_rect();
 

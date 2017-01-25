@@ -8,9 +8,9 @@
 
 namespace render {
 
-//const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
+const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
 //const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
-const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
+//const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
 
 RenderingWidget* renderingWidget;
 
@@ -39,7 +39,12 @@ void RenderingWidget::draw_unit_rect()
 {
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
-
+void RenderingWidget::draw_selection_rect()
+{
+    //glBlendColor(0.0f,1.0f,0.0f,0.5f);
+    glLineWidth(3);
+    glDrawArrays(GL_LINES, 0, 4);
+}
 
 
 
@@ -49,6 +54,8 @@ void RenderingWidget::initializeGL()
 
     prepare_rendering_resources();
     prepare_graphic_settings();
+
+    update_selection_rect();
 }
 
 
@@ -73,6 +80,7 @@ void RenderingWidget::prepare_rendering_resources()
     vertex_buffer.bind();
     vertex_buffer.allocate(vertices.constData(), vertices.count() * sizeof(Vertex));
 
+
     textures = {
         new QOpenGLTexture(QImage(resource_path+"sprites/node.png")),
         new QOpenGLTexture(QImage(resource_path+"sprites/bend.png")),
@@ -84,9 +92,16 @@ void RenderingWidget::prepare_rendering_resources()
     shader_program.addShaderFromSourceFile(
                 QOpenGLShader::Fragment, resource_path+"shaders/sprite.frag");
 
+    shader_selection.addShaderFromSourceFile(
+                QOpenGLShader::Vertex, resource_path+"shaders/selection.vert");
+    shader_selection.addShaderFromSourceFile(
+                QOpenGLShader::Fragment, resource_path+"shaders/selection.frag");
+
     shader_program.bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
     shader_program.bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
+    shader_selection.bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
     shader_program.link();
+    shader_selection.link();
     shader_program.setUniformValue("texture", 0);
 
     shader_program.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
@@ -94,8 +109,9 @@ void RenderingWidget::prepare_rendering_resources()
     shader_program.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
     shader_program.setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 2 * sizeof(GLfloat), 2, 4 * sizeof(GLfloat));
 
+    shader_selection.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
+    shader_selection.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
 
-    shader_program.bind();
 
     initialize_units();
 }
@@ -163,7 +179,7 @@ void RenderingWidget::initialize_units()
     }
 }
 
-QMatrix4x4 set_projection_according_to_observer_position(const QRectF& screen_rect)
+QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_rect)
 {
     QMatrix4x4 matrix;
     matrix.ortho(
@@ -176,16 +192,47 @@ QMatrix4x4 set_projection_according_to_observer_position(const QRectF& screen_re
     return matrix;
 }
 
+void RenderingWidget::update_selection_rect()
+{
+    QVector<Vertex> vertices_selection;
+    vertices_selection.push_back(Vertex{ -16,16,0,0});
+        vertices_selection.push_back(Vertex{ human_control.mouse_state.position.x(),16,0,0});
+        vertices_selection.push_back(Vertex{ human_control.mouse_state.position.x(), -human_control.mouse_state.position.y(), 0,0});
+        vertices_selection.push_back(Vertex{ -16,human_control.mouse_state.position.y(),0,0});
+
+    selection_vertices.create();
+    selection_vertices.bind();
+    selection_vertices.allocate(vertices_selection.constData(), vertices_selection.count() * sizeof(Vertex));
+
+
+}
+
 void RenderingWidget::paintGL()
 {
-    human_control.draw();
-    projection_matrix = set_projection_according_to_observer_position(window_rect);
-
     glClear(GL_COLOR_BUFFER_BIT);
 
+    shader_selection.bind();
+    //vertex_buffer.bind();
+
+
+
+    draw_selection_rect();
+
+    //human_control.draw();
+
+
+
+
+
+    projection_matrix = get_projection_according_to_observer_position(window_rect);
+
+
+
+    shader_program.bind();
     for (Drawable_unit& drawable: units) {
-        drawable.draw();
+        //drawable.draw();
     }
+    //shader_selection.bind();
     //human_control.draw();
 }
 

@@ -29,10 +29,14 @@ public:
     QOpenGLShaderProgram shader_program;
     static const std::size_t PROGRAM_VERTEX_ATTRIBUTE=0;
     static const std::size_t PROGRAM_TEXCOORD_ATTRIBUTE=1;
+    QOpenGLShaderProgram shader_selection;
 
     void draw_unit_rect();
+    void draw_selection_rect();
     QRectF window_rect;
 std::vector<QOpenGLTexture*> textures;
+void update_selection_rect();
+
 protected:
 
     void initializeGL() Q_DECL_OVERRIDE;
@@ -50,6 +54,7 @@ private:
 
 
     QOpenGLBuffer vertex_buffer;
+    QOpenGLBuffer selection_vertices;
     QColor clear_color;
 
     Human_control human_control;
