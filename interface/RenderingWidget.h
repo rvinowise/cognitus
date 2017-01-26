@@ -55,6 +55,9 @@ private:
 
     QOpenGLBuffer vertex_buffer;
     QOpenGLBuffer selection_vertices;
+    QOpenGLVertexArrayObject vao_sprite_rect;
+    QOpenGLVertexArrayObject vao_selection_rect;
+
     QColor clear_color;
 
     Human_control human_control;

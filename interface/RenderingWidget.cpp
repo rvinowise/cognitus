@@ -18,6 +18,8 @@ RenderingWidget* renderingWidget;
 RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *parent):
     network(rendering_network),
     QOpenGLWidget(parent),
+    vertex_buffer(QOpenGLBuffer::VertexBuffer),
+    selection_vertices(QOpenGLBuffer::VertexBuffer),
 
     clear_color(QColor(255,255,255))
 
@@ -76,9 +78,29 @@ void RenderingWidget::prepare_rendering_resources()
                                j == 2 || j == 3
                            });
     }
+
+    vao_sprite_rect.create();
+    vao_sprite_rect.bind();
+
     vertex_buffer.create();
     vertex_buffer.bind();
     vertex_buffer.allocate(vertices.constData(), vertices.count() * sizeof(Vertex));
+
+    //vao_sprite_rect.release();
+
+    QVector<Vertex> vertices_selection;
+    vertices_selection.push_back(Vertex{ -16,16,0,0});
+        vertices_selection.push_back(Vertex{ 40,16,0,0});
+        vertices_selection.push_back(Vertex{ 40, -40, 0,0});
+        vertices_selection.push_back(Vertex{ -16,40,0,0});
+    vao_selection_rect.create();
+    vao_selection_rect.bind();
+    selection_vertices.create();
+    selection_vertices.setUsagePattern(QOpenGLBuffer::UsagePattern::StreamDraw);
+    selection_vertices.bind();
+    //vao_selection_rect.release();
+    selection_vertices.allocate(vertices_selection.constData(), vertices_selection.count() * sizeof(Vertex));
+
 
 
     textures = {
@@ -112,8 +134,10 @@ void RenderingWidget::prepare_rendering_resources()
     shader_selection.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
     shader_selection.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
 
-
     initialize_units();
+
+
+
 }
 
 void RenderingWidget::prepare_graphic_settings()
@@ -179,7 +203,7 @@ void RenderingWidget::initialize_units()
     }
 }
 
-QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_rect)
+QMatrix4x4 get_projection_according_to_window(const QRectF& screen_rect)
 {
     QMatrix4x4 matrix;
     matrix.ortho(
@@ -187,21 +211,33 @@ QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_re
          screen_rect.width(),
         -screen_rect.height()/2,
          screen_rect.height(), -1.0f, 1.0f);
-    matrix.translate(screen_rect.x()*1.5,
-                       -screen_rect.y()*1.5);
     return matrix;
 }
+QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_rect)
+{
+    QMatrix4x4 matrix = get_projection_according_to_window(screen_rect);
+    matrix.translate(screen_rect.x()*1.5,
+                       -screen_rect.y()*1.5, 0);
+    return matrix;
+}
+
 
 void RenderingWidget::update_selection_rect()
 {
     QVector<Vertex> vertices_selection;
-    vertices_selection.push_back(Vertex{ -16,16,0,0});
-        vertices_selection.push_back(Vertex{ human_control.mouse_state.position.x(),16,0,0});
-        vertices_selection.push_back(Vertex{ human_control.mouse_state.position.x(), -human_control.mouse_state.position.y(), 0,0});
-        vertices_selection.push_back(Vertex{ -16,human_control.mouse_state.position.y(),0,0});
+    /*vertices_selection.push_back(Vertex{ -160,16,0,0});
+        vertices_selection.push_back(Vertex{ human_control.mouse_state.position.x()/500,16,0,0});
+        vertices_selection.push_back(Vertex{ human_control.mouse_state.position.x()/500, -human_control.mouse_state.position.y()/500, 0,0});
+        vertices_selection.push_back(Vertex{ -160,human_control.mouse_state.position.y()/500,0,0});
+*/
+    vertices_selection.push_back(Vertex{ -5,5,0});
+        vertices_selection.push_back(Vertex{ 5,5,0,0});
+        vertices_selection.push_back(Vertex{ 5, -5, 0,0});
+        vertices_selection.push_back(Vertex{ -5,5,0,0});
 
-    selection_vertices.create();
-    selection_vertices.bind();
+
+    vao_selection_rect.bind();
+    //selection_vertices.bind();
     selection_vertices.allocate(vertices_selection.constData(), vertices_selection.count() * sizeof(Vertex));
 
 
@@ -210,30 +246,26 @@ void RenderingWidget::update_selection_rect()
 void RenderingWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+shader_selection.bind();
+    vao_selection_rect.bind();
+    //selection_vertices.bind();
 
-    shader_selection.bind();
-    //vertex_buffer.bind();
 
+    QMatrix4x4 selection_matrix = get_projection_according_to_window(window_rect);
+    shader_selection.setUniformValue("matrix", selection_matrix);
 
-
-    draw_selection_rect();
-
+    draw_unit_rect();
     //human_control.draw();
-
-
-
 
 
     projection_matrix = get_projection_according_to_observer_position(window_rect);
 
-
-
+    vao_sprite_rect.bind();
+    //vertex_buffer.bind();
     shader_program.bind();
     for (Drawable_unit& drawable: units) {
-        //drawable.draw();
+        drawable.draw();
     }
-    //shader_selection.bind();
-    //human_control.draw();
 }
 
 
