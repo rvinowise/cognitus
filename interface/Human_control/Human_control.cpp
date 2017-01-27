@@ -100,31 +100,18 @@ void Human_control::draw_selection_rect()
 {
     //qDebug() << "draw_selection_rect";
     QVector<Vertex> vertices;
-    /*vertices.push_back(Vertex{ selection_start.x(),selection_start.y(),0,0});
+    vertices.push_back(Vertex{ selection_start.x(),selection_start.y(),0,0});
     vertices.push_back(Vertex{ selection_start.x(),mouse_state.position.y(),0,0});
     vertices.push_back(Vertex{ mouse_state.position.x(),mouse_state.position.y(),0,0});
-    vertices.push_back(Vertex{ mouse_state.position.x(),selection_start.y(),0,0});*/
-    vertices.push_back(Vertex{ -16,16,0,0});
-        vertices.push_back(Vertex{ mouse_state.position.x(),16,0,0});
-        vertices.push_back(Vertex{ mouse_state.position.x(), -mouse_state.position.y(), 0,0});
-        vertices.push_back(Vertex{ -16,mouse_state.position.y(),0,0});
+    vertices.push_back(Vertex{ mouse_state.position.x(),selection_start.y(),0,0});
 
-    selection_vertices.create();
-    selection_vertices.bind();
-    selection_vertices.allocate(vertices.constData(), vertices.count() * sizeof(Vertex));
+    renderingWidget->selection_vertices.bind();
+    renderingWidget->selection_vertices.allocate(vertices.constData(), vertices.count() * sizeof(Vertex));
 
     QMatrix4x4 matrix = renderingWidget->projection_matrix;
-    //matrix.translate(selection_start.x(), selection_start.y(), 0);
     renderingWidget->shader_selection.setUniformValue("matrix", matrix);
 
-    //renderingWidget->textures[0]->bind();
     renderingWidget->draw_selection_rect();
-    //QMatrix4x4 matrix = renderingWidget->projection_matrix;
-    //matrix.translate(selection_start.x(), selection_start.y());
-    //renderingWidget->shader_program.setUniformValue("matrix", matrix);
-
-    //renderingWidget->textures[0]->bind();
-    //renderingWidget->draw_selection_rect();
 }
 
 

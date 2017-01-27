@@ -15,6 +15,7 @@ void Drawable_unit::draw()
     QMatrix4x4 matrix = renderingWidget->projection_matrix;
     matrix.translate(position);
     renderingWidget->shader_program.setUniformValue("matrix", matrix);
+    renderingWidget->shader_selection.setUniformValue("matrix", matrix);
 
     texture->bind();
     renderingWidget->draw_unit_rect();

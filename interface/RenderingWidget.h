@@ -36,7 +36,10 @@ public:
     QRectF window_rect;
 std::vector<QOpenGLTexture*> textures;
 void update_selection_rect();
-
+QOpenGLBuffer vertex_buffer;
+QOpenGLBuffer selection_vertices;
+QOpenGLVertexArrayObject vao_sprite_rect;
+QOpenGLVertexArrayObject vao_selection_rect;
 protected:
 
     void initializeGL() Q_DECL_OVERRIDE;
@@ -53,10 +56,7 @@ private:
     void print_context_information();
 
 
-    QOpenGLBuffer vertex_buffer;
-    QOpenGLBuffer selection_vertices;
-    QOpenGLVertexArrayObject vao_sprite_rect;
-    QOpenGLVertexArrayObject vao_selection_rect;
+
 
     QColor clear_color;
 
