@@ -10,7 +10,8 @@
 
 namespace render {
 
-using Point = QPointF;
+using Point = QPoint;
+using Rect = QRect;
 
 struct Mouse_state
 {
@@ -32,6 +33,7 @@ class Human_control: protected QOpenGLFunctions
 {
 public:
     Human_control();
+    void initializeGL();
 
     void mouse_press(QMouseEvent *event);
     void mouse_left_press(QMouseEvent *event);
@@ -41,17 +43,26 @@ public:
 
     void draw();
 
-    QOpenGLBuffer selection_vertices;
-//private:
+    Rect calculate_selection_rect();
+private:
     std::vector<Drawable_unit> get_units_under_mouse();
+    std::vector<Drawable_unit> get_units_inside_selection_rect();
     void draw_selection_rect();
 
     Mouse_state mouse_state;
     Action current_action;
 
     Point selection_start;
+    QRect selection_rect;
+
+
     std::vector<Drawable_unit> selected_units;
     std::vector<Drawable_unit> pressed_units;
+
+//protected:
+    QOpenGLBuffer selection_vertices;
+    QOpenGLVertexArrayObject vao_selection_rect;
+    QOpenGLShaderProgram shader_selection;
 };
 
 }

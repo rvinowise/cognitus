@@ -8,9 +8,9 @@
 
 namespace render {
 
-const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
+//const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
 //const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
-//const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
+const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
 
 RenderingWidget* renderingWidget;
 
@@ -19,7 +19,6 @@ RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *pare
     network(rendering_network),
     QOpenGLWidget(parent),
     vertex_buffer(QOpenGLBuffer::VertexBuffer),
-    selection_vertices(QOpenGLBuffer::VertexBuffer),
 
     clear_color(QColor(255,255,255))
 
@@ -55,6 +54,8 @@ void RenderingWidget::initializeGL()
     initializeOpenGLFunctions();
 
     prepare_rendering_resources();
+    human_control.initializeGL();
+
     prepare_graphic_settings();
 
     update_selection_rect();
@@ -69,15 +70,9 @@ void RenderingWidget::prepare_rendering_resources()
     shader_program.addShaderFromSourceFile(
                 QOpenGLShader::Fragment, resource_path+"shaders/sprite.frag");
 
-    shader_selection.addShaderFromSourceFile(
-                QOpenGLShader::Vertex, resource_path+"shaders/selection.vert");
-    shader_selection.addShaderFromSourceFile(
-                QOpenGLShader::Fragment, resource_path+"shaders/selection.frag");
-
-
 
     static const GLfloat sprite_coordinates[4][2] = {
-         { -1, -1}, { +1, -1}, { +1, +1}, { -1, +1 }
+          { -1, +1 }, { +1, +1}, { +1, -1},{ -1, -1}
     };
     static GLfloat sprite_scale = 10;
 
@@ -96,58 +91,26 @@ void RenderingWidget::prepare_rendering_resources()
     vertex_buffer.bind();
     vertex_buffer.allocate(vertices.constData(), vertices.count() * sizeof(Vertex));
 
-
-
     shader_program.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
     shader_program.enableAttributeArray(PROGRAM_TEXCOORD_ATTRIBUTE);
     shader_program.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
     shader_program.setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 2 * sizeof(GLfloat), 2, 4 * sizeof(GLfloat));
 
 
-
-
-    QVector<Vertex> vertices_selection;
-    vertices_selection.push_back(Vertex{ -30,-30,0,0});
-        vertices_selection.push_back(Vertex{ 30,-30,1,0});
-        vertices_selection.push_back(Vertex{ 30, 30, 1,1});
-        vertices_selection.push_back(Vertex{ -30,30,0,1});
-    vao_selection_rect.create();
-    vao_selection_rect.bind();
-    selection_vertices.create();
-    selection_vertices.bind();
-    selection_vertices.allocate(vertices_selection.constData(), vertices_selection.count() * sizeof(Vertex));
-
-
-
-    shader_selection.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
-    shader_selection.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
-
-
-
-
     textures = {
-        new QOpenGLTexture(QImage(resource_path+"sprites/node.png")),
-        new QOpenGLTexture(QImage(resource_path+"sprites/bend.png")),
-        new QOpenGLTexture(QImage(resource_path+"sprites/hub.png"))
+        new QOpenGLTexture(QImage(resource_path+"sprites/node.png").mirrored()),
+        new QOpenGLTexture(QImage(resource_path+"sprites/bend.png").mirrored()),
+        new QOpenGLTexture(QImage(resource_path+"sprites/hub.png").mirrored())
     };
-
-
 
 
     shader_program.bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
     shader_program.bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
-    shader_selection.bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
     shader_program.link();
-    shader_selection.link();
     shader_program.setUniformValue("texture", 0);
 
 
-
-
     initialize_units();
-
-
-
 }
 
 void RenderingWidget::prepare_graphic_settings()
@@ -201,8 +164,8 @@ void RenderingWidget::initialize_units()
 {
     int test = network.input.getNodesQty();
 
-    QVector2D position(0,0);
-    QVector2D offset(50,0);
+    Point position(100,50);
+    Point offset(50,0);
     for (auto input_node: network.input) {
         units.push_back(Drawable_unit());
         units.back().texture = textures[0];
@@ -215,46 +178,29 @@ QMatrix4x4 get_projection_according_to_window(const QRectF& screen_rect)
 {
     QMatrix4x4 matrix;
     matrix.ortho(
-        -screen_rect.width()/2,
+        0,
          screen_rect.width(),
-        -screen_rect.height()/2,
-         screen_rect.height(), -1.0f, 1.0f);
+        screen_rect.height(),
+         0, -1.0f, 1.0f);
     return matrix;
 }
 QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_rect)
 {
     QMatrix4x4 matrix = get_projection_according_to_window(screen_rect);
-    matrix.translate(screen_rect.x()*1.5,
-                       -screen_rect.y()*1.5, 0);
+    matrix.translate(screen_rect.x(),
+                       screen_rect.y(), 0);
     return matrix;
 }
 
 
 void RenderingWidget::update_selection_rect()
 {
-    QVector<Vertex> vertices_selection;
-    /*vertices_selection.push_back(Vertex{ -160,16,0,0});
-        vertices_selection.push_back(Vertex{ human_control.mouse_state.position.x()/500,16,0,0});
-        vertices_selection.push_back(Vertex{ human_control.mouse_state.position.x()/500, -human_control.mouse_state.position.y()/500, 0,0});
-        vertices_selection.push_back(Vertex{ -160,human_control.mouse_state.position.y()/500,0,0});
-*/
-    vertices_selection.push_back(Vertex{ -5,5,0});
-        vertices_selection.push_back(Vertex{ 5,5,0,0});
-        vertices_selection.push_back(Vertex{ 5, -5, 0,0});
-        vertices_selection.push_back(Vertex{ -5,5,0,0});
-
-
-    //vao_selection_rect.bind();
-    //selection_vertices.bind();
-    //selection_vertices.allocate(vertices_selection.constData(), vertices_selection.count() * sizeof(Vertex));
-
 
 }
 
 void RenderingWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
-//
 
 
 
@@ -265,8 +211,6 @@ void RenderingWidget::paintGL()
 
     projection_matrix = get_projection_according_to_window(window_rect);
 
-    shader_selection.bind();
-    vao_selection_rect.bind();
     human_control.draw();
 
 

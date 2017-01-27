@@ -7,7 +7,8 @@
 
 namespace render {
 
-using Point = QPointF;
+using Point = QPoint;
+using Rect = QRect;
 
 class Drawable_unit: protected QOpenGLFunctions
 {
@@ -16,8 +17,13 @@ public:
 
     void draw();
     void draw_link_to(const Drawable_unit& other);
+
+    bool is_inside(Rect rect);
+    bool is_collide(const Drawable_unit& other);
 //protected:
-    QVector2D position;
+    Point position;
+    bool is_selected;
+
     QOpenGLTexture* texture;
 
 };

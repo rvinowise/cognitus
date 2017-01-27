@@ -16,6 +16,9 @@ namespace core {
 
 namespace render {
 
+using Point = QPoint;
+using Rect = QRect;
+
 class RenderingWidget: public QOpenGLWidget,
                         protected QOpenGLFunctions
 {
@@ -29,17 +32,17 @@ public:
     QOpenGLShaderProgram shader_program;
     static const std::size_t PROGRAM_VERTEX_ATTRIBUTE=0;
     static const std::size_t PROGRAM_TEXCOORD_ATTRIBUTE=1;
-    QOpenGLShaderProgram shader_selection;
+
 
     void draw_unit_rect();
     void draw_selection_rect();
-    QRectF window_rect;
-std::vector<QOpenGLTexture*> textures;
-void update_selection_rect();
-QOpenGLBuffer vertex_buffer;
-QOpenGLBuffer selection_vertices;
-QOpenGLVertexArrayObject vao_sprite_rect;
-QOpenGLVertexArrayObject vao_selection_rect;
+    Rect window_rect;
+    std::vector<QOpenGLTexture*> textures;
+    void update_selection_rect();
+    QOpenGLBuffer vertex_buffer;
+    QOpenGLVertexArrayObject vao_sprite_rect;
+    std::vector<Drawable_unit> units;
+
 protected:
 
     void initializeGL() Q_DECL_OVERRIDE;
@@ -63,7 +66,7 @@ private:
     Human_control human_control;
 
 
-    std::vector<Drawable_unit> units;
+
     core::Network& network;
 
 
