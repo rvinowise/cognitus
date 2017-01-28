@@ -3,9 +3,12 @@
 
 namespace render {
 
-Node::Node()
+Node::Node():
+    radius{10}
 {
 
 }
+
+
 
 }

@@ -20,12 +20,14 @@ struct Mouse_state
     bool middle;
     Point position;
     Point world_pos;
+
+    void set_position(Point);
 };
 enum Action
 {
     nothing,
-    select_units,
-    move_units,
+    selection_units,
+    moving_units,
     move_screen
 };
 
@@ -43,21 +45,23 @@ public:
 
     void draw();
 
-    Rect calculate_selection_rect();
+
 private:
-    std::vector<Drawable_unit> get_units_under_mouse();
-    std::vector<Drawable_unit> get_units_inside_selection_rect();
+    Drawable_unit* get_unit_under_mouse() const;
+    std::vector<Drawable_unit*> get_units_inside_selection_rect(Rect) const;
+    Rect get_selection_rect() const;
+    void mark_as_selected_only_theese(std::vector<Drawable_unit *> &units);
+    void select_only_this(Drawable_unit* unit);
     void draw_selection_rect();
+    void move_units(std::vector<Drawable_unit *>& units, Point vector);
 
     Mouse_state mouse_state;
     Action current_action;
 
     Point selection_start;
-    QRect selection_rect;
 
-
-    std::vector<Drawable_unit> selected_units;
-    std::vector<Drawable_unit> pressed_units;
+    std::vector<Drawable_unit*> selected_units;
+    //std::vector<Drawable_unit&> pressed_units;
 
 //protected:
     QOpenGLBuffer selection_vertices;

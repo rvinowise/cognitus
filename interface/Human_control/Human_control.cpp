@@ -1,8 +1,17 @@
 #include "Human_control.h"
+#include <algorithm>
 
 #include "interface/RenderingWidget.h"
 
 namespace render {
+
+using std::vector;
+
+void Mouse_state::set_position(Point in_position) {
+    position = in_position;
+    world_pos = in_position - renderingWidget->window_rect.topLeft();
+}
+
 
 Human_control::Human_control():
     selection_vertices(QOpenGLBuffer::VertexBuffer)
@@ -31,7 +40,7 @@ void Human_control::initializeGL()
 
 void Human_control::mouse_press(QMouseEvent *event)
 {
-
+    mouse_state.set_position(event->pos());
     if (event->button()==Qt::LeftButton) {
         mouse_left_press(event);
     } else if (event->button()==Qt::RightButton) {
@@ -39,7 +48,6 @@ void Human_control::mouse_press(QMouseEvent *event)
     } else if (event->button()==Qt::MiddleButton) {
         mouse_state.middle = true;
         current_action = move_screen;
-        mouse_state.position = event->pos();
     }
 }
 
@@ -47,44 +55,45 @@ void Human_control::mouse_left_press(QMouseEvent *event)
 {
     mouse_state.left = true;
 
-    pressed_units = get_units_under_mouse();
+    Drawable_unit* pressed_unit = get_unit_under_mouse();
+    if (pressed_unit) {
+        if (
+                std::find(selected_units.begin(), selected_units.end(), pressed_unit)
+                !=
+                selected_units.end()
+            ) {
 
-    if (selected_units.empty()) {
-        current_action = select_units;
-        selection_start = event->pos();
+        } else {
+            select_only_this(pressed_unit);
+        }
+        current_action = moving_units;
     } else {
-        current_action = move_units;
+        select_only_this(nullptr);
+        current_action = selection_units;
+        selection_start = event->pos();
+        renderingWidget->update();
     }
 }
 
 void Human_control::mouse_move(QMouseEvent *event)
 {
-    if (current_action == select_units) {
-        //find_selected_units();
-        selection_rect = calculate_selection_rect();
-        get_units_inside_selection_rect();
-        qDebug() << "move_selection";
-        renderingWidget->update();
+    Point position_delta = event->pos() - mouse_state.position;
+    if (current_action == selection_units) {
 
-    } else if (current_action == move_units) {
-        //move_selected_units();
+        Rect selection_rect = get_selection_rect();
+        selected_units = get_units_inside_selection_rect(selection_rect);
+        mark_as_selected_only_theese(selected_units);
+        renderingWidget->update();
+    } else if (current_action == Action::moving_units) {
+        move_units(selected_units, position_delta);
+        renderingWidget->update();
     } else if (current_action == move_screen) {
-        //move_selected_units();
-        //QMatrix4x4& matrix = renderingWidget->projection_matrix;
         Rect& rect = renderingWidget->window_rect;
-        rect.translate(
-                    event->x() - mouse_state.position.x()
-                    ,
-                    event->y() - mouse_state.position.y()
-                    );
+        rect.translate(position_delta);
         renderingWidget->update();
     }
 
-    mouse_state.position = event->pos();
-    //mouse_state.world_pos =
-
-
-    //qDebug() << "x:" << mouse_state.position.x() << "y:" << mouse_state.position.y();
+    mouse_state.set_position(event->pos());
 }
 
 void Human_control::mouse_release(QMouseEvent *event)
@@ -95,12 +104,18 @@ void Human_control::mouse_release(QMouseEvent *event)
         mouse_state.right = false;
     }
 
-    if (current_action == move_screen) {
+    if (
+            (current_action == move_screen) ||
+            (current_action == selection_units)
+        )
+    {
         current_action = nothing;
+        renderingWidget->update();
     }
+
 }
 
-Rect Human_control::calculate_selection_rect()
+Rect Human_control::get_selection_rect() const
 {
 
     Point first, last;
@@ -116,20 +131,13 @@ Rect Human_control::calculate_selection_rect()
 }
 
 
-std::vector<Drawable_unit> Human_control::get_units_inside_selection_rect()
+std::vector<Drawable_unit *> Human_control::get_units_inside_selection_rect(Rect selection_rect) const
 {
-    if (
-        (selection_rect.width() > 400) &&
-        (selection_rect.height() > 400)
-            ) {
-        bool test = true;
-    }
-
-    std::vector<Drawable_unit> result;
-    for (Drawable_unit unit: renderingWidget->units) {
-        if (unit.is_inside(selection_rect)) {
-            result.push_back(unit);
-            unit.is_selected = true;
+    Rect selection_in_world = selection_rect.translated(-renderingWidget->window_rect.topLeft());
+    std::vector<Drawable_unit*> result;
+    for (Drawable_unit& unit: renderingWidget->units) {
+        if (unit.is_inside(selection_in_world)) {
+            result.push_back(&unit);
         }
 
     }
@@ -138,35 +146,56 @@ std::vector<Drawable_unit> Human_control::get_units_inside_selection_rect()
 }
 
 
-std::vector<Drawable_unit> Human_control::get_units_under_mouse()
+Drawable_unit* Human_control::get_unit_under_mouse() const
 {
-    std::vector<Drawable_unit> result;
-    //for () {
+    for (Drawable_unit& unit: renderingWidget->units) {
+        if (unit.has_inside(mouse_state.world_pos)) {
+            return &unit;
+        }
 
-    //}
+    }
+    return nullptr;
+}
 
-    return result;
+void Human_control::mark_as_selected_only_theese(vector<Drawable_unit*> &units)
+{
+    for (auto& unit: renderingWidget->units) {
+        unit.deselect();
+    }
+    for (auto unit: units) {
+        unit->select();
+    }
+}
+void Human_control::select_only_this(Drawable_unit* unit_to_select)
+{
+    selected_units.clear();
+    for (auto& unit: renderingWidget->units) {
+        unit.deselect();
+    }
+    if (unit_to_select) {
+        selected_units.push_back(unit_to_select);
+        unit_to_select->select();
+    }
 }
 
 
 void Human_control::draw()
 {
-    if (current_action == select_units) {
+    if (current_action == selection_units) {
         draw_selection_rect();
     }
 }
 
 void Human_control::draw_selection_rect()
 {
-    //qDebug() << "draw_selection_rect";
-    QVector<Vertex> vertices;
-    vertices.push_back(Vertex{ selection_start.x(),selection_start.y(),0,0});
-    vertices.push_back(Vertex{ selection_start.x(),mouse_state.position.y(),0,0});
-    vertices.push_back(Vertex{ mouse_state.position.x(),mouse_state.position.y(),0,0});
-    vertices.push_back(Vertex{ mouse_state.position.x(),selection_start.y(),0,0});
+    QVector<Vertex> vertices_of_selection;
+    vertices_of_selection.push_back(Vertex{ selection_start.x(),selection_start.y(),0,0});
+    vertices_of_selection.push_back(Vertex{ selection_start.x(),mouse_state.position.y(),0,0});
+    vertices_of_selection.push_back(Vertex{ mouse_state.position.x(),mouse_state.position.y(),0,0});
+    vertices_of_selection.push_back(Vertex{ mouse_state.position.x(),selection_start.y(),0,0});
 
     vao_selection_rect.bind();
-    selection_vertices.allocate(vertices.constData(), vertices.count() * sizeof(Vertex));
+    selection_vertices.allocate(vertices_of_selection.constData(), vertices_of_selection.count() * sizeof(Vertex));
     shader_selection.bind();
 
     QMatrix4x4 matrix = renderingWidget->projection_matrix;
@@ -174,6 +203,13 @@ void Human_control::draw_selection_rect()
 
     glLineWidth(2);
     glDrawArrays(GL_LINE_LOOP, 0, 4);
+}
+
+void Human_control::move_units(std::vector<Drawable_unit *> &units, Point vector)
+{
+    for (auto unit: units) {
+        unit->position += vector;
+    }
 }
 
 

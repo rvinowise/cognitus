@@ -30,6 +30,7 @@ public:
     static const QString resource_path;
     QMatrix4x4 projection_matrix;
     QOpenGLShaderProgram shader_program;
+    QOpenGLShaderProgram shaders_selection;
     static const std::size_t PROGRAM_VERTEX_ATTRIBUTE=0;
     static const std::size_t PROGRAM_TEXCOORD_ATTRIBUTE=1;
 
@@ -54,6 +55,7 @@ protected:
 
 private:
     void initialize_units();
+    void update_units_according_to_network();
     void prepare_rendering_resources();
     void prepare_graphic_settings();
     void print_context_information();
@@ -66,7 +68,7 @@ private:
     Human_control human_control;
 
 
-
+    //std::map<core::>
     core::Network& network;
 
 

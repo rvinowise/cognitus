@@ -1,7 +1,8 @@
 uniform sampler2D texture;
 varying vec2 texc;
+out vec4 diffuseColor;
 
 void main(void)
 {
-    gl_FragColor = texture2D(texture, texc);
+    diffuseColor = texture2D(texture, texc);
 }
