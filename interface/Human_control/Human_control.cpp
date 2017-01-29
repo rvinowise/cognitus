@@ -85,6 +85,7 @@ void Human_control::mouse_left_press(QMouseEvent *event)
 
         } else {
             select_only_this(pressed_unit);
+            renderingWidget->update();
         }
         current_action = moving_units;
     } else {
@@ -184,8 +185,9 @@ std::vector<Drawable_unit *> Human_control::get_units_inside_selection_rect(Rect
 Drawable_unit* Human_control::get_unit_under_mouse() const
 {
     for (Node& node: renderingWidget->units) {
-        if (node.has_inside(mouse_state.world_pos)) {
-            return &unit;
+        Drawable_unit* pressed_part = node.get_part_under_point(mouse_state.world_pos);
+        if (pressed_part) {
+            return pressed_part;
         }
 
     }

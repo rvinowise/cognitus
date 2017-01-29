@@ -15,6 +15,7 @@ public:
     Node(core::Node real_node);
     void update_according_to_network();
     std::vector<Drawable_unit*> get_parts_inside_rect(Rect rect);
+    Drawable_unit* get_part_under_point(Point point);
     void deselect_all_parts();
 
     int get_radius();

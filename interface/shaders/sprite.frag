@@ -1,4 +1,5 @@
-#version 450
+#version 130
+//#version 450
 
 uniform sampler2D texture;
 varying vec2 texc;

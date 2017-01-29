@@ -32,10 +32,11 @@ QOpenGLTexture* Node::get_texture()
 
 void Node::update_according_to_network()
 {
-    for (core::Bend bend: node.bends()) {
-
+    for (core::Bend real_bend: node.bends()) {
+        vector<core::Bend> unaccounted_real_bends =
+            find_unaccounted_real_bends();
     }
-    for (core::Figure_bend hub: node) {
+    for (core::Figure_bend real_hub: node) {
 
     }
     bends.push_back(Bend());
@@ -55,12 +56,30 @@ vector<Drawable_unit *> Node::get_parts_inside_rect(Rect rect)
             result.push_back(&bend);
         }
     }
-    for (Hub hub: hubs) {
+    for (Hub& hub: hubs) {
         if (hub.is_inside(rect)) {
             result.push_back(&hub);
         }
     }
     return result;
+}
+
+Drawable_unit *Node::get_part_under_point(Point point)
+{
+    if (has_inside(point)) {
+        return this;
+    }
+    for (Bend& bend: bends) {
+        if (bend.has_inside(point)) {
+            return &bend;
+        }
+    }
+    for (Hub& hub: hubs) {
+        if (hub.has_inside(point)) {
+            return &hub;
+        }
+    }
+    return nullptr;
 }
 
 void Node::deselect_all_parts()
@@ -69,7 +88,7 @@ void Node::deselect_all_parts()
     for (Bend& bend: bends) {
         bend.deselect();
     }
-    for (Hub hub: hubs) {
+    for (Hub& hub: hubs) {
         hub.deselect();
     }
 }

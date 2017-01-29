@@ -1,4 +1,5 @@
-#version 450
+#version 130
+//#version 450
 
 attribute vec4 vertex;
 attribute vec2 texCoord;
