@@ -9,9 +9,29 @@ using std::vector;
 
 void Mouse_state::set_position(Point in_position) {
     position = in_position;
-    world_pos = in_position - renderingWidget->window_rect.topLeft();
+    world_pos = (in_position - renderingWidget->window_rect.topLeft())
+            / renderingWidget->window_scale;
 }
+void Selection_state::set_screen_rect(Rect in_rect)
+{
+    screen_rect = in_rect;
+    world_rect.setTopLeft(
+                    Point(
+                        screen_rect.left()/(renderingWidget->window_scale),
+                        screen_rect.top()/(renderingWidget->window_scale)
+                        )
+                    );
 
+    world_rect.setBottomRight(
+                Point(
+                    screen_rect.right()/(renderingWidget->window_scale),
+                    screen_rect.bottom()/(renderingWidget->window_scale)
+                    )
+                );
+
+    world_rect.translate(-renderingWidget->window_rect.topLeft()/renderingWidget->window_scale);
+
+}
 
 Human_control::Human_control():
     selection_vertices(QOpenGLBuffer::VertexBuffer)
@@ -78,14 +98,16 @@ void Human_control::mouse_left_press(QMouseEvent *event)
 void Human_control::mouse_move(QMouseEvent *event)
 {
     Point position_delta = event->pos() - mouse_state.position;
+    Point world_position_delta = position_delta/renderingWidget->window_scale;
+
     if (current_action == selection_units) {
 
-        Rect selection_rect = get_selection_rect();
-        selected_units = get_units_inside_selection_rect(selection_rect);
+        selection_state.set_screen_rect(get_selection_rect_in_screen());
+        selected_units = get_units_inside_selection_rect(selection_state.world_rect);
         mark_as_selected_only_theese(selected_units);
         renderingWidget->update();
     } else if (current_action == Action::moving_units) {
-        move_units(selected_units, position_delta);
+        move_units(selected_units, world_position_delta);
         renderingWidget->update();
     } else if (current_action == move_screen) {
         Rect& rect = renderingWidget->window_rect;
@@ -115,7 +137,20 @@ void Human_control::mouse_release(QMouseEvent *event)
 
 }
 
-Rect Human_control::get_selection_rect() const
+void Human_control::mouse_wheel(QWheelEvent *event)
+{
+    static float scaling_step = 1.05;
+    auto rotation = event->angleDelta();
+    if (rotation.y() > 0) {
+        renderingWidget->window_scale *= scaling_step;
+    } else {
+        renderingWidget->window_scale /= scaling_step;
+    }
+    renderingWidget->update();
+}
+
+
+Rect Human_control::get_selection_rect_in_screen() const
 {
 
     Point first, last;
@@ -131,25 +166,25 @@ Rect Human_control::get_selection_rect() const
 }
 
 
-std::vector<Drawable_unit *> Human_control::get_units_inside_selection_rect(Rect selection_rect) const
+std::vector<Drawable_unit *> Human_control::get_units_inside_selection_rect(Rect selection_in_world) const
 {
-    Rect selection_in_world = selection_rect.translated(-renderingWidget->window_rect.topLeft());
     std::vector<Drawable_unit*> result;
-    for (Drawable_unit& unit: renderingWidget->units) {
-        if (unit.is_inside(selection_in_world)) {
+    for (Node& node: renderingWidget->units) {
+        vector<Drawable_unit*> selected_parts = node.get_parts_inside_rect(selection_in_world);
+        result.insert(result.end(), selected_parts.begin(), selected_parts.end());
+        /*if (node.is_inside(selection_in_world)) {
             result.push_back(&unit);
-        }
+        }*/
 
     }
 
     return result;
 }
 
-
 Drawable_unit* Human_control::get_unit_under_mouse() const
 {
-    for (Drawable_unit& unit: renderingWidget->units) {
-        if (unit.has_inside(mouse_state.world_pos)) {
+    for (Node& node: renderingWidget->units) {
+        if (node.has_inside(mouse_state.world_pos)) {
             return &unit;
         }
 
@@ -159,8 +194,8 @@ Drawable_unit* Human_control::get_unit_under_mouse() const
 
 void Human_control::mark_as_selected_only_theese(vector<Drawable_unit*> &units)
 {
-    for (auto& unit: renderingWidget->units) {
-        unit.deselect();
+    for (auto& node: renderingWidget->units) {
+        node.deselect_all_parts();
     }
     for (auto unit: units) {
         unit->select();
@@ -169,8 +204,8 @@ void Human_control::mark_as_selected_only_theese(vector<Drawable_unit*> &units)
 void Human_control::select_only_this(Drawable_unit* unit_to_select)
 {
     selected_units.clear();
-    for (auto& unit: renderingWidget->units) {
-        unit.deselect();
+    for (auto& node: renderingWidget->units) {
+        node.deselect_all_parts();
     }
     if (unit_to_select) {
         selected_units.push_back(unit_to_select);
@@ -211,6 +246,8 @@ void Human_control::move_units(std::vector<Drawable_unit *> &units, Point vector
         unit->position += vector;
     }
 }
+
+
 
 
 }

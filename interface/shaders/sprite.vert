@@ -1,3 +1,5 @@
+#version 450
+
 attribute vec4 vertex;
 attribute vec2 texCoord;
 varying vec2 texc;

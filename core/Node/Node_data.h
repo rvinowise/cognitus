@@ -14,7 +14,7 @@ public:
     Node_data();
 
     size_t level;
-    std::vector<Bend> bend;
+    std::vector<Bend> bends;
     std::vector<Figure_bend> figure_bends;
 };
 

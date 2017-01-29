@@ -53,7 +53,7 @@ Node::~Node()
 
 void Node::deallocate_with_all_connected_entities_upward()
 {
-    for (auto bend: this->data->bend) {
+    for (auto bend: this->data->bends) {
         //bend.
     }
     delete data;
@@ -98,7 +98,7 @@ void Node::carefully_preserve_initial_chain_because_of_its_context(
 
 void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
 {
-    if (data->bend.size() > 0) {
+    if (data->bends.size() > 0) {
         throw("incorporating circuit is only for _new_ Nodes");
     }
     if (!inCircuit.is_complete()) {
@@ -132,7 +132,7 @@ void Node::fire()
 
 void Node::add_new_bend_as_active() {
     Bend newBend(*this);
-    data->bend.push_back(newBend);
+    data->bends.push_back(newBend);
     global_network->save_new_activated_bend(newBend);
 }
 
@@ -140,13 +140,13 @@ void Node::add_new_bend_as_active() {
 
 Bend Node::add_bend()
 {
-    data->bend.push_back(Bend(*this));
-    return data->bend.back();
+    data->bends.push_back(Bend(*this));
+    return data->bends.back();
 }
 
 void Node::append_bend(const Bend& bend)
 {
-    data->bend.push_back(bend);
+    data->bends.push_back(bend);
 }
 
 std::vector<Figure_bend>& Node::get_arr_figure_bends()
@@ -158,6 +158,11 @@ Figure_bend Node::add_figure_bend()
 {
     data->figure_bends.push_back(Figure_bend(*this));
     return data->figure_bends.back();
+}
+
+std::vector<Bend>& Node::bends()
+{
+    return data->bends;
 }
 
 Node::iterator_BFS Node::begin()

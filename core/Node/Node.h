@@ -38,6 +38,8 @@ public:
     std::vector<Figure_bend>& get_arr_figure_bends();
     Figure_bend add_figure_bend();
 
+    std::vector<Bend> &bends();
+
     class iterator_BFS;
     iterator_BFS begin();
     iterator_BFS end();

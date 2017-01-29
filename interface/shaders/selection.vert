@@ -1,3 +1,5 @@
+#version 450
+
 attribute vec4 vertex;
 uniform mat4 matrix;
 

@@ -5,16 +5,19 @@
 #include <QOpenGLBuffer>
 #include <memory>
 
+#include "interface/coordinates_type.h"
+
+
 namespace render {
 
-using Point = QPoint;
-using Rect = QRect;
 
-class Drawable_unit: protected QOpenGLFunctions
+
+class Drawable_unit//: protected QOpenGLFunctions
 {
 friend class RenderingWidget;
 public:
     Drawable_unit();
+    virtual void update_according_to_network(){};
 
     void draw();
     void draw_link_to(const Drawable_unit& other);
@@ -25,12 +28,13 @@ public:
     void select();
     void deselect();
 
+    virtual int get_radius(){};
+    virtual QOpenGLTexture* get_texture(){};
     Point position;
+
+
  protected:
     bool is_selected;
-    int radius;
-
-    QOpenGLTexture* texture;
 
 };
 

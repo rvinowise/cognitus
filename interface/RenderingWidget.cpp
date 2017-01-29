@@ -4,6 +4,7 @@
 #include <QString>
 
 #include "core/Network/Network.h"
+#include "interface/drawable_units/draw_Node.h"
 
 
 namespace render {
@@ -16,10 +17,11 @@ RenderingWidget* renderingWidget;
 
 
 RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *parent):
-    network(rendering_network),
+    network{rendering_network},
     QOpenGLWidget(parent),
     vertex_buffer(QOpenGLBuffer::VertexBuffer),
 
+    window_scale{2},
     clear_color(QColor(255,255,255))
 
 {
@@ -72,13 +74,13 @@ void RenderingWidget::prepare_rendering_resources()
     static const GLfloat sprite_coordinates[4][2] = {
           { -1, +1 }, { +1, +1}, { +1, -1},{ -1, -1}
     };
-    static GLfloat sprite_radius = 10;
+
 
     QVector<Vertex> vertices;
     for (int j = 0; j < 4; ++j) {
         vertices.push_back(Vertex{
-                               sprite_radius * sprite_coordinates[j][0],
-                               sprite_radius * sprite_coordinates[j][1],
+                               sprite_etalon_radius * sprite_coordinates[j][0],
+                               sprite_etalon_radius * sprite_coordinates[j][1],
                                j == 2 || j == 1,
                                j == 2 || j == 3
                            });
@@ -119,7 +121,7 @@ void RenderingWidget::prepare_rendering_resources()
         new QOpenGLTexture(QImage(resource_path+"sprites/bend.png").mirrored()),
         new QOpenGLTexture(QImage(resource_path+"sprites/hub.png").mirrored())
     };
-    initialize_units();
+    update_units_according_to_network();
 }
 
 void RenderingWidget::prepare_graphic_settings()
@@ -170,9 +172,14 @@ void RenderingWidget::mouseReleaseEvent(QMouseEvent *event)
     human_control.mouse_release(event);
 }
 
+void RenderingWidget::wheelEvent(QWheelEvent *event)
+{
+    human_control.mouse_wheel(event);
+}
+
 void RenderingWidget::initialize_units()
 {
-    Point position(100,50);
+    /*Point position(100,50);
     Point offset(50,0);
     for (auto input_node: network.input) {
         units.push_back(Drawable_unit());
@@ -180,7 +187,7 @@ void RenderingWidget::initialize_units()
         units.back().position = position;
         //units.back().radius =
         position += offset;
-    }
+    }*/
 }
 
 void RenderingWidget::update_units_according_to_network()
@@ -190,6 +197,7 @@ void RenderingWidget::update_units_according_to_network()
     for (auto input_node: network.input) {
         units.push_back(render::Node(input_node));
         units.back().position = position;
+        units.back().update_according_to_network();
         position += offset;
     }
 }
@@ -227,13 +235,13 @@ void RenderingWidget::paintGL()
 
 
     projection_matrix = get_projection_according_to_observer_position(window_rect);
-
+    projection_matrix.scale(window_scale);
 
     vao_sprite_rect.bind();
 
     int i=0;
-    for (Drawable_unit& drawable: units) { 
-        drawable.draw();
+    for (Node& drawable_node: units) {
+        drawable_node.draw();
 
         ++i;
     }

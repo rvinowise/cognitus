@@ -1,3 +1,5 @@
+#version 450
+
 uniform sampler2D texture;
 varying vec2 texc;
 varying float is_selected2;

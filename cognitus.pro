@@ -85,7 +85,8 @@ HEADERS  += \
     interface/drawable_units/draw_Hub.h \
     interface/drawable_units/draw_Node.h \
     interface/Human_control/Human_control.h \
-    interface/functions/functions.h
+    interface/functions/functions.h \
+    interface/coordinates_type.h
 
 
 

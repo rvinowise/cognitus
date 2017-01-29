@@ -27,7 +27,9 @@ Bend::Bend(Node& masterNode)
 Bend::Bend(const Bend& other)
 {
     this->data = other.data;
-    data->connect_a_handle();
+    if (data) {
+        data->connect_a_handle();
+    }
 }
 
 Bend::Bend(Bend &&other)
