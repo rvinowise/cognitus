@@ -33,8 +33,8 @@ QOpenGLTexture* Node::get_texture()
 void Node::update_according_to_network()
 {
     for (core::Bend real_bend: node.bends()) {
-        vector<core::Bend> unaccounted_real_bends =
-            find_unaccounted_real_bends();
+        //vector<core::Bend> unaccounted_real_bends =
+        //    find_unaccounted_real_bends();
     }
     for (core::Figure_bend real_hub: node) {
         vector<core::Figure_bend> unaccounted_real_hubs =

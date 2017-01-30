@@ -25,7 +25,7 @@ private:
 
     void produce_outputs_for_representation_of_client();
 
-    WaiterForTask waiterForChangeOfOutput;
+    Waiter_for_task waiterForChangeOfOutput;
     std::thread*  threadProcessOutput;
 };
 

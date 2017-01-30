@@ -13,6 +13,7 @@ const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
 //const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
 //const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
 
+
 RenderingWidget* renderingWidget;
 
 
