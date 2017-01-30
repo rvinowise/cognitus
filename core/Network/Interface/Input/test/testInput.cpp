@@ -59,7 +59,7 @@ void Input::input_history_in_cycle()
             debug.error(boost::format("not enought memory to save input data #%1%")%i_iter);
         }
     }
-    network.input.wait_for_insertion_of_input();
+    network.input.wait_for_insertion_of_previous_input();
 }
 
 void Input::check_network_validity()

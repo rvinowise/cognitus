@@ -7,12 +7,12 @@ namespace core {
 Input::Input(Network &inNetwork):
     Interface(inNetwork)
 {
-    initProcessingThread();
+    init_processing_thread();
 
 }
 
 
-void Input::initProcessingThread()
+void Input::init_processing_thread()
 {
     threadProcessInput = new std::thread(
                 &Input::bring_inputs_to_representation_of_network, this);
@@ -20,7 +20,7 @@ void Input::initProcessingThread()
 
 void Input::begin_setting_input_from_outside()
 {
-    waiterForChangeOfInput.master_wait_for_task_completion();
+   wait_for_insertion_of_previous_input();
 }
 
 void Input::prepare_wire_for_input(std::size_t index)
@@ -34,7 +34,7 @@ void Input::end_setting_input_from_outside()
     waiterForChangeOfInput.master_has_given_a_task();
 }
 
-void Input::wait_for_insertion_of_input()
+void Input::wait_for_insertion_of_previous_input()
 {
     waiterForChangeOfInput.master_wait_for_task_completion();
 }

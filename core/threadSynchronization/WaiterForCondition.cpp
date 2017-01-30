@@ -4,18 +4,18 @@
 
 namespace core {
 
-WaiterForTask::WaiterForTask()
+Waiter_for_task::Waiter_for_task()
 {
     worker_needs_to_proceed = false;
     master_needs_to_proceed = true;
 }
 
-WaiterForTask::~WaiterForTask()
+Waiter_for_task::~Waiter_for_task()
 {
 
 }
 
-void WaiterForTask::worker_wait_for_task()
+void Waiter_for_task::worker_wait_for_task()
 {
 	std::unique_lock<std::mutex> uniqueLock(worker_mutex);
     while (!worker_needs_to_proceed) {
@@ -30,7 +30,7 @@ void WaiterForTask::worker_wait_for_task()
 
     }
 }
-void WaiterForTask::worker_prepare_for_next_task()
+void Waiter_for_task::worker_prepare_for_next_task()
 {
     
 	master_mutex.lock();
@@ -42,7 +42,7 @@ void WaiterForTask::worker_prepare_for_next_task()
 }
 
 
-void WaiterForTask::master_wait_for_task_completion()
+void Waiter_for_task::master_wait_for_task_completion()
 {
 	std::unique_lock<std::mutex> uniqueLock(master_mutex);
     while (!master_needs_to_proceed) {
@@ -50,7 +50,7 @@ void WaiterForTask::master_wait_for_task_completion()
 	}
 	
 }
-void WaiterForTask::master_has_given_a_task()
+void Waiter_for_task::master_has_given_a_task()
 {
     worker_mutex.lock();
     worker_needs_to_proceed = true;
