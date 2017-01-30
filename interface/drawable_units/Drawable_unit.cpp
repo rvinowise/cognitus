@@ -17,13 +17,15 @@ Drawable_unit::Drawable_unit():
 
 void Drawable_unit::draw()
 {
+    renderingWidget->vao_sprite_rect.bind();
+
     QMatrix4x4 matrix = renderingWidget->projection_matrix;
     matrix.translate(QVector2D(position));
     matrix.scale(get_radius()/RenderingWidget::sprite_etalon_radius);
 
-    renderingWidget->shaders_selection.bind();
-    renderingWidget->shaders_selection.setUniformValue("matrix", matrix);
-    renderingWidget->shaders_selection.setUniformValue("is_selected", is_selected?1.0f:0.0f);
+    renderingWidget->shaders_sprite.bind();
+    renderingWidget->shaders_sprite.setUniformValue("matrix", matrix);
+    renderingWidget->shaders_sprite.setUniformValue("is_selected", is_selected?1.0f:0.0f);
 
     get_texture()->bind();
     renderingWidget->draw_unit_rect();

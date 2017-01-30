@@ -9,11 +9,22 @@
 
 namespace render {
 
-//const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
-const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
+const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
+//const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
 //const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
 
 RenderingWidget* renderingWidget;
+
+
+Vertex_point::Vertex_point(Point point) {
+    position[0] = point.x();
+    position[1] = point.y();
+}
+Vertex_point::Vertex_point(GLfloat in_x, GLfloat in_y)
+{
+    position[0] = in_x;
+    position[1] = in_y;
+}
 
 
 RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *parent):
@@ -42,13 +53,12 @@ void RenderingWidget::draw_unit_rect()
 {
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
-void RenderingWidget::draw_selection_rect()
-{
-    //glBlendColor(0.0f,1.0f,0.0f,0.5f);
-    glLineWidth(3);
-    glDrawArrays(GL_LINE_LOOP, 0, 4);
-}
 
+void RenderingWidget::draw_lines(std::size_t qty)
+{
+    glLineWidth(1*window_scale);
+    glDrawArrays(GL_LINES, 0, qty);
+}
 
 
 void RenderingWidget::initializeGL()
@@ -65,10 +75,7 @@ void RenderingWidget::initializeGL()
 
 void RenderingWidget::prepare_rendering_resources()
 {
-    shader_program.addShaderFromSourceFile(
-                QOpenGLShader::Vertex, resource_path+"shaders/sprite.vert");
-    shader_program.addShaderFromSourceFile(
-                QOpenGLShader::Fragment, resource_path+"shaders/sprite.frag");
+
 
 
     static const GLfloat sprite_coordinates[4][2] = {
@@ -91,30 +98,36 @@ void RenderingWidget::prepare_rendering_resources()
     vertex_buffer.bind();
     vertex_buffer.allocate(vertices.constData(), vertices.count() * sizeof(Vertex));
 
-    shader_program.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
-    shader_program.enableAttributeArray(PROGRAM_TEXCOORD_ATTRIBUTE);
-    shader_program.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
-    shader_program.setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 2 * sizeof(GLfloat), 2, 4 * sizeof(GLfloat));
 
-    shader_program.bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
-    shader_program.bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
-    shader_program.link();
-    shader_program.setUniformValue("texture", 0);
-
-
-    shaders_selection.addShaderFromSourceFile(
+    shaders_sprite.addShaderFromSourceFile(
                 QOpenGLShader::Vertex, resource_path+"shaders/sprite.vert");
-    shaders_selection.addShaderFromSourceFile(
-                QOpenGLShader::Fragment, resource_path+"shaders/selected_sprite.frag");
-    shaders_selection.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
-    shaders_selection.enableAttributeArray(PROGRAM_TEXCOORD_ATTRIBUTE);
-    shaders_selection.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
-    shaders_selection.setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 2 * sizeof(GLfloat), 2, 4 * sizeof(GLfloat));
+    shaders_sprite.addShaderFromSourceFile(
+                QOpenGLShader::Fragment, resource_path+"shaders/sprite.frag");
 
-    shaders_selection.bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
-    shaders_selection.bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
-    shaders_selection.link();
-    shaders_selection.setUniformValue("texture", 0);
+    shaders_sprite.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
+    shaders_sprite.enableAttributeArray(PROGRAM_TEXCOORD_ATTRIBUTE);
+    shaders_sprite.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
+    shaders_sprite.setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 2 * sizeof(GLfloat), 2, 4 * sizeof(GLfloat));
+
+    shaders_sprite.bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
+    shaders_sprite.bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
+    shaders_sprite.link();
+    shaders_sprite.setUniformValue("texture", 0);
+
+
+    vao_link_lines.create();
+    vao_link_lines.bind();
+    link_lines_buffer.create();
+    link_lines_buffer.bind();
+    shaders_link_lines.addShaderFromSourceFile(
+                QOpenGLShader::Vertex, resource_path+"shaders/selection.vert");
+    shaders_link_lines.addShaderFromSourceFile(
+                QOpenGLShader::Fragment, resource_path+"shaders/selection.frag");
+    shaders_link_lines.enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
+    shaders_link_lines.setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 2 * sizeof(GLfloat));
+    shaders_link_lines.bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
+    shaders_link_lines.link();
+
 
     textures = {
         new QOpenGLTexture(QImage(resource_path+"sprites/node.png").mirrored()),
@@ -237,7 +250,7 @@ void RenderingWidget::paintGL()
     projection_matrix = get_projection_according_to_observer_position(window_rect);
     projection_matrix.scale(window_scale);
 
-    vao_sprite_rect.bind();
+    //vao_sprite_rect.bind();
 
     int i=0;
     for (Node& drawable_node: units) {

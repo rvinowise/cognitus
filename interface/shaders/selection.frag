@@ -1,8 +1,11 @@
 #version 130
 //#version 450
 
+out vec4 diffuseColor;
+uniform vec4 color;
+
 void main(void)
 {
-    gl_FragColor = vec4(0.2, 1, 0.5, 1);
+    diffuseColor = color;
 	//return vec4(1,1,1,0.5);
 }

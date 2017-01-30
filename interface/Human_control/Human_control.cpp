@@ -53,7 +53,7 @@ void Human_control::initializeGL()
                 QOpenGLShader::Fragment, RenderingWidget::resource_path+"shaders/selection.frag");
 
     shader_selection.enableAttributeArray(0);
-    shader_selection.setAttributeBuffer(0, GL_FLOAT, 0, 2, 4 * sizeof(GLfloat));
+    shader_selection.setAttributeBuffer(0, GL_FLOAT, 0, 2, 2 * sizeof(GLfloat));
     shader_selection.bindAttributeLocation("vertex", 0);
     shader_selection.link();
 }
@@ -225,18 +225,20 @@ void Human_control::draw()
 
 void Human_control::draw_selection_rect()
 {
-    QVector<Vertex> vertices_of_selection;
-    vertices_of_selection.push_back(Vertex{ selection_start.x(),selection_start.y(),0,0});
-    vertices_of_selection.push_back(Vertex{ selection_start.x(),mouse_state.position.y(),0,0});
-    vertices_of_selection.push_back(Vertex{ mouse_state.position.x(),mouse_state.position.y(),0,0});
-    vertices_of_selection.push_back(Vertex{ mouse_state.position.x(),selection_start.y(),0,0});
+    QVector<Vertex_point> vertices_of_selection;
+    vertices_of_selection.push_back(Vertex_point(selection_start));
+    vertices_of_selection.push_back(Vertex_point(selection_start.x(),mouse_state.position.y()));
+    vertices_of_selection.push_back(Vertex_point(mouse_state.position));
+    vertices_of_selection.push_back(Vertex_point(mouse_state.position.x(),selection_start.y()));
 
     vao_selection_rect.bind();
-    selection_vertices.allocate(vertices_of_selection.constData(), vertices_of_selection.count() * sizeof(Vertex));
+    selection_vertices.bind(); //?
+    selection_vertices.allocate(vertices_of_selection.constData(), vertices_of_selection.count() * sizeof(Vertex_point));
     shader_selection.bind();
 
     QMatrix4x4 matrix = renderingWidget->projection_matrix;
     shader_selection.setUniformValue("matrix", matrix);
+    shader_selection.setUniformValue("color", QColor::fromRgbF(0,1,0.5));
 
     glLineWidth(2);
     glDrawArrays(GL_LINE_LOOP, 0, 4);

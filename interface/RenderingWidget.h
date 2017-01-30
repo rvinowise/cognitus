@@ -28,20 +28,25 @@ public:
 
     static const QString resource_path;
     QMatrix4x4 projection_matrix;
-    QOpenGLShaderProgram shader_program;
-    QOpenGLShaderProgram shaders_selection;
+    QOpenGLShaderProgram shaders_sprite;
     static const std::size_t PROGRAM_VERTEX_ATTRIBUTE=0;
     static const std::size_t PROGRAM_TEXCOORD_ATTRIBUTE=1;
     static constexpr GLfloat sprite_etalon_radius = 10;
+    QOpenGLShaderProgram shaders_link_lines;
 
     void draw_unit_rect();
-    void draw_selection_rect();
+    //void draw_selection_rect();
+    void draw_lines(std::size_t qty);
+
     Rect window_rect;
     float window_scale;
     std::vector<QOpenGLTexture*> textures;
-    void update_selection_rect();
+
     QOpenGLBuffer vertex_buffer;
     QOpenGLVertexArrayObject vao_sprite_rect;
+    QOpenGLBuffer link_lines_buffer;
+    QOpenGLVertexArrayObject vao_link_lines;
+
     std::vector<Node> units;
 
 protected:
@@ -81,6 +86,13 @@ struct Vertex
 {
     GLfloat position[2];
     GLfloat texture_coordinates[2];
+};
+struct Vertex_point
+{
+    Vertex_point(){};
+    Vertex_point(GLfloat in_x, GLfloat in_y);
+    Vertex_point(Point point);
+    GLfloat position[2];
 };
 
 }
