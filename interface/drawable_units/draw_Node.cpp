@@ -21,11 +21,21 @@ Node::Node(core::Node real_node):
 {
 
 }
-int Node::get_radius()
+Node::Node(const render::Node& other_node):
+    Drawable_unit(),
+    node{other_node.node},
+    bends{other_node.bends},
+    hubs{other_node.hubs},
+    first_hubs{other_node.first_hubs}
+{
+
+}
+
+int Node::get_radius() const
 {
     return 10;
 }
-QOpenGLTexture* Node::get_texture()
+QOpenGLTexture* Node::get_texture() const
 {
     return renderingWidget->textures[0];
 }
@@ -46,8 +56,12 @@ void Node::update_according_to_network()
     bends.back().position = position + Point(10, -20);
     bends.push_back(Bend());
     bends.back().position = position + Point(25, -20);
-    hubs.push_back(Hub());
-    hubs.back().position = position + Point(-10, 20);
+    add_first_hub();
+    first_hubs.back()->position = position + Point(-10, 20);
+    add_next_hub(*first_hubs.back());
+    first_hubs.back()->get_last_next_hub().position = position + Point(+40, 20);
+    add_next_hub(*first_hubs.back());
+    first_hubs.back()->get_last_next_hub().position = position + Point(+40, 10);
 }
 
 vector<core::Bend> Node::find_unaccounted_real_bends()
@@ -65,12 +79,12 @@ vector<core::Bend> Node::find_unaccounted_real_bends()
 
 }
 
-vector<core::Figure_bend> Node::find_unaccounted_real_hubs()
+vector<core::Figure_bend> Node::find_unaccounted_real_hubs() const
 {
     vector<core::Figure_bend> result;
 }
 
-void add_bend_corresponding_to(real_bend)
+void Node::add_bend_corresponding_to(core::Bend real_bend)
 {
 
 }
@@ -123,10 +137,10 @@ void Node::deselect_all_parts()
     }
 }
 
-void Node::draw()
+void Node::draw() const
 {
-    std::for_each(bends.begin(), bends.end(), [](Bend& bend){bend.draw();});
-    std::for_each(hubs.begin(), hubs.end(), [](Hub& hub){hub.draw();});
+    std::for_each(bends.begin(), bends.end(), [](const Bend& bend){bend.draw();});
+    std::for_each(hubs.begin(), hubs.end(), [](const Hub& hub){hub.draw();});
     Drawable_unit::draw();
 
     draw_links_to_first_hubs();
@@ -134,48 +148,43 @@ void Node::draw()
 }
 
 
-void Node::draw_links_to_bends()
+void Node::draw_links_to_bends() const
 {
-    QVector<Vertex_point> vertices_of_links;
+    std::vector<Vertex_point> vertices_of_links;
     Point attachment = this->position + Point(0,-get_radius()+1);
-    for (Bend& bend: bends) {
+    for (const Bend& bend: bends) {
         vertices_of_links.push_back(Vertex_point(attachment));
         vertices_of_links.push_back(Vertex_point(bend.position));
     }
 
-    renderingWidget->vao_link_lines.bind();
-    renderingWidget->link_lines_buffer.bind();
-    renderingWidget->link_lines_buffer.allocate(vertices_of_links.constData(), vertices_of_links.count() * sizeof(Vertex_point));
-    renderingWidget->shaders_link_lines.bind();
+    draw_link_lines(vertices_of_links, Color::fromRgbF(0,0,0,0.5));
 
-    QMatrix4x4 matrix = renderingWidget->projection_matrix;
-    renderingWidget->shaders_link_lines.setUniformValue("matrix", matrix);
-    renderingWidget->shaders_link_lines.setUniformValue("color", QColor::fromRgbF(0,0,0,0.5));
-    renderingWidget->draw_lines(vertices_of_links.size());
 }
 
-void Node::draw_links_to_first_hubs()
+void Node::draw_links_to_first_hubs() const
 {
-    QVector<Vertex_point> vertices_of_links;
+    std::vector<Vertex_point> vertices_of_links;
     Point attachment = this->position + Point(0,get_radius()-1);
 
-    for (Hub& hub: hubs) {
+    for (const Hub* hub: first_hubs) {
         vertices_of_links.push_back(Vertex_point(attachment));
-        Point hub_attachment = hub.position + Point(0,-hub.get_radius()+1);
+        Point hub_attachment = hub->position + Point(0,-hub->get_radius()+1);
         vertices_of_links.push_back(Vertex_point(hub_attachment));
     }
 
-    renderingWidget->vao_link_lines.bind();
-    renderingWidget->link_lines_buffer.bind();
-    renderingWidget->link_lines_buffer.allocate(vertices_of_links.constData(), vertices_of_links.count() * sizeof(Vertex_point));
-    renderingWidget->shaders_link_lines.bind();
-
-    QMatrix4x4 matrix = renderingWidget->projection_matrix;
-    renderingWidget->shaders_link_lines.setUniformValue("matrix", matrix);
-    renderingWidget->shaders_link_lines.setUniformValue("color", QColor::fromRgbF(0,0,0));
-    renderingWidget->draw_lines(vertices_of_links.size());
+    draw_link_lines(vertices_of_links, Color::fromRgbF(0,0,0,0.5));
 }
 
+Hub &Node::add_first_hub()
+{
+    hubs.push_back(Hub(*this));
+    first_hubs.push_back(&hubs.back());
+}
+Hub &Node::add_next_hub(Hub& in_hub)
+{
+    hubs.push_back(Hub(*this));
+    in_hub.next_hubs.push_back(&hubs.back());
+}
 
 
 }

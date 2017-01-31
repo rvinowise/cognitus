@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "interface/coordinates_type.h"
+#include "interface/primitives/Vertex/Vertex.h"
 
 
 namespace render {
@@ -19,22 +20,26 @@ public:
     Drawable_unit();
     virtual void update_according_to_network(){};
 
-    void draw();
-    void draw_link_to(const Drawable_unit& other);
+    void draw() const;
+    void draw_link_to(const Drawable_unit& other) const;
+    void draw_link_lines(const std::vector<Vertex_point>& vertices, const Color& color)const;
 
-    bool is_inside(Rect rect);
-    bool has_inside(Point point);
-    bool is_collide(const Drawable_unit& other);
+    bool is_inside(Rect rect)const;
+    bool has_inside(Point point)const;
+    bool is_collide(const Drawable_unit& other)const;
     void select();
     void deselect();
 
-    virtual int get_radius(){};
-    virtual QOpenGLTexture* get_texture(){};
+    virtual int get_radius()const{};
+    virtual QOpenGLTexture* get_texture()const{};
     Point position;
 
 
  protected:
     bool is_selected;
+
+private:
+
 
 };
 

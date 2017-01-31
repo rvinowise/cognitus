@@ -11,10 +11,12 @@ class Bend: public Drawable_unit
 public:
     Bend();
     void update_according_to_network(){};
-    void draw();
+    void draw() const;
 
-    int get_radius();
-    QOpenGLTexture* get_texture();
+    int get_radius() const;
+    QOpenGLTexture* get_texture() const;
+
+    bool operator ==(const core::Bend& real_bend) const;
 private:
 
 

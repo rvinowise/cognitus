@@ -15,7 +15,7 @@ Drawable_unit::Drawable_unit():
 
 }
 
-void Drawable_unit::draw()
+void Drawable_unit::draw() const
 {
     renderingWidget->vao_sprite_rect.bind();
 
@@ -31,12 +31,12 @@ void Drawable_unit::draw()
     renderingWidget->draw_unit_rect();
 }
 
-void Drawable_unit::draw_link_to(const Drawable_unit &other)
+void Drawable_unit::draw_link_to(const Drawable_unit &other) const
 {
 
 }
 
-bool Drawable_unit::is_inside(Rect rect)
+bool Drawable_unit::is_inside(Rect rect) const
 {
     Point first = rect.topLeft();
     Point last = rect.bottomRight();
@@ -52,7 +52,7 @@ bool Drawable_unit::is_inside(Rect rect)
     return false;
 }
 
-bool Drawable_unit::has_inside(Point point)
+bool Drawable_unit::has_inside(Point point) const
 {
     if (poidis(position, point) < get_radius()) {
         return true;
@@ -67,6 +67,19 @@ void Drawable_unit::select()
 void Drawable_unit::deselect()
 {
     is_selected = false;
+}
+
+void Drawable_unit::draw_link_lines(const std::vector<Vertex_point>& vertices, const Color& color) const
+{
+    renderingWidget->vao_link_lines.bind();
+    renderingWidget->link_lines_buffer.bind();
+    renderingWidget->link_lines_buffer.allocate(vertices.data(), vertices.size() * sizeof(Vertex_point));
+    renderingWidget->shaders_link_lines.bind();
+
+    QMatrix4x4 matrix = renderingWidget->projection_matrix;
+    renderingWidget->shaders_link_lines.setUniformValue("matrix", matrix);
+    renderingWidget->shaders_link_lines.setUniformValue("color", color);
+    renderingWidget->draw_lines(vertices.size());
 }
 
 

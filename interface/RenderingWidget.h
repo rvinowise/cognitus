@@ -82,17 +82,6 @@ private:
 
 extern RenderingWidget* renderingWidget;
 
-struct Vertex
-{
-    GLfloat position[2];
-    GLfloat texture_coordinates[2];
-};
-struct Vertex_point
-{
-    Vertex_point(){};
-    Vertex_point(GLfloat in_x, GLfloat in_y);
-    Vertex_point(Point point);
-    GLfloat position[2];
-};
+
 
 }

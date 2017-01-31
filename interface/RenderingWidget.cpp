@@ -5,7 +5,7 @@
 
 #include "core/Network/Network.h"
 #include "interface/drawable_units/draw_Node.h"
-
+#include "interface/primitives/Vertex/Vertex.h"
 
 namespace render {
 
@@ -17,15 +17,7 @@ const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
 RenderingWidget* renderingWidget;
 
 
-Vertex_point::Vertex_point(Point point) {
-    position[0] = point.x();
-    position[1] = point.y();
-}
-Vertex_point::Vertex_point(GLfloat in_x, GLfloat in_y)
-{
-    position[0] = in_x;
-    position[1] = in_y;
-}
+
 
 
 RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *parent):

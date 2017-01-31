@@ -46,7 +46,8 @@ SOURCES += main.cpp \
     interface/drawable_units/draw_Bend.cpp \
     interface/drawable_units/draw_Hub.cpp \
     interface/drawable_units/draw_Node.cpp \
-    interface/Human_control/Human_control.cpp
+    interface/Human_control/Human_control.cpp \
+    interface/primitives/Vertex/Vertex.cpp
 
 
 
@@ -86,7 +87,8 @@ HEADERS  += \
     interface/drawable_units/draw_Node.h \
     interface/Human_control/Human_control.h \
     interface/functions/functions.h \
-    interface/coordinates_type.h
+    interface/coordinates_type.h \
+    interface/primitives/Vertex/Vertex.h
 
 
 
