@@ -6,31 +6,22 @@
 namespace render {
 
 
-/*Hub::Hub():
-    node{nullptr}
-{
 
-}*/
 
-Hub::Hub(Node &in_node):
+Hub::Hub(const core::Figure_bend& real_hub, Node &in_node):
     Drawable_unit(),
-    node(in_node)
-{
-
-}
-
-Hub::Hub(const Hub &other_hub):
-    node(other_hub.node)
+    node{in_node},
+    hub{real_hub}
 {
 
 }
 
 
-int Hub::get_radius() const
+int Hub::get_radius()
 {
     return 4;
 }
-QOpenGLTexture* Hub::get_texture() const
+QOpenGLTexture* Hub::get_texture()
 {
     return renderingWidget->textures[2];
 }
@@ -43,6 +34,11 @@ Color Hub::get_links_to_next_hubs_color() const
 Hub &Hub::get_last_next_hub()
 {
     return *this->next_hubs.back();
+}
+
+bool Hub::operator==(const core::Figure_bend &real_hub) const
+{
+    return (this->hub == real_hub);
 }
 
 void Hub::draw_links_to_next_hubs() const
@@ -61,13 +57,10 @@ void Hub::draw_links_to_next_hubs() const
 
 }
 
-Hub &Hub::add_next_hub()
+Hub &Hub::add_next_hub(const core::Figure_bend &real_hub)
 {
-    node.hubs.push_back(Hub(node));
-    //node.first_hubs.push_back(new Hub(*this));
-    std::size_t lol = node.first_hubs.size();
-    std::size_t lol1 = node.hubs.size();
-    next_hubs.push_back(node.first_hubs.back());
+    node.hubs.push_back(Hub(real_hub, node));
+    next_hubs.push_back(&node.hubs.back());
     return node.hubs.back();
 }
 

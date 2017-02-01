@@ -13,7 +13,7 @@ namespace test {
 using std::size_t;
 using std::vector;
 
-void Network::init_data_for_tests()
+void Network::init_common_data_for_all_tests()
 {
     unsigned int randomSeed = std::chrono::system_clock::now().time_since_epoch().count();
     std::srand(randomSeed);

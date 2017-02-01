@@ -9,7 +9,7 @@ namespace test {
 class Network
 {
 public:
-    void init_data_for_tests();
+    void init_common_data_for_all_tests();
 
     void work_of_network();
 

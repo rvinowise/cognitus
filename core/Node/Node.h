@@ -43,6 +43,7 @@ public:
     class iterator_BFS;
     iterator_BFS begin();
     iterator_BFS end();
+    typedef Figure_bend value_type;
 
 #ifdef debug_mode
     bool has_it_as_progeny(Node node);

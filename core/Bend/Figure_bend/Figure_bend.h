@@ -25,8 +25,8 @@ public:
     static Figure_bend new_empty();
     bool is_empty();
 
-    bool operator==(const Figure_bend& other);
-    bool operator!=(const Figure_bend& other);
+    bool operator==(const Figure_bend& other) const;
+    bool operator!=(const Figure_bend& other)const;
     Figure_bend& operator=(const Figure_bend& other);
 
     size_t get_prev_links_qty() const;

@@ -30,8 +30,8 @@ public:
     void select();
     void deselect();
 
-    virtual int get_radius()const{};
-    virtual QOpenGLTexture* get_texture()const{};
+    static int get_radius() {};
+    static QOpenGLTexture* get_texture() {};
     Point position;
 
 

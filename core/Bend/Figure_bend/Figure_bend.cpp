@@ -67,11 +67,11 @@ bool Figure_bend::is_empty()
     return data==nullptr;
 }
 
-bool Figure_bend::operator==(const Figure_bend &other)
+bool Figure_bend::operator==(const Figure_bend &other) const
 {
     return data == other.data;
 }
-bool Figure_bend::operator!=(const Figure_bend &other)
+bool Figure_bend::operator!=(const Figure_bend &other)const
 {
     return data != other.data;
 }

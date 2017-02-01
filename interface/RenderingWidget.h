@@ -47,7 +47,7 @@ public:
     QOpenGLBuffer link_lines_buffer;
     QOpenGLVertexArrayObject vao_link_lines;
 
-    std::vector<Node> units;
+    std::list<Node> units;
 
 protected:
 

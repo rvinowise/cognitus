@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     //format.setSamples(16);
 
     test::Network network;
-    network.init_data_for_tests();
+    network.init_common_data_for_all_tests();
     test::Input input(network.network);
     input.init_input_characteristics();
 
