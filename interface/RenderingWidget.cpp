@@ -276,9 +276,7 @@ void RenderingWidget::paintGL()
     projection_matrix = get_projection_according_to_observer_position(window_rect);
     projection_matrix.scale(window_scale);
 
-    //vao_sprite_rect.bind();
-
-    for (Node& drawable_node: units) {
+    for (Node& node: network) {
         drawable_node.draw();
     }
 }

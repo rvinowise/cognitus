@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "interface/drawable_units/Drawable_unit.h"
-#include "core/Network/Node/Bend/Bend.h"
+
 
 namespace render {
 
@@ -11,9 +11,7 @@ class Node;
 class Bend: public Drawable_unit
 {
 public:
-    Bend(core::Bend real_bend, render::Node& node);
-    void update_according_to_network(){};
-    render::Bend* add_next_bend();
+    Bend();
 
     void draw() const;
     void draw_links_to_next_bends() const;
@@ -22,12 +20,8 @@ public:
     int get_radius()const;
     QOpenGLTexture* get_texture()const;
 
-    bool operator ==(const core::Bend& real_bend) const;
 private:
 
-    std::vector<render::Bend*> next_bends;
-    core::Bend bend;
-    render::Node& node;
 };
 
 

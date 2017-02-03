@@ -50,10 +50,7 @@ public:
     QOpenGLBuffer link_lines_buffer;
     QOpenGLVertexArrayObject vao_link_lines;
 
-    std::list<Node> units;
-    std::map<core::Node, render::Node> real_node_to_node;
-    std::map<core::Node, std::size_t> real_node_to_index;
-core::Network& network;
+
 protected:
 
     void initializeGL() Q_DECL_OVERRIDE;
@@ -72,17 +69,12 @@ private:
     void prepare_graphic_settings();
     void print_context_information();
 
-
-
-
     QColor clear_color;
 
     Human_control human_control;
 
 
-    //std::map<core::>
-
-
+    core::Network& network;
 
 };
 

@@ -8,6 +8,11 @@
 #include "core/Network/Link/Linked.h"
 #include "core/auxiliary/Acquiring_handles/Acquiring_handles.h"
 
+#ifdef render_mode
+#include "interface/drawable_units/draw_Bend.h"
+#endif
+
+
 namespace core {
 
 class Bend_data;
@@ -15,6 +20,9 @@ class Node;
 class Hub;
 
 class Bend: public Linked
+#ifdef render_mode
+        ,public render::Bend
+#endif
 {
 public:
     Bend();

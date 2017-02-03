@@ -5,16 +5,26 @@
 
 #include "core/Network/Link/Linked.h"
 
+#ifdef render_mode
+#include "interface/drawable_units/draw_Hub.h"
+#endif
+
 /// @image html position2.png
 
+
 namespace core {
+
 
 class Node;
 class Node_data;
 class Bend;
 class Hub_data;
 using std::size_t;
+
 class Hub: public Linked
+#ifdef render_mode
+        //,public render::Hub
+#endif
 {
 public:
     Hub();

@@ -154,10 +154,6 @@ void Node::draw() const
     draw_links_to_bends();
 }
 
-bool Node::operator==(const core::Node &real_node) const
-{
-    return (this->node == real_node);
-}
 
 
 void Node::draw_links_to_bends() const

@@ -5,10 +5,7 @@
 
 namespace render {
 
-Bend::Bend(core::Bend real_bend, render::Node &in_node):
-    Drawable_unit(),
-    bend{real_bend},
-    node{in_node}
+Bend::Bend()
 {
 
 }
@@ -22,10 +19,6 @@ QOpenGLTexture* Bend::get_texture()const
     return renderingWidget->textures[1];
 }
 
-bool Bend::operator ==(const core::Bend &real_bend) const
-{
-    return (this->bend == real_bend);
-}
 
 Color Bend::get_links_to_next_bends_color() const
 {

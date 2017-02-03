@@ -8,10 +8,7 @@ namespace render {
 
 
 
-Hub::Hub(const core::Hub& real_hub, Node &in_node):
-    Drawable_unit(),
-    node{in_node},
-    hub{real_hub}
+Hub::Hub()
 {
 
 }
@@ -31,15 +28,7 @@ Color Hub::get_links_to_next_hubs_color() const
     return Color::fromRgbF(0,0,0,0.5);
 }
 
-Hub &Hub::get_last_next_hub()
-{
-    return *this->next_hubs.back();
-}
 
-bool Hub::operator==(const core::Hub &real_hub) const
-{
-    return (this->hub == real_hub);
-}
 
 void Hub::draw_links_to_next_hubs() const
 {
@@ -57,17 +46,6 @@ void Hub::draw_links_to_next_hubs() const
 
 }
 
-Hub &Hub::add_next_hub(const core::Hub &real_hub)
-{
-    node.hubs.push_back(Hub(real_hub, node));
-    next_hubs.push_back(&node.hubs.back());
-    return node.hubs.back();
-}
-
-void Hub::update_according_to_network()
-{
-
-}
 
 void Hub::draw() const
 {

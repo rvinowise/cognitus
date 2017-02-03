@@ -3,10 +3,7 @@
 #include <vector>
 
 #ifdef render_mode
-#include "interface/drawable_units/Drawable_unit.h"
 #include "interface/drawable_units/draw_Node.h"
-//class Drawable_unit;
-
 #endif
 
 namespace core {
