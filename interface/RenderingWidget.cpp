@@ -4,8 +4,10 @@
 #include <QString>
 
 #include "core/Network/Network.h"
+#include "core/Network/Node/Iterator/Iterator_node_BFS.h"
 #include "interface/drawable_units/draw_Node.h"
 #include "interface/primitives/Vertex/Vertex.h"
+#include "algorithms.h"
 
 namespace render {
 
@@ -51,6 +53,32 @@ void RenderingWidget::draw_lines(std::size_t qty)
 {
     glLineWidth(1*window_scale);
     glDrawArrays(GL_LINES, 0, qty);
+}
+
+void RenderingWidget::update_according_to_network()
+{
+    for (core::Node real_node: network) {
+        if (
+                real_node_to_index.count(real_node) == 0
+            ) {
+            add_node_corresponding_to(real_node);
+        }
+    }
+    for (Node& node: units) {
+        node.update_according_to_network();
+    }
+}
+
+void RenderingWidget::add_node_corresponding_to(core::Node real_node)
+{
+    units.push_back(render::Node(real_node));
+    real_node_to_index[real_node] = units.size()-1;
+    Node &node_in_margin = get_unit_in_margin(units);
+    if (units.size()==1) {
+        units.back().position = Point(50,50);
+    } else {
+        units.back().position = node_in_margin.position + Point(30,0);
+    }
 }
 
 
@@ -183,6 +211,11 @@ void RenderingWidget::wheelEvent(QWheelEvent *event)
     human_control.mouse_wheel(event);
 }
 
+void RenderingWidget::keyPressEvent(QKeyEvent *event)
+{
+    human_control.key_press(event);
+}
+
 void RenderingWidget::initialize_units()
 {
     /*Point position(100,50);
@@ -245,11 +278,8 @@ void RenderingWidget::paintGL()
 
     //vao_sprite_rect.bind();
 
-    int i=0;
     for (Node& drawable_node: units) {
         drawable_node.draw();
-
-        ++i;
     }
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Node/InterfaceNode.h"
+#include "core/Network/Node/InterfaceNode.h"
 
 #include <vector>
 

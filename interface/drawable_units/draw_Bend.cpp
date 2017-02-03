@@ -13,11 +13,11 @@ Bend::Bend(core::Bend real_bend, render::Node &in_node):
 
 }
 
-int Bend::get_radius()
+int Bend::get_radius()const
 {
     return 3;
 }
-QOpenGLTexture* Bend::get_texture()
+QOpenGLTexture* Bend::get_texture()const
 {
     return renderingWidget->textures[1];
 }

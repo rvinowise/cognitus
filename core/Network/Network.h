@@ -35,6 +35,11 @@ public:
     void save_new_activated_bend(Bend inBend);
 
 
+    class iterator_node_BFS;
+    iterator_node_BFS begin();
+    iterator_node_BFS end();
+    typedef Node value_type;
+
 private:
     friend class Input;
     friend class Output;

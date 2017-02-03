@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Bend/Bend.h"
+#include "core/Network/Node/Bend/Bend.h"
 
 #include <vector>
 

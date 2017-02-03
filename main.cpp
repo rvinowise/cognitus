@@ -18,32 +18,25 @@ int main(int argc, char *argv[])
 {
     QApplication  app(argc, argv);
 
-    //QSurfaceFormat format;
-    //format.setSamples(16);
+    core::Network network;
+    test::Network test_network(network);
+    test_network.init_common_data_for_all_tests();
+    test::Input input(network);
+    //input.init_input_characteristics();
 
-    test::Network network;
-    network.init_common_data_for_all_tests();
-    test::Input input(network.network);
-    input.init_input_characteristics();
 
-    //RenderingWidget renderingWindow(network.network);
-    //renderingWindow.show();
-    QSurfaceFormat format;
-    format.setDepthBufferSize(24);
-    QSurfaceFormat::setDefaultFormat(format);
-
-    render::RenderingWidget renderingWindow(network.network);
+    render::RenderingWidget renderingWindow(network);
     renderingWindow.show();
 
-    InterfaceWindow interfaceWindow(network.network);
+    InterfaceWindow interfaceWindow(network);
     interfaceWindow.show();
 
     return app.exec();
 
 
 
-    network.work_of_network();
-    debug.writeResume();
+    //test_network.work_of_network();
+    //debug.writeResume();
 }
 
 

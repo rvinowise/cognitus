@@ -50,6 +50,7 @@ public:
     void mouse_move(QMouseEvent *event);
     void mouse_release(QMouseEvent *event);
     void mouse_wheel(QWheelEvent *event);
+    void key_press(QKeyEvent *event);
 
     void draw();
 

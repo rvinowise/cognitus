@@ -5,14 +5,14 @@
 #include <set>
 #include <memory>
 
-#include "core/Bend/Link/Linked.h"
+#include "core/Network/Link/Linked.h"
 #include "core/auxiliary/Acquiring_handles/Acquiring_handles.h"
 
 namespace core {
 
 class Bend_data;
 class Node;
-class Figure_bend;
+class Hub;
 
 class Bend: public Linked
 {
@@ -42,12 +42,13 @@ public:
     std::size_t get_higher_nodes_qty() const;
     Node get_higher_node(std::size_t index) const;
     std::vector<Node> get_common_higher_nodes_with(Bend otherBend);
+    std::vector<Hub> &hubs();
 
 
     void append_to_higher_node(Node& inNode);
     void copy_prev_bends_from(Bend otherBend);
     void copy_next_bends_from(Bend otherBend);
-    void attach_to_figure(Figure_bend figureBend);
+    void attach_to_hub(Hub hub);
     Bend add_next_bend();
     void connect_to(Bend& toBend);
 

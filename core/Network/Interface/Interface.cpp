@@ -14,6 +14,7 @@ Interface::Interface(Network &inNetwork):
 void Interface::initNodes(std::size_t inQty) {
     for (std::size_t i_node = 0; i_node < inQty; i_node++) {
         InterfaceNode newInterfaceNode;
+        newInterfaceNode.create_data();
         newInterfaceNode.set_index_in_interface_array(node.size());
         node.push_back(newInterfaceNode);
     }

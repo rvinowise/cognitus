@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Bend/Bend.h"
+#include "core/Network/Node/Bend/Bend.h"
 
 namespace core {
 

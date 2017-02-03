@@ -1,6 +1,6 @@
 #include "Circuit.h"
 
-#include "core/Node/Node.h"
+#include "core/Network/Node/Node.h"
 
 namespace core {
 

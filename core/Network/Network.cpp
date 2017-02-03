@@ -1,6 +1,7 @@
 #include "Network.h"
 
 #include <QtDebug>
+#include "core/Network/Node/Iterator/Iterator_node_BFS.h"
 
 
 namespace core {
@@ -50,6 +51,16 @@ void Network::save_new_activated_bend(Bend inBend)
     newActiveBends->bend.push_back(inBend);
 }
 
+Network::iterator_node_BFS Network::begin()
+{
+    return iterator_node_BFS(*this);
+}
+Network::iterator_node_BFS Network::end()
+{
+    return iterator_node_BFS();
+}
+
+
 void Network::prolongate_history_of_inputs() {
     // incapsulate?
     if (!newActiveBends->bend.empty()) {
@@ -90,5 +101,3 @@ void Network::prepareOutputOnMotors() {
 
 
 }
-
-

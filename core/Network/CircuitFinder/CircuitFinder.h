@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "core/Circuit/Circuit.h"
+#include "core/Network/Circuit/Circuit.h"
 
 namespace core {
 

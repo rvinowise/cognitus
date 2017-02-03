@@ -13,10 +13,11 @@ InterfaceNode_data::InterfaceNode_data()
 }
 
 
-InterfaceNode::InterfaceNode()
-    :Node()
+InterfaceNode::InterfaceNode():
+    Node(),
+    interface_data{nullptr}
 {
-    interface_data = new InterfaceNode_data();
+
 }
 
 InterfaceNode::InterfaceNode(const Node &other)
@@ -28,6 +29,12 @@ InterfaceNode::InterfaceNode(const InterfaceNode &other)
     :Node(other)
 {
     interface_data = other.interface_data;
+}
+
+void InterfaceNode::create_data()
+{
+    interface_data = new InterfaceNode_data();
+    Node::create_data();
 }
 
 void InterfaceNode::prepare_to_fire() {

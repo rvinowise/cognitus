@@ -2,7 +2,7 @@
 #include "Node_data.h"
 
 #include "core/Network/Network.h"
-#include "core/Bend/Figure_bend/Iterator/Iterator_BFS.h"
+#include "core/Network/Node/Hub/Iterator/Iterator_BFS.h"
 
 #ifdef debug_mode
 #include "core/test/randomFunc.h"
@@ -16,9 +16,9 @@ Node_data::Node_data():
 }
 
 
-Node::Node()
+Node::Node():
+    data{nullptr}
 {
-    data = new Node_data;
 
 }
 
@@ -51,6 +51,21 @@ Node::~Node()
     }
 }
 
+void Node::create_data()
+{
+    data = new Node_data();
+}
+
+Node Node::new_empty()
+{
+    Node node;
+    return node;
+}
+bool Node::is_empty() const
+{
+    return data==nullptr;
+}
+
 void Node::deallocate_with_all_connected_entities_upward()
 {
     for (auto bend: this->data->bends) {
@@ -68,6 +83,17 @@ Node& Node::operator=(const Node &other)
 bool Node::operator==(const Node &other) const
 {
     return data==other.data;
+}
+
+bool Node::operator!=(const Node &other) const
+{
+    return data!=other.data;
+}
+
+bool Node::operator<(const Node &other) const
+{
+    return reinterpret_cast<std::size_t>(data) <
+            reinterpret_cast<std::size_t>(other.data);
 }
 
 
@@ -90,10 +116,10 @@ void delete_initial_chain_which_is_redundant_now(LineOfCircuit inChain) {
 
 void Node::carefully_preserve_initial_chain_because_of_its_context(
         LineOfCircuit inLine,
-        Figure_bend first_chain_bend,
-        Figure_bend second_chain_bend) {
-    inLine.get_start().attach_to_figure(first_chain_bend);
-    inLine.get_end().attach_to_figure(second_chain_bend);
+        Hub first_chain_bend,
+        Hub second_chain_bend) {
+    inLine.get_start().attach_to_hub(first_chain_bend);
+    inLine.get_end().attach_to_hub(second_chain_bend);
 }
 
 void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
@@ -111,13 +137,13 @@ void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
     secondHigherBend.copy_prev_bends_from(inCircuit.getSecondStartBend());
     secondHigherBend.copy_next_bends_from(inCircuit.getSecondEndBend());
 
-    Figure_bend first_figure_bend = this->add_figure_bend();
-    Figure_bend second_figure_bend = first_figure_bend.add_next_bend();
+    Hub first_hub = this->add_hub();
+    Hub second_hub = first_hub.add_next_bend();
 
     if (there_are_other_bends_inside_this_line(inCircuit.get_first_line())) {
         carefully_preserve_initial_chain_because_of_its_context(
                     inCircuit.get_first_line(),
-                    first_figure_bend, second_figure_bend);
+                    first_hub, second_hub);
     } else {
         delete_initial_chain_which_is_redundant_now(inCircuit.get_first_line());
     }
@@ -149,15 +175,15 @@ void Node::append_bend(const Bend& bend)
     data->bends.push_back(bend);
 }
 
-std::vector<Figure_bend>& Node::get_arr_figure_bends()
+std::vector<Hub>& Node::get_arr_hubs()
 {
-    return data->figure_bends;
+    return data->hubs;
 }
 
-Figure_bend Node::add_figure_bend()
+Hub Node::add_hub()
 {
-    data->figure_bends.push_back(Figure_bend(*this));
-    return data->figure_bends.back();
+    data->hubs.push_back(Hub(*this));
+    return data->hubs.back();
 }
 
 std::vector<Bend>& Node::bends()
@@ -180,7 +206,7 @@ Node::iterator_BFS Node::end()
 
 bool Node::has_it_as_progeny(Node in_node)
 {
-    for (Figure_bend figure: *this) {
+    for (Hub figure: *this) {
         for (Bend child_bend: figure.get_arr_free_bends()) {
             Node child_node = child_bend.get_master_node();
             if (child_node == in_node) {
@@ -200,20 +226,20 @@ bool Node::is_progeny_of(Node node)
 void Node::generate_random_empty_figure(std::size_t figure_size)
 {
 
-    std::vector<Figure_bend> figures(figure_size);
+    std::vector<Hub> hubs(figure_size);
     for (size_t i_figure=0; i_figure<figure_size; i_figure++) {
-        figures[i_figure] = Figure_bend(*this);
+        hubs[i_figure] = Hub(*this);
     }
-    for (Figure_bend figure: figures) {
-        std::vector<Figure_bend> potential_next_figures=
-                figure.get_arr_not_linked_figures(figures);
-        unsigned int figure_picking_step = potential_next_figures.size()-2;
+    for (Hub figure: hubs) {
+        std::vector<Hub> potential_next_hubs=
+                figure.get_arr_not_linked_hubs(hubs);
+        unsigned int figure_picking_step = potential_next_hubs.size()-2;
         for (
              size_t i_potential_next = 0;
-             i_potential_next < potential_next_figures.size();
+             i_potential_next < potential_next_hubs.size();
              i_potential_next += (1+test::random(figure_picking_step))
              ) {
-            figure.push_next_bend(potential_next_figures[i_potential_next]);
+            figure.push_next_bend(potential_next_hubs[i_potential_next]);
         }
     }
 }

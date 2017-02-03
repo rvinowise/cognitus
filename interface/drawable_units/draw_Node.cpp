@@ -2,10 +2,10 @@
 
 #include <algorithm>
 
-#include "core/Node/Node.h"
-#include "core/Bend/Figure_bend/Figure_bend.h"
-#include "core/Bend/Bend.h"
-#include "core/Bend/Figure_bend/Iterator/Iterator_BFS.h"
+#include "core/Network/Node/Node.h"
+#include "core/Network/Node/Hub/Hub.h"
+#include "core/Network/Node/Bend/Bend.h"
+#include "core/Network/Node/Hub/Iterator/Iterator_BFS.h"
 #include "interface/RenderingWidget.h"
 #include "interface/algorithms.h"
 
@@ -23,42 +23,42 @@ Node::Node(core::Node real_node):
 }
 
 
-int Node::get_radius()
+int Node::get_radius()const
 {
     return 10;
 }
-QOpenGLTexture* Node::get_texture()
+QOpenGLTexture* Node::get_texture()const
 {
     return renderingWidget->textures[0];
 }
 
 void Node::update_according_to_network()
 {
-    /*vector<core::Bend> unaccounted_real_bends =
+    vector<core::Bend> unaccounted_real_bends =
         find_unaccounted_real_bends();
     for (core::Bend real_bend: unaccounted_real_bends) {
         add_bend_corresponding_to(real_bend);
 
     }
 
-    vector<core::Figure_bend> unaccounted_real_hubs =
+    vector<core::Hub> unaccounted_real_hubs =
             find_unaccounted_real_hubs();
-    for (core::Figure_bend real_hub: unaccounted_real_hubs) {
+    for (core::Hub real_hub: unaccounted_real_hubs) {
         add_hub_corresponding_to(real_hub);
-    }*/
+    }
 
 
-    /*bends.push_back(Bend());
+    /*bends.push_back(Bend(&(new core::Bend)));
     bends.back().position = position + Point(0, -20);
     bends.push_back(Bend());
     bends.back().position = position + Point(10, -20);
     bends.push_back(Bend());
-    bends.back().position = position + Point(25, -20);
-    add_first_hub();
+    bends.back().position = position + Point(25, -20);*/
+    /*add_first_hub();
     first_hubs.back()->position = position + Point(-10, 20);
-    first_hubs.back()->add_next_hub();
+    first_hubs.back()->add_next_hub(&(new core::Figure_bend()));
     first_hubs.back()->get_last_next_hub().position = position + Point(+40, 20);
-    first_hubs.back()->add_next_hub();
+    first_hubs.back()->add_next_hub(&(new core::Figure_bend()));
     first_hubs.back()->get_last_next_hub().position = position + Point(+40, 10);*/
 }
 
@@ -66,31 +66,20 @@ vector<core::Bend> Node::find_unaccounted_real_bends()
 {
     vector<core::Bend> result =
             get_items_of_difference(node.bends(), this->bends);
-    //auto result::
     return result;
 }
 
-vector<core::Figure_bend> Node::find_unaccounted_real_hubs()
+vector<core::Hub> Node::find_unaccounted_real_hubs()
 {
-    vector<core::Figure_bend> result =
+    vector<core::Hub> result =
             get_items_of_difference(node, this->hubs);
-    /*vector<core::Figure_bend> result;
-    for (auto real_hub: node) {
-        if (
-                std::find(this->hubs.begin(), this->hubs.end(), real_hub)
-                ==
-                this->hubs.end()
-            ) {
-            result.push_back(real_hub);
-        }
-    }*/
     return result;
 }
 
 void Node::add_bend_corresponding_to(core::Bend real_bend)
 {
-    static Point offset(0, Bend::get_radius()+1);
     bends.push_back(Bend(real_bend, *this));
+    Point offset(0, bends.back().get_radius()+1);
     render::Bend bend = bends.back();
     render::Bend& bend_in_margin = get_unit_in_margin(bends);
     bend.position = bend_in_margin.position + offset;
@@ -98,10 +87,10 @@ void Node::add_bend_corresponding_to(core::Bend real_bend)
 }
 
 
-void Node::add_hub_corresponding_to(core::Figure_bend real_hub)
+void Node::add_hub_corresponding_to(core::Hub real_hub)
 {
-    static Point offset(Hub::get_radius()+1,0);
     hubs.push_back(Hub(real_hub, *this));
+    Point offset(hubs.back().get_radius()+1,0);
     render::Hub& hub_in_margin = get_unit_in_margin(hubs);
     render::Hub hub = hubs.back();
     hub.position = hub_in_margin.position + offset;
@@ -157,12 +146,17 @@ void Node::deselect_all_parts()
 
 void Node::draw() const
 {
-    //std::for_each(bends.begin(), bends.end(), [](const Bend& bend){bend.draw();});
-    //std::for_each(hubs.begin(), hubs.end(), [](const Hub& hub){hub.draw();});
+    std::for_each(bends.begin(), bends.end(), [](const Bend& bend){bend.draw();});
+    std::for_each(hubs.begin(), hubs.end(), [](const Hub& hub){hub.draw();});
     Drawable_unit::draw();
 
     draw_links_to_first_hubs();
     draw_links_to_bends();
+}
+
+bool Node::operator==(const core::Node &real_node) const
+{
+    return (this->node == real_node);
 }
 
 
@@ -193,7 +187,7 @@ void Node::draw_links_to_first_hubs() const
     draw_link_lines(vertices_of_links, Color::fromRgbF(0,0,0,0.5));
 }
 
-Hub &Node::add_first_hub(const core::Figure_bend& real_hub)
+Hub &Node::add_first_hub(const core::Hub& real_hub)
 {
     hubs.push_back(Hub(real_hub, *this));
     first_hubs.push_back(&hubs.back());

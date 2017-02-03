@@ -44,7 +44,7 @@ Unit& get_unit_in_margin(Cont& container)
          ++iterator) {
 
         Unit& unit = *iterator;
-        if (unit.position.y() < unit_in_margin->position.y()) {
+        if (unit.position.x() > unit_in_margin->position.x()) {
             unit_in_margin = &unit;
         }
     }

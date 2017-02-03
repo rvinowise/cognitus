@@ -26,6 +26,11 @@ public:
     //explicit RenderingWidget(RenderingWidget* other = 0);
     ~RenderingWidget();
 
+    void draw_unit_rect();
+    void draw_lines(std::size_t qty);
+    void update_according_to_network();
+    void add_node_corresponding_to(core::Node real_node);
+
     static const QString resource_path;
     QMatrix4x4 projection_matrix;
     QOpenGLShaderProgram shaders_sprite;
@@ -34,9 +39,7 @@ public:
     static constexpr GLfloat sprite_etalon_radius = 10;
     QOpenGLShaderProgram shaders_link_lines;
 
-    void draw_unit_rect();
-    //void draw_selection_rect();
-    void draw_lines(std::size_t qty);
+
 
     Rect window_rect;
     float window_scale;
@@ -48,7 +51,9 @@ public:
     QOpenGLVertexArrayObject vao_link_lines;
 
     std::list<Node> units;
-
+    std::map<core::Node, render::Node> real_node_to_node;
+    std::map<core::Node, std::size_t> real_node_to_index;
+core::Network& network;
 protected:
 
     void initializeGL() Q_DECL_OVERRIDE;
@@ -58,6 +63,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void wheelEvent(QWheelEvent*event) Q_DECL_OVERRIDE;
+    void keyPressEvent(QKeyEvent*event) Q_DECL_OVERRIDE;
 
 private:
     void initialize_units();
@@ -75,7 +81,7 @@ private:
 
 
     //std::map<core::>
-    core::Network& network;
+
 
 
 };

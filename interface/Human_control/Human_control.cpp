@@ -2,6 +2,7 @@
 #include <algorithm>
 
 #include "interface/RenderingWidget.h"
+#include "core/Network/Network.h"
 
 namespace render {
 
@@ -148,6 +149,17 @@ void Human_control::mouse_wheel(QWheelEvent *event)
         renderingWidget->window_scale /= scaling_step;
     }
     renderingWidget->update();
+}
+
+void Human_control::key_press(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case Qt::Key_G:
+        renderingWidget->network.input.initNodes(3);
+        renderingWidget->network.input.getNode(0).generate_random_empty_figure(3);
+        break;
+    }
+    renderingWidget->update_according_to_network();
 }
 
 

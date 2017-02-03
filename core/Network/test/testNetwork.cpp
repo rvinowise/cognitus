@@ -5,13 +5,19 @@
 #include <boost/format.hpp>
 #include "core/test/Debug_inspector.h"
 #include "core/test/randomFunc.h"
-#include "core/Bend/Figure_bend/Figure_bend.h"
-#include "core/Bend/Figure_bend/Iterator/Iterator_BFS.h"
+#include "core/Network/Node/Hub/Hub.h"
+#include "core/Network/Node/Hub/Iterator/Iterator_BFS.h"
 
 namespace test {
 
 using std::size_t;
 using std::vector;
+
+Network::Network(core::Network &in_network):
+    network{in_network}
+{
+
+}
 
 void Network::init_common_data_for_all_tests()
 {
@@ -38,7 +44,7 @@ void Network::construct_network_ignoring_interface()
     for (Node node: nodes) {
         size_t figure_size = random(100);
         node.generate_random_empty_figure(figure_size);
-        for (Figure_bend figure: node) {
+        for (Hub figure: node) {
 
         }
     }

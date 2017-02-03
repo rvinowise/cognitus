@@ -8,7 +8,7 @@ namespace render {
 
 
 
-Hub::Hub(const core::Figure_bend& real_hub, Node &in_node):
+Hub::Hub(const core::Hub& real_hub, Node &in_node):
     Drawable_unit(),
     node{in_node},
     hub{real_hub}
@@ -17,11 +17,11 @@ Hub::Hub(const core::Figure_bend& real_hub, Node &in_node):
 }
 
 
-int Hub::get_radius()
+int Hub::get_radius()const
 {
     return 4;
 }
-QOpenGLTexture* Hub::get_texture()
+QOpenGLTexture* Hub::get_texture()const
 {
     return renderingWidget->textures[2];
 }
@@ -36,7 +36,7 @@ Hub &Hub::get_last_next_hub()
     return *this->next_hubs.back();
 }
 
-bool Hub::operator==(const core::Figure_bend &real_hub) const
+bool Hub::operator==(const core::Hub &real_hub) const
 {
     return (this->hub == real_hub);
 }
@@ -57,7 +57,7 @@ void Hub::draw_links_to_next_hubs() const
 
 }
 
-Hub &Hub::add_next_hub(const core::Figure_bend &real_hub)
+Hub &Hub::add_next_hub(const core::Hub &real_hub)
 {
     node.hubs.push_back(Hub(real_hub, node));
     next_hubs.push_back(&node.hubs.back());

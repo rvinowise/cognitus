@@ -1,7 +1,7 @@
 
 #include "Bend.h"
 
-#include "core/Node/Node.h"
+#include "core/Network/Node/Node.h"
 #include "Bend_data.h"
 
 namespace core {
@@ -148,14 +148,14 @@ Bend Bend::get_next_bend(std::size_t index) const
 
 std::size_t Bend::get_higher_nodes_qty() const
 {
-    return data->higher_figure_bends.size();
+    return data->higher_hubs.size();
 }
 
 std::vector<Node> Bend::get_common_higher_nodes_with(Bend otherBend)
 {
     std::vector<Node> commonNodes;
-    for(auto this_place: data->higher_figure_bends) {
-        for (auto other_place: otherBend.data->higher_figure_bends) {
+    for(auto this_place: data->higher_hubs) {
+        for (auto other_place: otherBend.data->higher_hubs) {
             if (this_place.get_node_of_whole_figure()
                 ==
                 other_place.get_node_of_whole_figure())
@@ -166,6 +166,11 @@ std::vector<Node> Bend::get_common_higher_nodes_with(Bend otherBend)
     }
 
     return commonNodes;
+}
+
+std::vector<Hub>& Bend::hubs()
+{
+    return data->higher_hubs;
 }
 
 void Bend::append_to_higher_node(Node &inNode)
@@ -186,9 +191,9 @@ void Bend::copy_next_bends_from(Bend otherBend)
     }
 }
 
-void Bend::attach_to_figure(Figure_bend figureBend)
+void Bend::attach_to_hub(Hub hub)
 {
-    this->data->higher_figure_bends.push_back(figureBend);
+    this->data->higher_hubs.push_back(hub);
 }
 
 Bend Bend::add_next_bend()

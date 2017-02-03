@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "core/Bend/Bend.h"
-#include "core/Bend/Figure_bend/Figure_bend.h"
+#include "core/Network/Node/Bend/Bend.h"
+#include "core/Network/Node/Hub/Hub.h"
 #include "core/auxiliary/Acquiring_handles/Acquiring_handles.h"
 
 namespace core {
@@ -15,7 +15,7 @@ public:
 
     size_t level;
     std::vector<Bend> bends;
-    std::vector<Figure_bend> figure_bends;
+    std::vector<Hub> hubs;
 };
 
 

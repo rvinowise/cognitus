@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "interface/drawable_units/Drawable_unit.h"
-#include "core/Bend/Bend.h"
+#include "core/Network/Node/Bend/Bend.h"
 
 namespace render {
 
@@ -19,8 +19,8 @@ public:
     void draw_links_to_next_bends() const;
     Color get_links_to_next_bends_color() const;
 
-    static int get_radius();
-    static QOpenGLTexture* get_texture();
+    int get_radius()const;
+    QOpenGLTexture* get_texture()const;
 
     bool operator ==(const core::Bend& real_bend) const;
 private:

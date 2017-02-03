@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Bend.h"
-#include "core/Node/Node.h"
+#include "core/Network/Node/Node.h"
 #include "core/auxiliary/Acquiring_handles/Acquiring_handles.h"
-#include "Figure_bend/Figure_bend.h"
+#include "core/Network/Node/Hub/Hub.h"
 
 namespace core {
 
@@ -28,7 +28,7 @@ public:
     std::vector<Bend> prev_bends;
     std::vector<Bend> next_bends;
     Node& master_node;
-    std::vector<Figure_bend> higher_figure_bends;
+    std::vector<Hub> higher_hubs;
     Activation_interval interval;
 };
 
