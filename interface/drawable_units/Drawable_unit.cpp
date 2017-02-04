@@ -56,12 +56,12 @@ Drawable_unit Drawable_unit::get_empty()
     return Drawable_unit();
 }
 
-bool Drawable_unit::is_empty()
+bool Drawable_unit::is_empty() const
 {
     return !data;
 }
 
-bool Drawable_unit::exists()
+bool Drawable_unit::exists() const
 {
     return data;
 }

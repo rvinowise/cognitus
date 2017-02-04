@@ -15,6 +15,9 @@ class Hub: public Drawable_unit
 {
 public:
     Hub();
+    Hub(const Hub& other);
+    Hub(Hub&& other);
+    render::Hub operator=(const Hub& other);
 
     void draw() const;
 

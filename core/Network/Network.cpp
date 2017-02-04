@@ -51,11 +51,11 @@ void Network::save_new_activated_bend(Bend inBend)
     newActiveBends->bend.push_back(inBend);
 }
 
-Network::iterator_node_BFS Network::begin()
+iterator_node_BFS Network::begin()
 {
     return iterator_node_BFS(*this);
 }
-Network::iterator_node_BFS Network::end()
+iterator_node_BFS Network::end()
 {
     return iterator_node_BFS();
 }

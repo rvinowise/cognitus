@@ -29,7 +29,7 @@ Node::Node(Node &&other):
 {
 }
 
-Node::operator=(const Node &other)
+render::Node Node::operator=(const Node &other)
 {
     data = other.data;
 }
@@ -97,8 +97,8 @@ void Node::deselect_all_parts()
 
 void Node::draw()
 {
-    std::for_each(bends().begin(), bends().end(), [](Bend bend){bend.draw();});
-    std::for_each(this->begin(), this->end(), [](const Hub hub){hub.draw();});
+    std::for_each(bends().begin(), bends().end(), [](core::Bend bend){bend.draw();});
+    std::for_each(this->begin(), this->end(), [](const core::Hub hub){hub.draw();});
     Drawable_unit::draw();
 
     draw_links_to_first_hubs();

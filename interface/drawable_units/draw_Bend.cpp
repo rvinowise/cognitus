@@ -6,9 +6,21 @@
 
 namespace render {
 
-Bend::Bend()
+Bend::Bend():
+    Drawable_unit()
 {
-
+}
+Bend::Bend(const Bend &other):
+    Drawable_unit(other)
+{
+}
+Bend::Bend(Bend &&other):
+    Drawable_unit(std::move(other))
+{
+}
+render::Bend Bend::operator=(const Bend &other)
+{
+    data = other.data;
 }
 
 int Bend::get_radius()const

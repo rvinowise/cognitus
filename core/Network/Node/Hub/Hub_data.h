@@ -15,8 +15,8 @@ public:
     Hub_data(Node in_figure_node);
     Hub_data(Node_data in_figure_node_data);
 
-    std::vector<Hub> prev_bends;
-    std::vector<Hub> next_bends;
+    std::vector<Hub> prev_hubs;
+    std::vector<Hub> next_hubs;
 
     Node figure_node;
     std::vector<Bend> free_bends;

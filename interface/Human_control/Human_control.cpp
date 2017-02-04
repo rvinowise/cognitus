@@ -79,6 +79,7 @@ void Human_control::mouse_left_press(QMouseEvent *event)
     mouse_state.left = true;
 
     Drawable_unit pressed_unit = get_unit_under_mouse();
+
     if (pressed_unit.exists()) {
         if (
                 std::find(selected_units.begin(), selected_units.end(), pressed_unit)
@@ -158,7 +159,7 @@ void Human_control::key_press(QKeyEvent *event)
     switch (event->key()) {
     case Qt::Key_G:
         renderingWidget->network.input.initNodes(1);
-        //renderingWidget->network.input.getNode(0).generate_random_empty_figure(3);
+        renderingWidget->network.input.getNode(0).generate_random_empty_figure(3);
         break;
     }
     renderingWidget->update();
@@ -184,13 +185,9 @@ Rect Human_control::get_selection_rect_in_screen() const
 std::vector<Drawable_unit> Human_control::get_units_inside_selection_rect(Rect selection_in_world) const
 {
     std::vector<Drawable_unit> result;
-    for (Node node: renderingWidget->network) {
+    for (core::Node node: renderingWidget->network) {
         vector<Drawable_unit> selected_parts = node.get_parts_inside_rect(selection_in_world);
         result.insert(result.end(), selected_parts.begin(), selected_parts.end());
-        /*if (node.is_inside(selection_in_world)) {
-            result.push_back(&unit);
-        }*/
-
     }
 
     return result;
@@ -198,12 +195,11 @@ std::vector<Drawable_unit> Human_control::get_units_inside_selection_rect(Rect s
 
 Drawable_unit Human_control::get_unit_under_mouse() const
 {
-    for (core::Node node: renderingWidget->network) {
+    for (core::Node node: renderingWidget->network) {//test
         Drawable_unit pressed_part = node.get_part_under_point(mouse_state.world_pos);
         if (pressed_part.exists()) {
             return pressed_part;
         }
-
     }
     return Drawable_unit::get_empty();
 }

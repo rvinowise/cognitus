@@ -29,10 +29,14 @@ Hub::Hub()
 Hub::Hub(Node in_figure_node)
 {
     data = new Hub_data(in_figure_node);
+    render::Hub::create_data();
 }
 
 
 Hub::Hub(const Hub &other)
+#ifdef render_mode
+    :render::Hub(other)
+#endif
 {
     data = other.data;
     if (data) {
@@ -73,21 +77,24 @@ Hub &Hub::operator=(const Hub &other)
     if (data) {
         data->connect_a_handle();
     }
+#ifdef render_mode
+    render::Hub::Drawable_unit::data = other.render::Hub::Drawable_unit::data;
+#endif
     return *this;
 }
 
 std::size_t Hub::get_prev_links_qty() const
 {
-    return data->prev_bends.size();
+    return data->prev_hubs.size();
 }
 std::size_t Hub::get_next_links_qty() const
 {
-    return data->next_bends.size();
+    return data->next_hubs.size();
 }
 
 std::vector<Hub>& Hub::get_arr_next_hubs() const
 {
-    return data->next_bends;
+    return data->next_hubs;
 }
 
 
@@ -97,18 +104,18 @@ Node Hub::get_node_of_whole_figure()
 }
 
 bool Hub::is_this_last_bend_in_chain() const {
-    return data->next_bends.empty();
+    return data->next_hubs.empty();
 }
 
 Hub Hub::add_next_bend()
 {
-    data->next_bends.push_back(Hub());
-    return data->next_bends.back();
+    data->next_hubs.push_back(Hub());
+    return data->next_hubs.back();
 }
 
-void Hub::push_next_bend(Hub in_figure)
+void Hub::push_next_hub(Hub in_hub)
 {
-    data->next_bends.push_back(in_figure);
+    data->next_hubs.push_back(in_hub);
 }
 
 std::vector<Bend>& Hub::get_arr_free_bends()

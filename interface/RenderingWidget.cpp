@@ -11,8 +11,8 @@
 
 namespace render {
 
-const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
-//const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
+//const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
+const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
 //const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
 
 
@@ -239,9 +239,14 @@ void RenderingWidget::paintGL()
     projection_matrix = get_projection_according_to_observer_position(window_rect);
     projection_matrix.scale(window_scale);
 
+    int i=0;
     if (network.input.getNodesQty()) {
         for (core::Node node: network) {
             node.draw();
+
+            if (++i == 10) {
+                break;
+            }
         }
     }
 }

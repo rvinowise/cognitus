@@ -13,7 +13,7 @@ void Acquiring_handles::connect_a_handle()
 void Acquiring_handles::disconnect_a_handle()
 {
     handles_qty--;
-    if (handles_qty == 0) {
+    /*if (handles_qty == 0) {
         delete this;
-    }
+    }*/
 }

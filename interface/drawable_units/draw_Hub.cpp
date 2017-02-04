@@ -12,9 +12,21 @@ namespace render {
 
 
 
-Hub::Hub()
+Hub::Hub():
+    Drawable_unit()
 {
-
+}
+Hub::Hub(const Hub &other):
+    Drawable_unit(other)
+{
+}
+Hub::Hub(Hub &&other):
+    Drawable_unit(std::move(other))
+{
+}
+render::Hub Hub::operator=(const Hub &other)
+{
+    data = other.data;
 }
 
 
@@ -45,7 +57,7 @@ void Hub::draw_links_to_next_hubs() const
     std::vector<Vertex_point> vertices_of_links;
     Point attachment = this->position() + Point(get_radius()-1,0);
 
-    for (render::Hub next_hub: this->get_arr_next_hubs()) {
+    for (core::Hub next_hub: this->get_arr_next_hubs()) {
         vertices_of_links.push_back(Vertex_point(attachment));
         Point hub_attachment = next_hub.position() + Point(-next_hub.get_radius()+1,0);
         vertices_of_links.push_back(Vertex_point(hub_attachment));

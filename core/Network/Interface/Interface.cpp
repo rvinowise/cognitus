@@ -1,5 +1,7 @@
 #include "Interface.h"
 
+#include "core/test/Debug_inspector.h"
+
 
 namespace core {
 
@@ -56,7 +58,7 @@ void Interface::deallocate_all_connected_entities()
 InterfaceNode Interface::getNode(std::size_t index)
 {
     if (node.size() <= index) {
-        throw("Interface::getNode out of range");
+        throw_msg("Interface::getNode out of range");
     }
     return node[index];
 }

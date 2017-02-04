@@ -1,17 +1,18 @@
 #include "./Iterator_node_BFS.h"
 
+#include "core/Network/Network.h"
 #include "core/Network/Node/Hub/Hub.h"
 #include "core/Network/Node/Hub/Hub_data.h"
 
 namespace core {
 
-Network::iterator_node_BFS::iterator_node_BFS():
+iterator_node_BFS::iterator_node_BFS():
     node()
 {
 
 }
 
-Network::iterator_node_BFS::iterator_node_BFS(Network& network)
+iterator_node_BFS::iterator_node_BFS(Network& network)
 {
     for(Node node: network.input) {
         queue_node.push(node);
@@ -26,12 +27,12 @@ Network::iterator_node_BFS::iterator_node_BFS(Network& network)
 }
 
 
-Network::iterator_node_BFS::iterator_node_BFS(Node in_node)
+iterator_node_BFS::iterator_node_BFS(Node in_node)
 {
     continue_with_node(in_node);
 }
 
-void Network::iterator_node_BFS::continue_with_node(Node in_node) {
+void iterator_node_BFS::continue_with_node(Node in_node) {
     node = in_node;
     for(Bend bend: node.bends()) {
         for (Hub hub: bend.hubs()) {
@@ -41,13 +42,13 @@ void Network::iterator_node_BFS::continue_with_node(Node in_node) {
 }
 
 
-Network::iterator_node_BFS Network::iterator_node_BFS::operator++(int) {
+iterator_node_BFS iterator_node_BFS::operator++(int) {
     (*this)++;
 
 }
 
 
-Network::iterator_node_BFS& Network::iterator_node_BFS::operator++()
+iterator_node_BFS& iterator_node_BFS::operator++()
 {
     if (queue_node.size() > 0) {
         continue_with_node(queue_node.front());
@@ -60,7 +61,7 @@ Network::iterator_node_BFS& Network::iterator_node_BFS::operator++()
 
 }
 
-bool Network::iterator_node_BFS::is_end()
+bool iterator_node_BFS::is_end()
 {
     return node.is_empty();
 }

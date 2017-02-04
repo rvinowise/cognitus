@@ -3,15 +3,14 @@
 #include <iterator>
 #include <queue>
 
-#include "core/Network/Network.h"
 #include "core/Network/Node/Node.h"
 #include "core/Network/Node/Node_data.h"
 
 namespace core {
 
-//class Network;
+class Network;
 
-class Network::iterator_node_BFS
+class iterator_node_BFS
 {
 public:
     iterator_node_BFS();

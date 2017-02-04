@@ -11,6 +11,7 @@
 namespace core {
     class Bend;
     class Node;
+    class Hub;
 }
 namespace render {
 
@@ -33,6 +34,8 @@ friend class render::Node;
 friend class render::Bend;
 friend class render::Hub;
 friend class core::Node;
+friend class core::Bend;
+friend class core::Hub;
 public:
     Drawable_unit();
     Drawable_unit(const Drawable_unit& other);
@@ -44,8 +47,8 @@ public:
     bool operator=(const Drawable_unit& other);
 
     static Drawable_unit get_empty();
-    bool is_empty();
-    bool exists();
+    bool is_empty() const;
+    bool exists() const;
 
     void draw() const;
     void draw_link_to(const Drawable_unit& other) const;

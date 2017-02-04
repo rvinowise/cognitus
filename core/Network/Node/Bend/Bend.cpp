@@ -13,9 +13,9 @@ Bend_data::Bend_data(Node& masterNode)
 }
 
 
-Bend::Bend()
+Bend::Bend():
+    data{nullptr}
 {
-    data = nullptr;
 }
 
 Bend::Bend(Node& masterNode)

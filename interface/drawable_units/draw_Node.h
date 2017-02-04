@@ -23,7 +23,7 @@ public:
     Node();
     Node(const Node& other);
     Node(Node&& other);
-    operator=(const Node& other);
+    render::Node operator=(const Node& other);
 
     std::vector<Drawable_unit> get_parts_inside_rect(Rect rect);
     Drawable_unit get_part_under_point(Point point);

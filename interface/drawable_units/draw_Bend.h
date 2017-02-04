@@ -16,6 +16,9 @@ class Bend: public Drawable_unit
 {
 public:
     Bend();
+    Bend(const Bend& other);
+    Bend(Bend&& other);
+    render::Bend operator=(const Bend& other);
 
     void draw();
     void draw_links_to_next_bends();
