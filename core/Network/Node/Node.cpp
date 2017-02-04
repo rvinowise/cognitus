@@ -1,6 +1,8 @@
 #include "Node.h"
 #include "Node_data.h"
 
+#include <utility>
+
 #include "core/Network/Network.h"
 #include "core/Network/Node/Hub/Iterator/Iterator_BFS.h"
 
@@ -22,15 +24,11 @@ Node::Node():
 
 }
 
-Node::Node(Node_data& in_node_data)
-{
-    data = &in_node_data;
-    if (data) {
-        data->connect_a_handle();
-    }
-}
 
 Node::Node(const Node &other)
+#ifdef render_mode
+    :render::Node(other)
+#endif
 {
     data = other.data;
     if(data) {
@@ -40,7 +38,7 @@ Node::Node(const Node &other)
 
 Node::Node(Node &&other)
 #ifdef render_mode
-    :render::Drawable_unit(std::forward(other))
+    :render::Node(std::move(other))
 #endif
 {
     data = other.data;
@@ -57,6 +55,9 @@ Node::~Node()
 void Node::create_data()
 {
     data = new Node_data();
+#ifdef render_mode
+    render::Node::Drawable_unit::create_data();
+#endif
 }
 
 Node Node::new_empty()
@@ -79,6 +80,9 @@ void Node::deallocate_with_all_connected_entities_upward()
 
 Node& Node::operator=(const Node &other)
 {
+#ifdef render_mode
+    render::Node::data = other.render::Node::data;
+#endif
     data = other.data;
     return *this;
 }
@@ -183,6 +187,11 @@ std::vector<Hub>& Node::first_hubs()
     return data->hubs;
 }
 
+const std::vector<Hub>& Node::first_hubs() const
+{
+    return data->hubs;
+}
+
 Hub Node::add_hub()
 {
     data->hubs.push_back(Hub(*this));
@@ -194,13 +203,18 @@ std::vector<Bend>& Node::bends()
     return data->bends;
 }
 
-Node::iterator_BFS Node::begin()
+const std::vector<Bend>& Node::bends() const
 {
-    return iterator_BFS(*this);
+    return data->bends;
 }
-Node::iterator_BFS Node::end()
+
+iterator_hub_BFS Node::begin()
 {
-    return iterator_BFS();
+    return iterator_hub_BFS(*this);
+}
+iterator_hub_BFS Node::end()
+{
+    return iterator_hub_BFS();
 }
 
 #ifdef debug_mode

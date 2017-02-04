@@ -19,11 +19,6 @@ Hub_data::Hub_data(Node in_figure_node):
 
 }
 
-Hub_data::Hub_data(Node_data in_figure_node_data):
-    figure_node(in_figure_node_data), Acquiring_handles()
-{
-
-}
 
 
 Hub::Hub()
@@ -36,10 +31,6 @@ Hub::Hub(Node in_figure_node)
     data = new Hub_data(in_figure_node);
 }
 
-Hub::Hub(Node_data in_figure_node_data)
-{
-    data = new Hub_data(in_figure_node_data);
-}
 
 Hub::Hub(const Hub &other)
 {
@@ -94,7 +85,7 @@ std::size_t Hub::get_next_links_qty() const
     return data->next_bends.size();
 }
 
-std::vector<Hub>& Hub::get_arr_next_hubs()
+std::vector<Hub>& Hub::get_arr_next_hubs() const
 {
     return data->next_bends;
 }
@@ -151,7 +142,7 @@ std::vector<Hub> Hub::get_arr_not_linked_hubs(std::vector<Hub> hubs)
 bool Hub::lead_to(Hub other)
 {
     for (
-         Node::iterator_BFS iter(*this);
+         iterator_hub_BFS iter(*this);
          !iter.is_end();
          ++iter
          ) {

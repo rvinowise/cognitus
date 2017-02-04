@@ -93,3 +93,9 @@ void Debug_inspector::writeResume()
 
 
 }
+
+void throw_msg(const char *message)
+{
+    qDebug() << "exception: " << message;
+    throw(message);
+}

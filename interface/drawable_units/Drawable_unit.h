@@ -8,8 +8,15 @@
 #include "interface/coordinates_type.h"
 #include "interface/primitives/Vertex/Vertex.h"
 
-
+namespace core {
+    class Bend;
+    class Node;
+}
 namespace render {
+
+class Node;
+class Bend;
+class Hub;
 
 struct Drawable_unit_data
 {
@@ -22,11 +29,23 @@ public:
 class Drawable_unit//: protected QOpenGLFunctions
 {
 friend class RenderingWidget;
+friend class render::Node;
+friend class render::Bend;
+friend class render::Hub;
+friend class core::Node;
 public:
     Drawable_unit();
+    Drawable_unit(const Drawable_unit& other);
     Drawable_unit(Drawable_unit&& other);
     ~Drawable_unit();
     void create_data();
+
+    bool operator==(Drawable_unit other);
+    bool operator=(const Drawable_unit& other);
+
+    static Drawable_unit get_empty();
+    bool is_empty();
+    bool exists();
 
     void draw() const;
     void draw_link_to(const Drawable_unit& other) const;
@@ -39,10 +58,10 @@ public:
     void deselect();
     bool is_selected() const;
     Point& position();
+    Point position() const;
 
     virtual int get_radius() const;
     virtual QOpenGLTexture* get_texture() const;
-
 
 private:
     Drawable_unit_data* data;

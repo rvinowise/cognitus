@@ -5,13 +5,13 @@
 
 namespace core {
 
-Node::iterator_BFS::iterator_BFS():
+iterator_hub_BFS::iterator_hub_BFS():
     hub()
 {
 
 }
 
-Node::iterator_BFS::iterator_BFS(Node in_node)
+iterator_hub_BFS::iterator_hub_BFS(Node in_node)
 {
     for(Hub figure: in_node.first_hubs()) {
         queue_hub.push(figure);
@@ -23,12 +23,12 @@ Node::iterator_BFS::iterator_BFS(Node in_node)
 
 }
 
-Node::iterator_BFS::iterator_BFS(Hub in_figure_bend)
+iterator_hub_BFS::iterator_hub_BFS(Hub in_figure_bend)
 {
     continue_with_hub(in_figure_bend);
 }
 
-void Node::iterator_BFS::continue_with_hub(Hub in_figure) {
+void iterator_hub_BFS::continue_with_hub(Hub in_figure) {
     hub = in_figure;
     for(Hub next_figure: hub.get_arr_next_hubs()) {
         queue_hub.push(next_figure);
@@ -36,13 +36,13 @@ void Node::iterator_BFS::continue_with_hub(Hub in_figure) {
 }
 
 
-Node::iterator_BFS Node::iterator_BFS::operator++(int) {
+iterator_hub_BFS iterator_hub_BFS::operator++(int) {
     (*this)++;
 
 }
 
 
-Node::iterator_BFS& Node::iterator_BFS::operator++()
+iterator_hub_BFS& iterator_hub_BFS::operator++()
 {
     if (queue_hub.size() > 0) {
         continue_with_hub(queue_hub.front());
@@ -55,7 +55,7 @@ Node::iterator_BFS& Node::iterator_BFS::operator++()
 
 }
 
-bool Node::iterator_BFS::is_end()
+bool iterator_hub_BFS::is_end()
 {
     return hub.is_empty();
 }

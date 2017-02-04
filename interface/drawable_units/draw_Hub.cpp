@@ -3,6 +3,10 @@
 #include "interface/RenderingWidget.h"
 
 #include "draw_Node.h"
+#include "core/Network/Node/Hub/Hub.h"
+#include "core/test/Debug_inspector.h"
+
+
 namespace render {
 
 
@@ -28,17 +32,22 @@ Color Hub::get_links_to_next_hubs_color() const
     return Color::fromRgbF(0,0,0,0.5);
 }
 
+std::vector<core::Hub> &Hub::get_arr_next_hubs() const
+{
+    throw_msg("render::Hub::get_arr_next_hubs must call the function of core::Hub");
+}
+
 
 
 void Hub::draw_links_to_next_hubs() const
 {
 
     std::vector<Vertex_point> vertices_of_links;
-    Point attachment = this->position + Point(get_radius()-1,0);
+    Point attachment = this->position() + Point(get_radius()-1,0);
 
-    for (render::Hub* next_hub: this->get_arr_next_hubs()) {
+    for (render::Hub next_hub: this->get_arr_next_hubs()) {
         vertices_of_links.push_back(Vertex_point(attachment));
-        Point hub_attachment = next_hub->position + Point(-next_hub->get_radius()+1,0);
+        Point hub_attachment = next_hub.position() + Point(-next_hub.get_radius()+1,0);
         vertices_of_links.push_back(Vertex_point(hub_attachment));
     }
 

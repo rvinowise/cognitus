@@ -19,6 +19,10 @@ Drawable_unit::Drawable_unit():
     data{nullptr}
 {
 }
+Drawable_unit::Drawable_unit(const Drawable_unit &other)
+{
+    data = other.data;
+}
 Drawable_unit::Drawable_unit(Drawable_unit &&other)
 {
     data = other.data;
@@ -28,13 +32,38 @@ Drawable_unit::Drawable_unit(Drawable_unit &&other)
 Drawable_unit::~Drawable_unit()
 {
     if (data) {
-        delete data;
+        //handle disconnect
     }
 }
 
 void Drawable_unit::create_data()
 {
     data = new Drawable_unit_data();
+}
+
+bool Drawable_unit::operator==(Drawable_unit other)
+{
+    return data==other.data;
+}
+
+bool Drawable_unit::operator=(const Drawable_unit &other)
+{
+    data=other.data;
+}
+
+Drawable_unit Drawable_unit::get_empty()
+{
+    return Drawable_unit();
+}
+
+bool Drawable_unit::is_empty()
+{
+    return !data;
+}
+
+bool Drawable_unit::exists()
+{
+    return data;
 }
 
 
@@ -64,10 +93,10 @@ bool Drawable_unit::is_inside(Rect rect) const
     Point first = rect.topLeft();
     Point last = rect.bottomRight();
     if (
-            (first.x() < position.x()) &&
-            (first.y() < position.y()) &&
-            (last.x() > position.x()) &&
-            (last.y() > position.y())
+            (first.x() < position().x()) &&
+            (first.y() < position().y()) &&
+            (last.x() > position().x()) &&
+            (last.y() > position().y())
        )
     {
         return true;
@@ -77,7 +106,7 @@ bool Drawable_unit::is_inside(Rect rect) const
 
 bool Drawable_unit::has_inside(Point point) const
 {
-    if (poidis(position, point) < get_radius()) {
+    if (poidis(position(), point) < get_radius()) {
         return true;
     }
     return false;
@@ -100,6 +129,23 @@ bool Drawable_unit::is_selected() const
 Point &Drawable_unit::position()
 {
     return data->position;
+}
+
+Point Drawable_unit::position() const
+{
+    return data->position;
+}
+
+int Drawable_unit::get_radius() const
+{
+    throw("Drawable_unit::get_radius()");
+    return 0;
+}
+
+QOpenGLTexture *Drawable_unit::get_texture() const
+{
+    throw("Drawable_unit::get_texture()");
+    return nullptr;
 }
 
 void Drawable_unit::draw_lines(const std::vector<Vertex_point>& vertices, const Color& color) const

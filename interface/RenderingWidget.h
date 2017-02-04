@@ -7,7 +7,6 @@
 #include <string>
 #include <memory>
 
-#include "drawable_units/draw_Node.h"
 #include "interface/Human_control/Human_control.h"
 #include "interface/coordinates_type.h"
 
@@ -22,6 +21,7 @@ namespace render {
 class RenderingWidget: public QOpenGLWidget,
                         protected QOpenGLFunctions
 {
+    friend class Human_control;
 public:
     explicit RenderingWidget(core::Network &rendering_network, QWidget *parent = 0);
     //explicit RenderingWidget(RenderingWidget* other = 0);
@@ -29,7 +29,6 @@ public:
 
     void draw_unit_rect();
     void draw_lines(std::size_t qty);
-    void update_according_to_network();
 
     static const QString resource_path;
     QMatrix4x4 projection_matrix;

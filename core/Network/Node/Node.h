@@ -13,6 +13,7 @@ class Circuit;
 class Bend;
 class Hub;
 class Node_data;
+class iterator_hub_BFS;
 
 class Node
 #ifdef render_mode
@@ -20,12 +21,12 @@ class Node
 #endif
 {
 friend class InterfaceNode;
+friend class render::Node;
 public:
     Node();
-    Node(Node_data &in_node_data);
-    Node(Circuit inCircuit);
     Node(const Node& other);
     Node(Node&& other);
+    Node(Circuit inCircuit);
     ~Node();
     void create_data();
     static Node new_empty();
@@ -48,9 +49,9 @@ public:
 
     Hub add_hub();
 
-    class iterator_BFS;
-    iterator_BFS begin();
-    iterator_BFS end();
+
+    iterator_hub_BFS begin() override;
+    iterator_hub_BFS end() override;
     typedef Hub value_type;
 
 #ifdef debug_mode
@@ -60,7 +61,9 @@ public:
 #endif
 
    std::vector<core::Hub>& first_hubs();
+   const std::vector<Hub>& first_hubs()const;
    std::vector<core::Bend>& bends();
+   const std::vector<core::Bend>& bends()const;
 
 private:
    void add_new_bend_as_active();

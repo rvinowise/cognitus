@@ -207,7 +207,7 @@ const std::vector<Bend>& Bend::get_array_of_prev_bends() const
 {
     return data->prev_bends;
 }
-const std::vector<Bend>& Bend::get_array_of_next_bends() const
+std::vector<Bend> &Bend::get_array_of_next_bends()
 {
     return data->next_bends;
 }

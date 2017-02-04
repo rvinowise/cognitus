@@ -9,13 +9,13 @@
 
 namespace core {
 
-class Node::iterator_BFS// : public std::iterator<std::forward_iterator_tag, Figure_bend*>
+class iterator_hub_BFS// : public std::iterator<std::forward_iterator_tag, Figure_bend*>
 {
 public:
-    iterator_BFS();
-    iterator_BFS(Hub in_figure_bend);
-    iterator_BFS(Node in_node);
-    iterator_BFS(const iterator_BFS& other):
+    iterator_hub_BFS();
+    iterator_hub_BFS(Hub in_figure_bend);
+    iterator_hub_BFS(Node in_node);
+    iterator_hub_BFS(const iterator_hub_BFS& other):
         hub(other.hub), queue_hub(other.queue_hub)
     {
 
@@ -23,13 +23,13 @@ public:
     void continue_with_hub(Hub in_figure);
     bool is_end();
 
-    iterator_BFS& operator++();
-    iterator_BFS operator++(int);
+    iterator_hub_BFS& operator++();
+    iterator_hub_BFS operator++(int);
     Hub operator*() { return hub; }
     Hub operator->() { return hub; }
-    bool operator==(const iterator_BFS& other) { return hub == other.hub; }
-    bool operator!=(const iterator_BFS& other) { return hub != other.hub; }
-    iterator_BFS& operator=(const iterator_BFS& other) {
+    bool operator==(const iterator_hub_BFS& other) { return hub == other.hub; }
+    bool operator!=(const iterator_hub_BFS& other) { return hub != other.hub; }
+    iterator_hub_BFS& operator=(const iterator_hub_BFS& other) {
         hub = other.hub;
         queue_hub = other.queue_hub;
         return *this;

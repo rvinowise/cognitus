@@ -3,14 +3,17 @@
 #include <QtCore>
 #include <QMouseEvent>
 #include <QOpenGLFunctions>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLBuffer>
+#include <QOpenGLShaderProgram>
 #include <vector>
 
-#include "interface/drawable_units/Drawable_unit.h"
+//#include "interface/drawable_units/Drawable_unit.h"
 #include "interface/coordinates_type.h"
 
 namespace render {
 
-
+class Drawable_unit;
 
 struct Mouse_state
 {
@@ -56,13 +59,13 @@ public:
 
 
 private:
-    Drawable_unit* get_unit_under_mouse() const;
-    std::vector<Drawable_unit*> get_units_inside_selection_rect(Rect selection_in_world) const;
+    Drawable_unit get_unit_under_mouse() const;
+    std::vector<Drawable_unit> get_units_inside_selection_rect(Rect selection_in_world) const;
     Rect get_selection_rect_in_screen() const;
-    void mark_as_selected_only_theese(std::vector<Drawable_unit *> &units);
-    void select_only_this(Drawable_unit* unit);
+    void mark_as_selected_only_theese(std::vector<Drawable_unit> &units);
+    void select_only_this(Drawable_unit unit);
     void draw_selection_rect();
-    void move_units(std::vector<Drawable_unit *>& units, Point vector);
+    void move_units(std::vector<Drawable_unit> &units, Point vector);
 
     Mouse_state mouse_state;
     Selection_state selection_state;
@@ -70,7 +73,7 @@ private:
 
     Point selection_start;
 
-    std::vector<Drawable_unit*> selected_units;
+    std::vector<Drawable_unit> selected_units;
     //std::vector<Drawable_unit&> pressed_units;
 
 //protected:

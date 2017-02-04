@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "interface/drawable_units/Drawable_unit.h"
+#include "core/test/Debug_inspector.h"
 
 
 namespace core {
@@ -10,22 +11,23 @@ namespace core {
 
 namespace render {
 
-class Node;
 
 class Bend: public Drawable_unit
 {
 public:
     Bend();
 
-    void draw() const;
-    void draw_links_to_next_bends() const;
+    void draw();
+    void draw_links_to_next_bends();
     Color get_links_to_next_bends_color() const;
 
     int get_radius()const;
     QOpenGLTexture* get_texture()const;
 
+    virtual std::vector<core::Bend>& get_array_of_next_bends();
+
 private:
-    virtual const std::vector<core::Bend>& get_array_of_next_bends() const;
+
 };
 
 

@@ -3,10 +3,12 @@
 
 #include "interface/RenderingWidget.h"
 #include "core/Network/Network.h"
+#include "core/Network/Node/Iterator/Iterator_node_BFS.h"
 
 namespace render {
 
 using std::vector;
+
 
 void Mouse_state::set_position(Point in_position) {
     position = in_position;
@@ -76,8 +78,8 @@ void Human_control::mouse_left_press(QMouseEvent *event)
 {
     mouse_state.left = true;
 
-    Drawable_unit* pressed_unit = get_unit_under_mouse();
-    if (pressed_unit) {
+    Drawable_unit pressed_unit = get_unit_under_mouse();
+    if (pressed_unit.exists()) {
         if (
                 std::find(selected_units.begin(), selected_units.end(), pressed_unit)
                 !=
@@ -90,7 +92,7 @@ void Human_control::mouse_left_press(QMouseEvent *event)
         }
         current_action = moving_units;
     } else {
-        select_only_this(nullptr);
+        select_only_this(Drawable_unit::get_empty());
         current_action = selection_units;
         selection_start = event->pos();
         renderingWidget->update();
@@ -155,11 +157,11 @@ void Human_control::key_press(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_G:
-        renderingWidget->network.input.initNodes(3);
-        renderingWidget->network.input.getNode(0).generate_random_empty_figure(3);
+        renderingWidget->network.input.initNodes(1);
+        //renderingWidget->network.input.getNode(0).generate_random_empty_figure(3);
         break;
     }
-    renderingWidget->update_according_to_network();
+    renderingWidget->update();
 }
 
 
@@ -179,11 +181,11 @@ Rect Human_control::get_selection_rect_in_screen() const
 }
 
 
-std::vector<Drawable_unit *> Human_control::get_units_inside_selection_rect(Rect selection_in_world) const
+std::vector<Drawable_unit> Human_control::get_units_inside_selection_rect(Rect selection_in_world) const
 {
-    std::vector<Drawable_unit*> result;
-    for (Node& node: renderingWidget->units) {
-        vector<Drawable_unit*> selected_parts = node.get_parts_inside_rect(selection_in_world);
+    std::vector<Drawable_unit> result;
+    for (Node node: renderingWidget->network) {
+        vector<Drawable_unit> selected_parts = node.get_parts_inside_rect(selection_in_world);
         result.insert(result.end(), selected_parts.begin(), selected_parts.end());
         /*if (node.is_inside(selection_in_world)) {
             result.push_back(&unit);
@@ -194,36 +196,36 @@ std::vector<Drawable_unit *> Human_control::get_units_inside_selection_rect(Rect
     return result;
 }
 
-Drawable_unit* Human_control::get_unit_under_mouse() const
+Drawable_unit Human_control::get_unit_under_mouse() const
 {
-    for (Node& node: renderingWidget->units) {
-        Drawable_unit* pressed_part = node.get_part_under_point(mouse_state.world_pos);
-        if (pressed_part) {
+    for (core::Node node: renderingWidget->network) {
+        Drawable_unit pressed_part = node.get_part_under_point(mouse_state.world_pos);
+        if (pressed_part.exists()) {
             return pressed_part;
         }
 
     }
-    return nullptr;
+    return Drawable_unit::get_empty();
 }
 
-void Human_control::mark_as_selected_only_theese(vector<Drawable_unit*> &units)
+void Human_control::mark_as_selected_only_theese(vector<Drawable_unit> &units)
 {
-    for (auto& node: renderingWidget->units) {
+    for (core::Node node: renderingWidget->network) {
         node.deselect_all_parts();
     }
     for (auto unit: units) {
-        unit->select();
+        unit.select();
     }
 }
-void Human_control::select_only_this(Drawable_unit* unit_to_select)
+void Human_control::select_only_this(Drawable_unit unit_to_select)
 {
     selected_units.clear();
-    for (auto& node: renderingWidget->units) {
+    for (core::Node node: renderingWidget->network) {
         node.deselect_all_parts();
     }
-    if (unit_to_select) {
+    if (unit_to_select.exists()) {
         selected_units.push_back(unit_to_select);
-        unit_to_select->select();
+        unit_to_select.select();
     }
 }
 
@@ -256,10 +258,10 @@ void Human_control::draw_selection_rect()
     glDrawArrays(GL_LINE_LOOP, 0, 4);
 }
 
-void Human_control::move_units(std::vector<Drawable_unit *> &units, Point vector)
+void Human_control::move_units(std::vector<Drawable_unit> &units, Point vector)
 {
     for (auto unit: units) {
-        unit->position += vector;
+        unit.position() += vector;
     }
 }
 

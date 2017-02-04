@@ -53,5 +53,7 @@ extern Debug_inspector debug;
 #define VERIFY2(statement, description) \
 	debug.verify((statement), #statement, description, __FILE__, __LINE__);
 
+
 }
 
+void throw_msg(const char* message);

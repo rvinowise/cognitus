@@ -55,20 +55,6 @@ void RenderingWidget::draw_lines(std::size_t qty)
     glDrawArrays(GL_LINES, 0, qty);
 }
 
-void RenderingWidget::update_according_to_network()
-{
-    for (core::Node real_node: network) {
-        if (
-                real_node_to_index.count(real_node) == 0
-            ) {
-            add_node_corresponding_to(real_node);
-        }
-    }
-    for (Node& node: units) {
-        node.update_according_to_network();
-    }
-}
-
 
 
 void RenderingWidget::initializeGL()
@@ -144,7 +130,6 @@ void RenderingWidget::prepare_rendering_resources()
         new QOpenGLTexture(QImage(resource_path+"sprites/bend.png").mirrored()),
         new QOpenGLTexture(QImage(resource_path+"sprites/hub.png").mirrored())
     };
-    update_units_according_to_network();
 }
 
 void RenderingWidget::prepare_graphic_settings()
@@ -218,17 +203,6 @@ void RenderingWidget::initialize_units()
     }*/
 }
 
-void RenderingWidget::update_units_according_to_network()
-{
-    Point position(100,50);
-    Point offset(50,0);
-    for (auto input_node: network.input) {
-        units.push_back(render::Node(input_node));
-        units.back().position = position;
-        units.back().update_according_to_network();
-        position += offset;
-    }
-}
 
 
 QMatrix4x4 get_projection_according_to_window(const QRectF& screen_rect)
@@ -265,8 +239,10 @@ void RenderingWidget::paintGL()
     projection_matrix = get_projection_according_to_observer_position(window_rect);
     projection_matrix.scale(window_scale);
 
-    for (Node& node: network) {
-        drawable_node.draw();
+    if (network.input.getNodesQty()) {
+        for (core::Node node: network) {
+            node.draw();
+        }
     }
 }
 
