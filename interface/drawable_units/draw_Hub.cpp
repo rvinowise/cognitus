@@ -36,13 +36,13 @@ void Hub::draw_links_to_next_hubs() const
     std::vector<Vertex_point> vertices_of_links;
     Point attachment = this->position + Point(get_radius()-1,0);
 
-    for (render::Hub* next_hub: this->next_hubs) {
+    for (render::Hub* next_hub: this->get_arr_next_hubs()) {
         vertices_of_links.push_back(Vertex_point(attachment));
         Point hub_attachment = next_hub->position + Point(-next_hub->get_radius()+1,0);
         vertices_of_links.push_back(Vertex_point(hub_attachment));
     }
 
-    draw_link_lines(vertices_of_links, get_links_to_next_hubs_color());
+    draw_lines(vertices_of_links, get_links_to_next_hubs_color());
 
 }
 

@@ -13,6 +13,7 @@
 
 namespace core {
     class Network;
+    class Node;
 }
 
 namespace render {
@@ -29,7 +30,6 @@ public:
     void draw_unit_rect();
     void draw_lines(std::size_t qty);
     void update_according_to_network();
-    void add_node_corresponding_to(core::Node real_node);
 
     static const QString resource_path;
     QMatrix4x4 projection_matrix;

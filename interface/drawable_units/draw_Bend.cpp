@@ -36,12 +36,12 @@ void Bend::draw_links_to_next_bends() const
 
     std::vector<Vertex_point> vertices_of_links;
 
-    for (render::Bend* next_bend: this->next_bends) {
+    for (render::Bend* next_bend: this->get_array_of_next_bends()) {
         vertices_of_links.push_back(Vertex_point(position));
         vertices_of_links.push_back(Vertex_point(next_bend->position));
     }
 
-    draw_link_lines(vertices_of_links, get_links_to_next_bends_color());
+    draw_lines(vertices_of_links, get_links_to_next_bends_color());
 
 }
 

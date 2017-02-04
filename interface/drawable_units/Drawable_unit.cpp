@@ -8,24 +8,47 @@ namespace render {
 
 using namespace pos_functions;
 
-
-Drawable_unit::Drawable_unit():
+Drawable_unit_data::Drawable_unit_data():
     is_selected{false}
 {
 
 }
+
+
+Drawable_unit::Drawable_unit():
+    data{nullptr}
+{
+}
+Drawable_unit::Drawable_unit(Drawable_unit &&other)
+{
+    data = other.data;
+    other.data = nullptr;
+}
+
+Drawable_unit::~Drawable_unit()
+{
+    if (data) {
+        delete data;
+    }
+}
+
+void Drawable_unit::create_data()
+{
+    data = new Drawable_unit_data();
+}
+
 
 void Drawable_unit::draw() const
 {
     renderingWidget->vao_sprite_rect.bind();
 
     QMatrix4x4 matrix = renderingWidget->projection_matrix;
-    matrix.translate(QVector2D(position));
+    matrix.translate(QVector2D(position()));
     matrix.scale(get_radius()/RenderingWidget::sprite_etalon_radius);
 
     renderingWidget->shaders_sprite.bind();
     renderingWidget->shaders_sprite.setUniformValue("matrix", matrix);
-    renderingWidget->shaders_sprite.setUniformValue("is_selected", is_selected?1.0f:0.0f);
+    renderingWidget->shaders_sprite.setUniformValue("is_selected", is_selected()?1.0f:0.0f);
 
     get_texture()->bind();
     renderingWidget->draw_unit_rect();
@@ -62,14 +85,24 @@ bool Drawable_unit::has_inside(Point point) const
 
 void Drawable_unit::select()
 {
-    is_selected = true;
+    data->is_selected = true;
 }
 void Drawable_unit::deselect()
 {
-    is_selected = false;
+    data->is_selected = false;
 }
 
-void Drawable_unit::draw_link_lines(const std::vector<Vertex_point>& vertices, const Color& color) const
+bool Drawable_unit::is_selected() const
+{
+    return data->is_selected;
+}
+
+Point &Drawable_unit::position()
+{
+    return data->position;
+}
+
+void Drawable_unit::draw_lines(const std::vector<Vertex_point>& vertices, const Color& color) const
 {
     renderingWidget->vao_link_lines.bind();
     renderingWidget->link_lines_buffer.bind();
@@ -81,6 +114,8 @@ void Drawable_unit::draw_link_lines(const std::vector<Vertex_point>& vertices, c
     renderingWidget->shaders_link_lines.setUniformValue("color", color);
     renderingWidget->draw_lines(vertices.size());
 }
+
+
 
 
 }

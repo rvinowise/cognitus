@@ -4,6 +4,10 @@
 #include "interface/drawable_units/Drawable_unit.h"
 
 
+namespace core {
+    class Bend;
+}
+
 namespace render {
 
 class Node;
@@ -21,7 +25,7 @@ public:
     QOpenGLTexture* get_texture()const;
 
 private:
-
+    virtual const std::vector<core::Bend>& get_array_of_next_bends() const;
 };
 
 

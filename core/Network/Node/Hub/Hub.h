@@ -23,7 +23,7 @@ using std::size_t;
 
 class Hub: public Linked
 #ifdef render_mode
-        //,public render::Hub
+        ,public render::Hub
 #endif
 {
 public:
@@ -43,7 +43,7 @@ public:
     size_t get_next_links_qty() const;
     Hub get_next(size_t index);
     Hub get_prev(size_t index);
-    std::vector<Hub>& get_arr_next_figures();
+    std::vector<core::Hub>& get_arr_next_hubs();
 
     Node get_node_of_whole_figure();
     bool is_this_last_bend_in_chain() const;

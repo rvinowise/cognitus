@@ -94,7 +94,7 @@ std::size_t Hub::get_next_links_qty() const
     return data->next_bends.size();
 }
 
-std::vector<Hub>& Hub::get_arr_next_figures()
+std::vector<Hub>& Hub::get_arr_next_hubs()
 {
     return data->next_bends;
 }

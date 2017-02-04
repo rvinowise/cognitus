@@ -39,6 +39,9 @@ Node::Node(const Node &other)
 }
 
 Node::Node(Node &&other)
+#ifdef render_mode
+    :render::Drawable_unit(std::forward(other))
+#endif
 {
     data = other.data;
     other.data = nullptr;
@@ -175,7 +178,7 @@ void Node::append_bend(const Bend& bend)
     data->bends.push_back(bend);
 }
 
-std::vector<Hub>& Node::get_arr_hubs()
+std::vector<Hub>& Node::first_hubs()
 {
     return data->hubs;
 }

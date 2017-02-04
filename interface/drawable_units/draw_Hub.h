@@ -2,9 +2,11 @@
 
 #include <vector>
 #include "interface/drawable_units/Drawable_unit.h"
-#include "core/Network/Node/Hub/Hub.h"
-#include "interface/drawable_units/draw_Bend.h"
 #include "interface/drawable_units/draw_Hub.h"
+
+namespace core {
+    class Hub;
+}
 
 namespace render {
 
@@ -21,7 +23,8 @@ public:
     QOpenGLTexture* get_texture() const;
     Color get_links_to_next_hubs_color() const;
 
-//private:
+private:
+    virtual std::vector<core::Hub>& get_arr_next_hubs();
     void draw_links_to_next_hubs() const;
 
 };

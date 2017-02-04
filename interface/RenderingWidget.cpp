@@ -69,17 +69,6 @@ void RenderingWidget::update_according_to_network()
     }
 }
 
-void RenderingWidget::add_node_corresponding_to(core::Node real_node)
-{
-    units.push_back(render::Node(real_node));
-    real_node_to_index[real_node] = units.size()-1;
-    Node &node_in_margin = get_unit_in_margin(units);
-    if (units.size()==1) {
-        units.back().position = Point(50,50);
-    } else {
-        units.back().position = node_in_margin.position + Point(30,0);
-    }
-}
 
 
 void RenderingWidget::initializeGL()

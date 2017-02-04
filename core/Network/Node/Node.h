@@ -45,10 +45,8 @@ public:
     bool isLowest();
     Bend add_bend();
     void append_bend(const Bend& bend);
-    std::vector<Hub>& get_arr_hubs();
-    Hub add_hub();
 
-    std::vector<Bend> &bends();
+    Hub add_hub();
 
     class iterator_BFS;
     iterator_BFS begin();
@@ -61,13 +59,16 @@ public:
     void generate_random_empty_figure(std::size_t figure_size);
 #endif
 
-    //hub figure
-private:
-    Node_data* data;
+   std::vector<core::Hub>& first_hubs();
+   std::vector<core::Bend>& bends();
 
-    void add_new_bend_as_active();  
-    void carefully_preserve_initial_chain_because_of_its_context(
-            LineOfCircuit inLine, Hub first_chain_bend, Hub second_chain_bend);
+private:
+   void add_new_bend_as_active();
+   void carefully_preserve_initial_chain_because_of_its_context(
+           LineOfCircuit inLine, Hub first_chain_bend, Hub second_chain_bend);
+
+
+    Node_data* data; 
 };
 
 

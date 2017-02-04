@@ -44,8 +44,8 @@ public:
     Bend get_prev_bend(std::size_t index) const;
     Bend get_next_bend(std::size_t index) const;
 
-    const std::vector<Bend>& get_array_of_prev_bends() const;
-    const std::vector<Bend>& get_array_of_next_bends() const;
+    const std::vector<core::Bend>& get_array_of_prev_bends() const;
+    const std::vector<core::Bend>& get_array_of_next_bends() const;
 
     std::size_t get_higher_nodes_qty() const;
     Node get_higher_node(std::size_t index) const;

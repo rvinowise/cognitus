@@ -13,7 +13,7 @@ Node::iterator_BFS::iterator_BFS():
 
 Node::iterator_BFS::iterator_BFS(Node in_node)
 {
-    for(Hub figure: in_node.get_arr_hubs()) {
+    for(Hub figure: in_node.first_hubs()) {
         queue_hub.push(figure);
     }
     if (queue_hub.size()) {
@@ -30,7 +30,7 @@ Node::iterator_BFS::iterator_BFS(Hub in_figure_bend)
 
 void Node::iterator_BFS::continue_with_hub(Hub in_figure) {
     hub = in_figure;
-    for(Hub next_figure: hub.get_arr_next_figures()) {
+    for(Hub next_figure: hub.get_arr_next_hubs()) {
         queue_hub.push(next_figure);
     }
 }
