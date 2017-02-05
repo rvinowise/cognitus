@@ -69,12 +69,12 @@ void Input::check_network_validity()
     const std::vector<Bend>* bendsOfIteration = &lastAddedBends.bend;
     for (size_t i_iter = qtyIterations-1; i_iter > 0; i_iter--) {
         if (inputHistory[i_iter].count() > 0) {
-            debug.profiler.startTimer("check_network_validity iteration");
+            debug.profiler.start("check_network_validity iteration");
             debug.message(boost::format("master:: check iteration %1%")%i_iter);
             check_if_all_bends_of_input_iteration_have_the_same_previous_bends(*bendsOfIteration);
             compare_inputted_array_with_nodes_in_network(inputHistory[i_iter], *bendsOfIteration);
             bendsOfIteration = &get_bends_of_previous_input_iteration(*bendsOfIteration);
-            debug.profiler.stopTimer("check_network_validity iteration");
+            debug.profiler.stop("check_network_validity iteration");
         }
     }
 }

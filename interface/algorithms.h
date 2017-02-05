@@ -50,3 +50,11 @@ Unit& get_unit_in_margin(Cont& container)
     }
     return *unit_in_margin;
 }
+
+
+template <typename Cont,
+          typename Item>
+bool contains(const Cont& container, const Item& item)
+{
+    return std::find(container.begin(), container.end(), item) != container.end();
+}

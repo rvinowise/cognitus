@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+//#include <>
 
 #include "core/Network/Link/Linked.h"
 
@@ -26,6 +27,7 @@ class Hub: public Linked
         ,public render::Hub
 #endif
 {
+friend struct std::hash<core::Hub>;
 public:
     Hub();
     Hub(Node in_figure_node);
@@ -52,7 +54,8 @@ public:
 
 #ifdef debug_mode
     void letdown_new_bends_to_node(size_t qty, Node node);
-    std::vector<Hub> get_arr_not_linked_hubs(std::vector<Hub> hubs);
+    std::vector<Hub> get_hubs_leading_to_this();
+    std::vector<Hub> get_hubs_possible_for_linking(std::vector<Hub> hubs);
     bool lead_to(Hub other);
 #endif
 
@@ -64,4 +67,16 @@ private:
 };
 
 
+}
+
+namespace std {
+  template <> struct hash<core::Hub>
+  {
+    size_t operator()(const core::Hub& hub) const
+    {
+      return hash<std::size_t>()(
+                  reinterpret_cast<std::size_t>(hub.data)
+                  );
+    }
+  };
 }

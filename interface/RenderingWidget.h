@@ -62,7 +62,6 @@ protected:
     void keyPressEvent(QKeyEvent*event) Q_DECL_OVERRIDE;
 
 private:
-    void initialize_units();
     void update_units_according_to_network();
     void prepare_rendering_resources();
     void prepare_graphic_settings();

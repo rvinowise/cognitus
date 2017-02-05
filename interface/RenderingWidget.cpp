@@ -11,8 +11,8 @@
 
 namespace render {
 
-//const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
-const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
+const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
+//const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
 //const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
 
 
@@ -190,18 +190,6 @@ void RenderingWidget::keyPressEvent(QKeyEvent *event)
     human_control.key_press(event);
 }
 
-void RenderingWidget::initialize_units()
-{
-    /*Point position(100,50);
-    Point offset(50,0);
-    for (auto input_node: network.input) {
-        units.push_back(Drawable_unit());
-        units.back().texture = textures[0];
-        units.back().position = position;
-        //units.back().radius =
-        position += offset;
-    }*/
-}
 
 
 

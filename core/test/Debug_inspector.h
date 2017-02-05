@@ -14,6 +14,7 @@ enum Debug_index {NONE, ALL, BAD_WAIT};
 class Debug_inspector
 {
 public:
+    ~Debug_inspector();
 
     const Debug_index debug_index = ALL;
 
@@ -30,7 +31,7 @@ public:
     void verify(bool statement, const char *statementStr, const char *description,
                 const char *file, unsigned int line);
 
-    void writeResume();
+    void write_resume();
 
     Speed_profiler profiler;
 

@@ -10,6 +10,8 @@
 #include "interface/algorithms.h"
 #include "core/test/Debug_inspector.h"
 
+#include "core/test/randomFunc.h" //test
+
 namespace render {
 
 using std::vector;
@@ -123,6 +125,15 @@ iterator_hub_BFS Node::begin()
 iterator_hub_BFS Node::end()
 {
     throw_msg("render::Node::end must call the function of core::Node");
+}
+
+void Node::dispose_hubs_into_positions()
+{
+    std::for_each(begin(), end(),
+                  [this](core::Hub hub){
+        hub.position() = position() +
+                Point(test::random(200), test::random(200));
+    });
 }
 
 

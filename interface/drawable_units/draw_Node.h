@@ -40,6 +40,8 @@ public:
     virtual core::iterator_hub_BFS begin();
     virtual core::iterator_hub_BFS end();
     typedef Hub value_type;
+
+    void dispose_hubs_into_positions();
 private:
 
     render::Bend& get_bend_in_margin();

@@ -22,6 +22,7 @@ class Node
 {
 friend class InterfaceNode;
 friend class render::Node;
+friend struct std::hash<core::Node>;
 public:
     Node();
     Node(const Node& other);
@@ -29,7 +30,7 @@ public:
     Node(Circuit inCircuit);
     ~Node();
     void create_data();
-    static Node new_empty();
+    static Node get_empty();
     bool is_empty()const;
 
     void deallocate_with_all_connected_entities_upward();
@@ -75,4 +76,16 @@ private:
 };
 
 
+}
+
+namespace std {
+  template <> struct hash<core::Node>
+  {
+    size_t operator()(const core::Node& node) const
+    {
+      return hash<std::size_t>()(
+                  reinterpret_cast<std::size_t>(node.data)
+                  );
+    }
+  };
 }

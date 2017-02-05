@@ -60,7 +60,7 @@ void Node::create_data()
 #endif
 }
 
-Node Node::new_empty()
+Node Node::get_empty()
 {
     Node node;
     return node;
@@ -242,14 +242,18 @@ bool Node::is_progeny_of(Node node)
 
 void Node::generate_random_empty_figure(std::size_t figure_size)
 {
-
+    unsigned int figure_wideness = 3;
     std::vector<Hub> hubs(figure_size);
     for (size_t i_hub=0; i_hub<figure_size; i_hub++) {
         hubs[i_hub] = Hub(*this);
     }
+    for (size_t i_hub=0; i_hub<figure_wideness; i_hub++) {
+        this->first_hubs().push_back(hubs[i_hub]);
+    }
+
     for (Hub hub: hubs) {
         std::vector<Hub> potential_next_hubs=
-                hub.get_arr_not_linked_hubs(hubs);
+                hub.get_hubs_possible_for_linking(hubs);
         unsigned int figure_picking_step = potential_next_hubs.size()-2;
         for (
              size_t i_potential_next = 0;
@@ -259,9 +263,6 @@ void Node::generate_random_empty_figure(std::size_t figure_size)
             hub.push_next_hub(potential_next_hubs[i_potential_next]);
         }
     }
-    this->first_hubs().push_back(hubs[0]);
-    this->first_hubs().push_back(hubs[1]);
-    this->first_hubs().push_back(hubs[2]);
 }
 #endif
 

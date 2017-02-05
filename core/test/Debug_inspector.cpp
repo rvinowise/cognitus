@@ -7,6 +7,11 @@ namespace test {
 
 Debug_inspector debug;
 
+Debug_inspector::~Debug_inspector()
+{
+    write_resume();
+}
+
 void Debug_inspector::message(const std::string& _message)
 {
     message(ALL, _message.c_str());
@@ -73,7 +78,7 @@ void Debug_inspector::verify(bool statement, const char *statementStr, const cha
 }
 
 
-void Debug_inspector::writeResume()
+void Debug_inspector::write_resume()
 {
     message("\nRESUME: ");
     if (errors.size() > 0) {

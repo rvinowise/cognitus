@@ -60,12 +60,14 @@ public:
 
 private:
     Drawable_unit get_unit_under_mouse() const;
+    core::Node get_node_under_mouse() const;
     std::vector<Drawable_unit> get_units_inside_selection_rect(Rect selection_in_world) const;
     Rect get_selection_rect_in_screen() const;
     void mark_as_selected_only_theese(std::vector<Drawable_unit> &units);
     void select_only_this(Drawable_unit unit);
     void draw_selection_rect();
     void move_units(std::vector<Drawable_unit> &units, Point vector);
+    void fire_selected_input_nodes();
 
     Mouse_state mouse_state;
     Selection_state selection_state;

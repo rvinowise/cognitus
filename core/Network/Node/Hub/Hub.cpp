@@ -4,6 +4,7 @@
 
 #include "core/Network/Node/Node_data.h"
 #include "core/Network/Node/Hub/Iterator/Iterator_BFS.h"
+#include "interface/algorithms.h"
 
 namespace core {
 
@@ -109,13 +110,17 @@ bool Hub::is_this_last_bend_in_chain() const {
 
 Hub Hub::add_next_bend()
 {
-    data->next_hubs.push_back(Hub());
-    return data->next_hubs.back();
+    Hub hub;
+    hub.create_data();
+    data->next_hubs.push_back(hub);
+    hub.data->prev_hubs.push_back(*this);
+    return hub;
 }
 
 void Hub::push_next_hub(Hub in_hub)
 {
     data->next_hubs.push_back(in_hub);
+    in_hub.data->prev_hubs.push_back(*this);
 }
 
 std::vector<Bend>& Hub::get_arr_free_bends()
@@ -131,14 +136,38 @@ void Hub::letdown_new_bends_to_node(std::size_t qty, Node node)
     }
 }
 
-std::vector<Hub> Hub::get_arr_not_linked_hubs(std::vector<Hub> hubs)
+std::vector<Hub> Hub::get_hubs_leading_to_this()
 {
     std::vector<Hub> result;
+    Node node = get_node_of_whole_figure();
+    for (Hub hub: node) {
+        if (hub.lead_to(*this)) {
+            result.push_back(hub);
+        }
+    }
+    return result;
+}
+
+std::vector<Hub> Hub::get_hubs_possible_for_linking(std::vector<Hub> hubs)
+{
+    std::vector<Hub> result;
+    std::vector<Hub> hubs_leading_to_this;
+    hubs_leading_to_this = this->get_hubs_leading_to_this();
+
     for (Hub hub: hubs) {
+        bool must_be_superfluous_link = false;
+        for (Hub prev_hub: hubs_leading_to_this) {
+            if (prev_hub.lead_to(hub)) {
+                must_be_superfluous_link = true;
+            }
+        }
+
         if (
+                (!must_be_superfluous_link)&&
                 (hub!=(*this))&&
                 (!hub.lead_to(*this))&&
-                (!this->lead_to(hub))
+                (!this->lead_to(hub))&&
+                (!contains(get_node_of_whole_figure().first_hubs(), hub))
             ) {
             result.push_back(hub);
         }

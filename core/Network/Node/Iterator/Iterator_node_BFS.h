@@ -2,6 +2,7 @@
 
 #include <iterator>
 #include <queue>
+#include <unordered_set>
 
 #include "core/Network/Node/Node.h"
 #include "core/Network/Node/Node_data.h"
@@ -37,8 +38,11 @@ public:
     }
 
 private:
+    void enqueue_for_iteration(Node in_node);
+
     Node node;
     std::queue<Node> queue_node;
+    std::unordered_set<Node> ordered_nodes;
 };
 
 

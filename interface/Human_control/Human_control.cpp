@@ -4,10 +4,20 @@
 #include "interface/RenderingWidget.h"
 #include "core/Network/Network.h"
 #include "core/Network/Node/Iterator/Iterator_node_BFS.h"
+#include "interface/algorithms.h"
+
+//test
+#ifdef debug_mode
+#include "core/Network/Node/Hub/Iterator/Iterator_BFS.h"
+#include "core/test/randomFunc.h"
+#include "core/test/Debug_inspector.h"
+using namespace test;
+#endif
 
 namespace render {
 
 using std::vector;
+using network = renderingWidget->network;
 
 
 void Mouse_state::set_position(Point in_position) {
@@ -67,7 +77,7 @@ void Human_control::mouse_press(QMouseEvent *event)
     if (event->button()==Qt::LeftButton) {
         mouse_left_press(event);
     } else if (event->button()==Qt::RightButton) {
-        mouse_state.right = true;
+        mouse_right_press(event);
     } else if (event->button()==Qt::MiddleButton) {
         mouse_state.middle = true;
         current_action = move_screen;
@@ -81,11 +91,7 @@ void Human_control::mouse_left_press(QMouseEvent *event)
     Drawable_unit pressed_unit = get_unit_under_mouse();
 
     if (pressed_unit.exists()) {
-        if (
-                std::find(selected_units.begin(), selected_units.end(), pressed_unit)
-                !=
-                selected_units.end()
-            ) {
+        if (contains(selected_units, pressed_unit)) {
 
         } else {
             select_only_this(pressed_unit);
@@ -97,6 +103,19 @@ void Human_control::mouse_left_press(QMouseEvent *event)
         current_action = selection_units;
         selection_start = event->pos();
         renderingWidget->update();
+    }
+}
+
+void Human_control::mouse_right_press(QMouseEvent *event)
+{
+    mouse_state.right = true;
+
+    core::Node pressed_node = get_node_under_mouse();
+    std::size_t input_index = dynamic_cast<core::InterfaceNode>(pressed_node);
+
+    if (!pressed_node.is_empty()) {
+        network.input.begin_setting_input_from_outside();
+        pressed_node.fire();
     }
 }
 
@@ -154,15 +173,40 @@ void Human_control::mouse_wheel(QWheelEvent *event)
     renderingWidget->update();
 }
 
+
 void Human_control::key_press(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_G:
-        renderingWidget->network.input.initNodes(1);
-        renderingWidget->network.input.getNode(0).generate_random_empty_figure(3);
+        renderingWidget->network.input.initNodes(100);
+        auto& input = renderingWidget->network.input;
+
+        std::for_each(input.begin(), input.end(), [](core::Node node){
+            debug.profiler.start("create units");
+            node.generate_random_empty_figure(30);
+            debug.profiler.stop("create units");
+
+        });
+
+        std::for_each(input.begin(), input.end(), [](core::Node node){
+            debug.profiler.start("dispose units");
+            node.dispose_hubs_into_positions();
+            debug.profiler.stop("dispose units");
+        });
+
+        break;
+    case Qt::Key_F:
+        fire_selected_input_nodes();
         break;
     }
+
     renderingWidget->update();
+    debug.write_resume();
+}
+
+void Human_control::fire_selected_input_nodes()
+{
+    network.input.prepare_wire_for_input(i_input);
 }
 
 
@@ -195,13 +239,22 @@ std::vector<Drawable_unit> Human_control::get_units_inside_selection_rect(Rect s
 
 Drawable_unit Human_control::get_unit_under_mouse() const
 {
-    for (core::Node node: renderingWidget->network) {//test
+    for (core::Node node: renderingWidget->network) {
         Drawable_unit pressed_part = node.get_part_under_point(mouse_state.world_pos);
         if (pressed_part.exists()) {
             return pressed_part;
         }
     }
     return Drawable_unit::get_empty();
+}
+core::Node Human_control::get_node_under_mouse() const
+{
+    for (core::Node node: renderingWidget->network) {
+        if (node.has_inside(mouse_state.world_pos)) {
+            return node;
+        }
+    }
+    return core::Node::get_empty();
 }
 
 void Human_control::mark_as_selected_only_theese(vector<Drawable_unit> &units)
@@ -260,6 +313,8 @@ void Human_control::move_units(std::vector<Drawable_unit> &units, Point vector)
         unit.position() += vector;
     }
 }
+
+
 
 
 

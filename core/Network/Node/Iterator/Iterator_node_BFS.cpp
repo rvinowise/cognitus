@@ -15,10 +15,10 @@ iterator_node_BFS::iterator_node_BFS():
 iterator_node_BFS::iterator_node_BFS(Network& network)
 {
     for(Node node: network.input) {
-        queue_node.push(node);
+        enqueue_for_iteration(node);
     }
     for(Node node: network.output) {
-        queue_node.push(node);
+        enqueue_for_iteration(node);
     }
     if (queue_node.size()) {
         continue_with_node(queue_node.front());
@@ -36,7 +36,7 @@ void iterator_node_BFS::continue_with_node(Node in_node) {
     node = in_node;
     for(Bend bend: node.bends()) {
         for (Hub hub: bend.hubs()) {
-            queue_node.push(hub.get_node_of_whole_figure());
+            enqueue_for_iteration(hub.get_node_of_whole_figure());
         }
     }
 }
@@ -47,6 +47,12 @@ iterator_node_BFS iterator_node_BFS::operator++(int) {
 
 }
 
+void iterator_node_BFS::enqueue_for_iteration(Node in_node)
+{
+    queue_node.push(in_node);
+    ordered_nodes.emplace(in_node);
+}
+
 
 iterator_node_BFS& iterator_node_BFS::operator++()
 {
@@ -54,7 +60,7 @@ iterator_node_BFS& iterator_node_BFS::operator++()
         continue_with_node(queue_node.front());
         queue_node.pop();
     } else {
-        node = Node::new_empty();
+        node = Node::get_empty();
     }
 
     return *this;

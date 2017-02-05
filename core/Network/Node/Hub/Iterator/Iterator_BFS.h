@@ -2,10 +2,10 @@
 
 #include <iterator>
 #include <queue>
+#include <unordered_set>
 
 #include "core/Network/Node/Node.h"
 #include "core/Network/Node/Hub/Hub.h"
-#include "core/Network/Node/Hub/Hub_data.h"
 
 namespace core {
 
@@ -20,7 +20,7 @@ public:
     {
 
     }
-    void continue_with_hub(Hub in_figure);
+    void continue_with_hub(Hub in_hub);
     bool is_end();
 
     iterator_hub_BFS& operator++();
@@ -36,8 +36,11 @@ public:
     }
 
 private:
-    Hub hub;
+    void enqueue_for_iteration(Hub in_hub);
+
+    core::Hub hub;
     std::queue<Hub> queue_hub;
+    std::unordered_set<Hub> ordered_hubs;
 };
 
 
