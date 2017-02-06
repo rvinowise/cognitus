@@ -17,7 +17,6 @@ public:
     Hub();
     Hub(const Hub& other);
     Hub(Hub&& other);
-    render::Hub operator=(const Hub& other);
 
     void draw() const;
 
@@ -25,7 +24,7 @@ public:
     QOpenGLTexture* get_texture() const;
     Color get_links_to_next_hubs_color() const;
 
-    virtual std::vector<core::Hub>& get_arr_next_hubs() const;
+    virtual std::vector<core::Hub>& get_arr_next_hubs() const = 0;
 
 private:
 

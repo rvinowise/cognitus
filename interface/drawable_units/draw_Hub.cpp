@@ -24,10 +24,6 @@ Hub::Hub(Hub &&other):
     Drawable_unit(std::move(other))
 {
 }
-render::Hub Hub::operator=(const Hub &other)
-{
-    data = other.data;
-}
 
 
 int Hub::get_radius()const
@@ -43,12 +39,6 @@ Color Hub::get_links_to_next_hubs_color() const
 {
     return Color::fromRgbF(0,0,0,0.5);
 }
-
-std::vector<core::Hub> &Hub::get_arr_next_hubs() const
-{
-    throw_msg("render::Hub::get_arr_next_hubs must call the function of core::Hub");
-}
-
 
 
 void Hub::draw_links_to_next_hubs() const

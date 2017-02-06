@@ -43,7 +43,7 @@ public:
     ~Drawable_unit();
     void create_data();
 
-    bool operator==(Drawable_unit other);
+    bool operator==(const Drawable_unit& other)const;
     bool operator=(const Drawable_unit& other);
 
     static Drawable_unit get_empty();

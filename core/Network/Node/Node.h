@@ -55,16 +55,16 @@ public:
     iterator_hub_BFS end() override;
     typedef Hub value_type;
 
-#ifdef debug_mode
-    bool has_it_as_progeny(Node node);
-    bool is_progeny_of(Node node);
-    void generate_random_empty_figure(std::size_t figure_size);
-#endif
+    std::vector<core::Hub>& first_hubs();
+    const std::vector<Hub>& first_hubs()const;
+    std::vector<core::Bend>& bends();
+    const std::vector<core::Bend>& bends()const;
 
-   std::vector<core::Hub>& first_hubs();
-   const std::vector<Hub>& first_hubs()const;
-   std::vector<core::Bend>& bends();
-   const std::vector<core::Bend>& bends()const;
+#ifdef debug_mode
+   bool has_it_as_progeny(Node node);
+   bool is_progeny_of(Node node);
+   void generate_random_empty_figure(std::size_t figure_size);
+#endif
 
 private:
    void add_new_bend_as_active();

@@ -31,10 +31,6 @@ Node::Node(Node &&other):
 {
 }
 
-render::Node Node::operator=(const Node &other)
-{
-    data = other.data;
-}
 
 
 int Node::get_radius()const
@@ -55,12 +51,12 @@ vector<Drawable_unit> Node::get_parts_inside_rect(Rect rect)
     if (is_inside(rect)) {
         result.push_back(*this);
     }
-    for (Bend bend: bends()) {
+    for (core::Bend bend: bends()) {
         if (bend.is_inside(rect)) {
             result.push_back(bend);
         }
     }
-    for (Hub hub: *this) {
+    for (core::Hub hub: *this) {
         if (hub.is_inside(rect)) {
             result.push_back(hub);
         }
@@ -73,12 +69,12 @@ Drawable_unit Node::get_part_under_point(Point point)
     if (has_inside(point)) {
         return *this;
     }
-    for (Bend bend: bends()) {
+    for (core::Bend bend: bends()) {
         if (bend.has_inside(point)) {
             return bend;
         }
     }
-    for (Hub hub: *this) {
+    for (core::Hub hub: *this) {
         if (hub.has_inside(point)) {
             return hub;
         }
@@ -89,10 +85,10 @@ Drawable_unit Node::get_part_under_point(Point point)
 void Node::deselect_all_parts()
 {
     deselect();
-    for (Bend bend: bends()) {
+    for (core::Bend bend: bends()) {
         bend.deselect();
     }
-    for (Hub hub: *this) {
+    for (core::Hub hub: *this) {
         hub.deselect();
     }
 }
@@ -105,26 +101,6 @@ void Node::draw()
 
     draw_links_to_first_hubs();
     draw_links_to_bends();
-}
-
-const std::vector<core::Bend> &Node::bends() const
-{
-    throw_msg("render::Node::bends must call the function of core::Node");
-}
-
-const std::vector<core::Hub> &Node::first_hubs() const
-{
-    throw_msg("render::first_hubs::ends must call the function of core::Node");
-}
-
-iterator_hub_BFS Node::begin()
-{
-    throw_msg("render::Node::begin must call the function of core::Node");
-}
-
-iterator_hub_BFS Node::end()
-{
-    throw_msg("render::Node::end must call the function of core::Node");
 }
 
 void Node::dispose_hubs_into_positions()
@@ -142,7 +118,7 @@ void Node::draw_links_to_bends() const
 {
     std::vector<Vertex_point> vertices_of_links;
     Point attachment = this->position() + Point(0,-get_radius()+1);
-    for (Bend bend: bends()) {
+    for (core::Bend bend: bends()) {
         vertices_of_links.push_back(Vertex_point(attachment));
         vertices_of_links.push_back(Vertex_point(bend.position()));
     }
@@ -156,7 +132,7 @@ void Node::draw_links_to_first_hubs() const
     std::vector<Vertex_point> vertices_of_links;
     Point attachment = this->position() + Point(0,get_radius()-1);
 
-    for (Hub hub: first_hubs()) {
+    for (core::Hub hub: first_hubs()) {
         vertices_of_links.push_back(Vertex_point(attachment));
         Point hub_attachment = hub.position() + Point(0,-hub.get_radius()+1);
         vertices_of_links.push_back(Vertex_point(hub_attachment));

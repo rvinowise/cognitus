@@ -17,7 +17,6 @@ using namespace test;
 namespace render {
 
 using std::vector;
-using network = renderingWidget->network;
 
 
 void Mouse_state::set_position(Point in_position) {
@@ -25,7 +24,7 @@ void Mouse_state::set_position(Point in_position) {
     world_pos = (in_position - renderingWidget->window_rect.topLeft())
             / renderingWidget->window_scale;
 }
-void Selection_state::set_screen_rect(Rect in_rect)
+void Selection::set_screen_rect(Rect in_rect)
 {
     screen_rect = in_rect;
     world_rect.setTopLeft(
@@ -46,8 +45,9 @@ void Selection_state::set_screen_rect(Rect in_rect)
 
 }
 
-Human_control::Human_control():
-    selection_vertices(QOpenGLBuffer::VertexBuffer)
+Human_control::Human_control(/*core::Network in_network*/):
+    selection_vertices(QOpenGLBuffer::VertexBuffer)//,
+    //network{in_network}
 {
 
 }
@@ -91,7 +91,7 @@ void Human_control::mouse_left_press(QMouseEvent *event)
     Drawable_unit pressed_unit = get_unit_under_mouse();
 
     if (pressed_unit.exists()) {
-        if (contains(selected_units, pressed_unit)) {
+        if (contains(selection.units, pressed_unit)) {
 
         } else {
             select_only_this(pressed_unit);
@@ -108,15 +108,7 @@ void Human_control::mouse_left_press(QMouseEvent *event)
 
 void Human_control::mouse_right_press(QMouseEvent *event)
 {
-    mouse_state.right = true;
 
-    core::Node pressed_node = get_node_under_mouse();
-    std::size_t input_index = dynamic_cast<core::InterfaceNode>(pressed_node);
-
-    if (!pressed_node.is_empty()) {
-        network.input.begin_setting_input_from_outside();
-        pressed_node.fire();
-    }
 }
 
 void Human_control::mouse_move(QMouseEvent *event)
@@ -126,12 +118,12 @@ void Human_control::mouse_move(QMouseEvent *event)
 
     if (current_action == selection_units) {
 
-        selection_state.set_screen_rect(get_selection_rect_in_screen());
-        selected_units = get_units_inside_selection_rect(selection_state.world_rect);
-        mark_as_selected_only_theese(selected_units);
+        selection.set_screen_rect(get_selection_rect_in_screen());
+        selection.units = get_units_inside_selection_rect(selection.world_rect);
+        mark_as_selected_only_theese(selection.units);
         renderingWidget->update();
     } else if (current_action == Action::moving_units) {
-        move_units(selected_units, world_position_delta);
+        move_units(selection.units, world_position_delta);
         renderingWidget->update();
     } else if (current_action == move_screen) {
         Rect& rect = renderingWidget->window_rect;
@@ -177,7 +169,7 @@ void Human_control::mouse_wheel(QWheelEvent *event)
 void Human_control::key_press(QKeyEvent *event)
 {
     switch (event->key()) {
-    case Qt::Key_G:
+    case Qt::Key_G: {
         renderingWidget->network.input.initNodes(100);
         auto& input = renderingWidget->network.input;
 
@@ -192,7 +184,7 @@ void Human_control::key_press(QKeyEvent *event)
             debug.profiler.start("dispose units");
             node.dispose_hubs_into_positions();
             debug.profiler.stop("dispose units");
-        });
+        });}
 
         break;
     case Qt::Key_F:
@@ -206,7 +198,9 @@ void Human_control::key_press(QKeyEvent *event)
 
 void Human_control::fire_selected_input_nodes()
 {
-    network.input.prepare_wire_for_input(i_input);
+    /*network.input.begin_setting_input_from_outside();
+    network.input.prepare_wire_for_input(0);
+    network.input.end_setting_input_from_outside();*/
 }
 
 
@@ -247,15 +241,6 @@ Drawable_unit Human_control::get_unit_under_mouse() const
     }
     return Drawable_unit::get_empty();
 }
-core::Node Human_control::get_node_under_mouse() const
-{
-    for (core::Node node: renderingWidget->network) {
-        if (node.has_inside(mouse_state.world_pos)) {
-            return node;
-        }
-    }
-    return core::Node::get_empty();
-}
 
 void Human_control::mark_as_selected_only_theese(vector<Drawable_unit> &units)
 {
@@ -268,12 +253,12 @@ void Human_control::mark_as_selected_only_theese(vector<Drawable_unit> &units)
 }
 void Human_control::select_only_this(Drawable_unit unit_to_select)
 {
-    selected_units.clear();
+    selection.units.clear();
     for (core::Node node: renderingWidget->network) {
         node.deselect_all_parts();
     }
     if (unit_to_select.exists()) {
-        selected_units.push_back(unit_to_select);
+        selection.units.push_back(unit_to_select);
         unit_to_select.select();
     }
 }

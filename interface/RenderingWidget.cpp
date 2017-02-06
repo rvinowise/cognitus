@@ -26,6 +26,7 @@ RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *pare
     network{rendering_network},
     QOpenGLWidget(parent),
     vertex_buffer(QOpenGLBuffer::VertexBuffer),
+    //human_control(rendering_network),
 
     window_scale{2},
     clear_color(QColor(255,255,255))

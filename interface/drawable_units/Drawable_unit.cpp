@@ -41,7 +41,7 @@ void Drawable_unit::create_data()
     data = new Drawable_unit_data();
 }
 
-bool Drawable_unit::operator==(Drawable_unit other)
+bool Drawable_unit::operator==(const Drawable_unit& other) const
 {
     return data==other.data;
 }
