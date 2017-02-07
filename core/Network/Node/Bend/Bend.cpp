@@ -20,19 +20,25 @@ Bend::Bend():
 
 Bend::Bend(Node& masterNode)
 {	
+#ifdef render_mode
+    render::Bend::Drawable_unit::create_data();
+#endif
     data = new Bend_data(masterNode);
     masterNode.append_bend(*this);
 }
 
 Bend::Bend(const Bend& other)
+#ifdef render_mode
+    :render::Bend(other)
+#endif
 {
     this->data = other.data;
-    if (data) {
-        data->connect_a_handle();
-    }
 }
 
 Bend::Bend(Bend &&other)
+#ifdef render_mode
+    :render::Bend(std::move(other))
+#endif
 {
     this->data = other.data;
     other.data = nullptr;
@@ -40,20 +46,15 @@ Bend::Bend(Bend &&other)
 
 Bend::~Bend()
 {
-    if (data) {
-        data->disconnect_a_handle();
-    }
+
 }
 
 Bend& Bend::operator=(const Bend &other)
 {
-    if (data != other.data) {
-        if (!is_empty()) {
-            data->disconnect_a_handle();
-        }
-        data = other.data;
-        data->connect_a_handle();
-    }
+#ifdef render_mode
+    render::Bend::data = other.render::Bend::data;
+#endif
+    data = other.data;
     return *this;
 }
 

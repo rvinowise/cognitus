@@ -22,7 +22,10 @@ public:
     {
 
     }
+    void go_to_high_nodes(Network& network);
+
     void continue_with_node(Node in_node);
+    void enqueue_higher_nodes_of(Node in_node);
     bool is_end();
 
     iterator_node_BFS& operator++();

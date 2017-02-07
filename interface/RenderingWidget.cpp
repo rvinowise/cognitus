@@ -26,7 +26,7 @@ RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *pare
     network{rendering_network},
     QOpenGLWidget(parent),
     vertex_buffer(QOpenGLBuffer::VertexBuffer),
-    //human_control(rendering_network),
+    human_control(rendering_network),
 
     window_scale{2},
     clear_color(QColor(255,255,255))
@@ -228,15 +228,8 @@ void RenderingWidget::paintGL()
     projection_matrix = get_projection_according_to_observer_position(window_rect);
     projection_matrix.scale(window_scale);
 
-    int i=0;
-    if (network.input.getNodesQty()) {
-        for (core::Node node: network) {
-            node.draw();
-
-            if (++i == 10) {
-                break;
-            }
-        }
+    for (core::Node node: network) {
+        node.draw();
     }
 }
 

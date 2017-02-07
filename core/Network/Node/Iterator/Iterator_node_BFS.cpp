@@ -7,7 +7,7 @@
 namespace core {
 
 iterator_node_BFS::iterator_node_BFS():
-    node()
+    node{Node::get_empty()}
 {
 
 }
@@ -32,19 +32,32 @@ iterator_node_BFS::iterator_node_BFS(Node in_node)
     continue_with_node(in_node);
 }
 
-void iterator_node_BFS::continue_with_node(Node in_node) {
-    node = in_node;
-    for(Bend bend: node.bends()) {
-        for (Hub hub: bend.hubs()) {
-            enqueue_for_iteration(hub.get_node_of_whole_figure());
-        }
+void iterator_node_BFS::go_to_high_nodes(Network &network)
+{
+    for(Node node: network.input) {
+        enqueue_higher_nodes_of(node);
+    }
+    for(Node node: network.output) {
+        enqueue_higher_nodes_of(node);
+    }
+    if (queue_node.size()) {
+        continue_with_node(queue_node.front());
+        queue_node.pop();
     }
 }
 
 
-iterator_node_BFS iterator_node_BFS::operator++(int) {
-    (*this)++;
+void iterator_node_BFS::continue_with_node(Node in_node) {
+    node = in_node;
+    enqueue_higher_nodes_of(in_node);
+}
 
+void iterator_node_BFS::enqueue_higher_nodes_of(Node in_node) {
+    for(Bend bend: in_node.bends()) {
+        for (Hub hub: bend.hubs()) {
+            enqueue_for_iteration(hub.get_node_of_whole_figure());
+        }
+    }
 }
 
 void iterator_node_BFS::enqueue_for_iteration(Node in_node)
@@ -52,6 +65,14 @@ void iterator_node_BFS::enqueue_for_iteration(Node in_node)
     queue_node.push(in_node);
     ordered_nodes.emplace(in_node);
 }
+
+
+
+iterator_node_BFS iterator_node_BFS::operator++(int) {
+    (*this)++;
+
+}
+
 
 
 iterator_node_BFS& iterator_node_BFS::operator++()

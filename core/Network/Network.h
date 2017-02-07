@@ -4,6 +4,7 @@
 #include "Interface/Output/Output.h"
 #include "ActiveBend/ActiveBend.h"
 #include "CircuitFinder/CircuitFinder.h"
+#include "core/Network/Node/Iterator/Iterator_node_BFS.h"
 
 #include <vector>
 #include <thread>
@@ -12,6 +13,13 @@
 namespace core {
 
 class iterator_node_BFS;
+
+struct High_nodes
+{
+    iterator_node_BFS iter_begin;
+    iterator_node_BFS begin();
+    iterator_node_BFS end();
+};
 
 class Network
 {
@@ -35,6 +43,7 @@ public:
 
     iterator_node_BFS begin();
     iterator_node_BFS end();
+    High_nodes high_nodes();
     typedef Node value_type;
 
 private:

@@ -31,9 +31,6 @@ Node::Node(const Node &other)
 #endif
 {
     data = other.data;
-    if(data) {
-        data->connect_a_handle();
-    }
 }
 
 Node::Node(Node &&other)
@@ -47,9 +44,7 @@ Node::Node(Node &&other)
 
 Node::~Node()
 {
-    if (data) {
-        data->disconnect_a_handle();
-    }
+
 }
 
 void Node::create_data()
@@ -217,9 +212,8 @@ iterator_hub_BFS Node::end()
     return iterator_hub_BFS();
 }
 
-#ifdef debug_mode
 
-//using test::random;
+#ifdef debug_mode
 
 bool Node::has_it_as_progeny(Node in_node)
 {

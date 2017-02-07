@@ -48,9 +48,6 @@ QOpenGLTexture* Node::get_texture()const
 vector<Drawable_unit> Node::get_parts_inside_rect(Rect rect)
 {
     vector<Drawable_unit> result;
-    if (is_inside(rect)) {
-        result.push_back(*this);
-    }
     for (core::Bend bend: bends()) {
         if (bend.is_inside(rect)) {
             result.push_back(bend);

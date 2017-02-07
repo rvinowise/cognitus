@@ -51,11 +51,29 @@ void Network::save_new_activated_bend(Bend inBend)
     newActiveBends->bend.push_back(inBend);
 }
 
+
 iterator_node_BFS Network::begin()
 {
     return iterator_node_BFS(*this);
 }
 iterator_node_BFS Network::end()
+{
+    return iterator_node_BFS();
+}
+
+High_nodes Network::high_nodes()
+{
+    High_nodes high_hodes;
+    iterator_node_BFS iterator;
+    iterator.go_to_high_nodes(*this);
+    high_hodes.iter_begin = iterator;
+    return high_hodes;
+}
+iterator_node_BFS High_nodes::begin()
+{
+    return iter_begin;
+}
+iterator_node_BFS High_nodes::end()
 {
     return iterator_node_BFS();
 }
@@ -98,6 +116,8 @@ Node Network::create_higher_node_for(Circuit inCircuit) {
 void Network::prepareOutputOnMotors() {
 
 }
+
+
 
 
 }
