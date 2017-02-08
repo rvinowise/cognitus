@@ -34,9 +34,8 @@ int main(int argc, char *argv[])
     return app.exec();
 
 
-
     //test_network.work_of_network();
-    //debug.writeResume();
+    //debug.write_resume();
 }
 
 

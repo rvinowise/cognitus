@@ -8,12 +8,13 @@
 #include "interface/drawable_units/draw_Node.h"
 #include "interface/primitives/Vertex/Vertex.h"
 #include "algorithms.h"
+#include "core/test/Debug_inspector.h"
 
 namespace render {
 
-const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
+//const QString RenderingWidget::resource_path="D:/program/cognitus/interface/";
 //const QString RenderingWidget::resource_path="/home/v/proger/cognitus/interface/";
-//const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
+const QString RenderingWidget::resource_path="C:/proger/cognitus/interface/";
 
 
 RenderingWidget* renderingWidget;
@@ -42,7 +43,6 @@ RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *pare
 
 RenderingWidget::~RenderingWidget()
 {
-
 }
 
 void RenderingWidget::draw_unit_rect()
@@ -217,6 +217,7 @@ QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_re
 
 void RenderingWidget::paintGL()
 {
+    test::debug.profiler.start("RenderingWidget::paintGL");
     glClear(GL_COLOR_BUFFER_BIT);
 
 
@@ -231,6 +232,7 @@ void RenderingWidget::paintGL()
     for (core::Node node: network) {
         node.draw();
     }
+    test::debug.profiler.stop("RenderingWidget::paintGL");
 }
 
 

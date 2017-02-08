@@ -197,12 +197,12 @@ void Human_control::key_press(QKeyEvent *event)
 
 void Human_control::create_demo_units()
 {
-    network.input.initNodes(5);
+    network.input.initNodes(2);
     auto& input = network.input;
 
     std::for_each(input.begin(), input.end(), [](core::Node node){
         debug.profiler.start("create units");
-        //node.generate_random_empty_figure(0);
+        node.generate_random_empty_figure(2);
         debug.profiler.stop("create units");
 
     });

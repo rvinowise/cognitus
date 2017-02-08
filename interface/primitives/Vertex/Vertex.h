@@ -13,7 +13,7 @@ struct Vertex
 };
 struct Vertex_point
 {
-    Vertex_point(){};
+    Vertex_point(){}
     Vertex_point(GLfloat in_x, GLfloat in_y);
     Vertex_point(Point point);
     GLfloat position[2];

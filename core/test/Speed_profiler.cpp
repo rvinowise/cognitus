@@ -16,7 +16,6 @@ Speed_profiler::Speed_profiler()
 
 Speed_profiler::~Speed_profiler()
 {
-    write_resume();
 }
 
 void Speed_profiler::start(const char *action)

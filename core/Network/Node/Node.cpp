@@ -248,11 +248,11 @@ void Node::generate_random_empty_figure(std::size_t figure_size)
     for (Hub hub: hubs) {
         std::vector<Hub> potential_next_hubs=
                 hub.get_hubs_possible_for_linking(hubs);
-        unsigned int figure_picking_step = potential_next_hubs.size()-2;
+        size_t figure_picking_step = potential_next_hubs.size()-2;
         for (
              size_t i_potential_next = 0;
              i_potential_next < potential_next_hubs.size();
-             i_potential_next += (1+test::random(figure_picking_step))
+             ++i_potential_next += test::random(figure_picking_step)
              ) {
             hub.push_next_hub(potential_next_hubs[i_potential_next]);
         }

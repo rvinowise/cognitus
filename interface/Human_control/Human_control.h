@@ -84,6 +84,7 @@ private:
     void select_only_this(Selection::Units &unit);
     void draw_selection_rect();
     void move_units(std::vector<Drawable_unit> &units, Point vector);
+    void create_demo_units();
     void fire_selected_input_nodes();
 
     Mouse_state mouse_state;

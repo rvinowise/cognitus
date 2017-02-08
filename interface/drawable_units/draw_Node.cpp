@@ -120,7 +120,7 @@ void Node::draw_links_to_bends() const
         vertices_of_links.push_back(Vertex_point(bend.position()));
     }
 
-    draw_lines(vertices_of_links, Color::fromRgbF(0,0,0,0.5));
+    draw_lines(vertices_of_links, Color::fromRgbF(0,0,0,0.3));
 
 }
 
