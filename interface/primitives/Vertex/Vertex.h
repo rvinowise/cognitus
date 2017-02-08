@@ -18,6 +18,14 @@ struct Vertex_point
     Vertex_point(Point point);
     GLfloat position[2];
 };
+struct Vertex_colored
+{
+    Vertex_colored(){}
+    Vertex_colored(GLfloat in_x, GLfloat in_y, Color in_color);
+    Vertex_colored(Point point, Color in_color);
+    GLfloat position[2];
+    GLfloat color[4];
+};
 
 
 }

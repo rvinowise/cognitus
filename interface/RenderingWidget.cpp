@@ -82,12 +82,15 @@ void RenderingWidget::prepare_rendering_resources()
     link_lines_buffer.create();
     link_lines_buffer.bind();
     shaders_link_lines.addShaderFromSourceFile(
-                QOpenGLShader::Vertex, resource_path+"shaders/selection.vert");
+                QOpenGLShader::Vertex, resource_path+"shaders/lines.vert");
     shaders_link_lines.addShaderFromSourceFile(
-                QOpenGLShader::Fragment, resource_path+"shaders/selection.frag");
+                QOpenGLShader::Fragment, resource_path+"shaders/lines.frag");
     shaders_link_lines.enableAttributeArray(Sprite::PROGRAM_VERTEX_ATTRIBUTE);
-    shaders_link_lines.setAttributeBuffer(Sprite::PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 2 * sizeof(GLfloat));
+    shaders_link_lines.setAttributeBuffer(Sprite::PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 6 * sizeof(GLfloat));
     shaders_link_lines.bindAttributeLocation("vertex", Sprite::PROGRAM_VERTEX_ATTRIBUTE);
+    shaders_link_lines.enableAttributeArray(1);
+    shaders_link_lines.setAttributeBuffer(1, GL_FLOAT, 2 * sizeof(GLfloat), 4, 6 * sizeof(GLfloat));
+    shaders_link_lines.bindAttributeLocation("color",1);
     shaders_link_lines.link();
 
     textures = {

@@ -1,7 +1,7 @@
 #version 130
 //#version 450
 
-attribute vec4 vertex;
+in vec4 vertex;
 uniform mat4 matrix;
 
 

@@ -151,7 +151,10 @@ QOpenGLTexture *Drawable_unit::get_texture() const
     return nullptr;
 }
 
-void Drawable_unit::draw_lines(const std::vector<Vertex_point>& vertices, const Color& color) const
+
+void Drawable_unit::draw_lines(
+        const std::vector<Vertex_point>& vertices,
+        const Color& color) const
 {
     renderingWidget->vao_link_lines.bind();
     renderingWidget->link_lines_buffer.bind();
@@ -161,6 +164,18 @@ void Drawable_unit::draw_lines(const std::vector<Vertex_point>& vertices, const 
     QMatrix4x4 matrix = renderingWidget->projection_matrix;
     renderingWidget->shaders_link_lines.setUniformValue("matrix", matrix);
     renderingWidget->shaders_link_lines.setUniformValue("color", color);
+    renderingWidget->draw_lines(vertices.size());
+}
+
+void Drawable_unit::draw_lines(const std::vector<Vertex_colored> &vertices) const
+{
+    renderingWidget->vao_link_lines.bind();
+    renderingWidget->link_lines_buffer.bind();
+    renderingWidget->link_lines_buffer.allocate(vertices.data(), vertices.size() * sizeof(Vertex_colored));
+    renderingWidget->shaders_link_lines.bind();
+
+    QMatrix4x4 matrix = renderingWidget->projection_matrix;
+    renderingWidget->shaders_link_lines.setUniformValue("matrix", matrix);
     renderingWidget->draw_lines(vertices.size());
 }
 

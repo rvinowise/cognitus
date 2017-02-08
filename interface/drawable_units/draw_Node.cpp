@@ -125,16 +125,18 @@ void Node::draw_links_to_bends() const
 
 void Node::draw_links_to_first_hubs() const
 {
-    std::vector<Vertex_point> vertices_of_links;
+    std::vector<Vertex_colored> vertices_of_links;
     Point attachment = this->position() + Point(0,get_radius()-1);
-
+    Color color_link = Color::fromRgbF(0,0,0,0.5);
+    Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
     for (core::Hub hub: first_hubs()) {
-        vertices_of_links.push_back(Vertex_point(attachment));
+        vertices_of_links.push_back(Vertex_colored(attachment, color_begin));
         Point hub_attachment = hub.position() + Point(0,-hub.get_radius()+1);
-        vertices_of_links.push_back(Vertex_point(hub_attachment));
+        Color color_end = (hub.is_selected() ? /*color_link+*/selection_color : color_link);
+        vertices_of_links.push_back(Vertex_colored(hub_attachment, color_end));
     }
 
-    draw_lines(vertices_of_links, Color::fromRgbF(0,0,0,0.5));
+    draw_lines(vertices_of_links);
 }
 
 

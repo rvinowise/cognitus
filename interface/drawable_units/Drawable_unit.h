@@ -53,6 +53,7 @@ public:
     void draw() const;
     void draw_link_to(const Drawable_unit& other) const;
     void draw_lines(const std::vector<Vertex_point>& vertices, const Color& color)const;
+    void draw_lines(const std::vector<Vertex_colored>& vertices)const;
 
     bool is_inside(Rect rect)const;
     bool has_inside(Point point)const;

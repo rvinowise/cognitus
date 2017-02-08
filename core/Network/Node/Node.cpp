@@ -160,7 +160,6 @@ void Node::fire()
 
 void Node::add_new_bend_as_active() {
     Bend newBend(*this);
-    data->bends.push_back(newBend);
     global_network->save_new_activated_bend(newBend);
 }
 

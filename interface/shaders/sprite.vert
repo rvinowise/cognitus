@@ -1,13 +1,14 @@
 #version 130
 //#version 450
 
-attribute vec4 vertex;
-attribute vec2 texCoord;
-varying vec2 texc;
-uniform mat4 matrix;
+in vec4 vertex;
+in vec2 texCoord;
 
+uniform mat4 matrix;
 uniform float is_selected;
-varying float is_selected2;
+
+out vec2 texc;
+out float is_selected2;
 
 void main(void)
 {

@@ -44,16 +44,18 @@ Color Hub::get_links_to_next_hubs_color() const
 void Hub::draw_links_to_next_hubs() const
 {
 
-    std::vector<Vertex_point> vertices_of_links;
+    std::vector<Vertex_colored> vertices_of_links;
     Point attachment = this->position() + Point(get_radius()-1,0);
-
+    Color color_link = Color::fromRgbF(0,0,0,0.5);
+    Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
     for (core::Hub next_hub: this->get_arr_next_hubs()) {
-        vertices_of_links.push_back(Vertex_point(attachment));
+        vertices_of_links.push_back(Vertex_colored(attachment, color_begin));
         Point hub_attachment = next_hub.position() + Point(-next_hub.get_radius()+1,0);
-        vertices_of_links.push_back(Vertex_point(hub_attachment));
+        Color color_end = (next_hub.is_selected() ? /*color_link+*/selection_color : color_link);
+        vertices_of_links.push_back(Vertex_colored(hub_attachment, color_end));
     }
 
-    draw_lines(vertices_of_links, get_links_to_next_hubs_color());
+    draw_lines(vertices_of_links);
 
 }
 
