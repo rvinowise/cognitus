@@ -3,6 +3,9 @@
 #include "interface/functions/functions.h"
 #include "interface/RenderingWidget.h"
 
+#include "interface/primitives/Rectangle/Rectangle.h"
+#include "interface/primitives/Vertex/Vertex.h"
+
 
 namespace render {
 
@@ -69,18 +72,18 @@ bool Drawable_unit::exists() const
 
 void Drawable_unit::draw() const
 {
-    renderingWidget->vao_sprite_rect.bind();
+    Rectangle::vao_rect.bind();
 
     QMatrix4x4 matrix = renderingWidget->projection_matrix;
     matrix.translate(QVector2D(position()));
-    matrix.scale(get_radius()/RenderingWidget::sprite_etalon_radius);
+    matrix.scale(get_radius()/sprite_etalon_radius);
 
-    renderingWidget->shaders_sprite.bind();
-    renderingWidget->shaders_sprite.setUniformValue("matrix", matrix);
-    renderingWidget->shaders_sprite.setUniformValue("is_selected", is_selected()?1.0f:0.0f);
+    Sprite::shaders.bind();
+    Sprite::shaders.setUniformValue("matrix", matrix);
+    Sprite::shaders.setUniformValue("is_selected", is_selected()?1.0f:0.0f);
 
     get_texture()->bind();
-    renderingWidget->draw_unit_rect();
+    Sprite::draw();
 }
 
 void Drawable_unit::draw_link_to(const Drawable_unit &other) const

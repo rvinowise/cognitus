@@ -9,7 +9,7 @@
 #include <vector>
 
 //#include "interface/drawable_units/Drawable_unit.h"
-#include "interface/coordinates_type.h"
+#include "interface/common/constants.h"
 #include "core/Network/Node/InterfaceNode.h"
 
 namespace core {

@@ -8,7 +8,10 @@
 #include <memory>
 
 #include "interface/Human_control/Human_control.h"
-#include "interface/coordinates_type.h"
+#include "interface/common/constants.h"
+
+#include "interface/primitives/Arrow/Arrow.h"
+#include "interface/primitives/Rectangle/Rectangle.h"
 
 namespace core {
     class Network;
@@ -22,6 +25,8 @@ class RenderingWidget: public QOpenGLWidget,
                         protected QOpenGLFunctions
 {
     friend class Human_control;
+    friend class Sprite;
+    friend class Arrow;
 public:
     explicit RenderingWidget(core::Network &rendering_network, QWidget *parent = 0);
     //explicit RenderingWidget(RenderingWidget* other = 0);
@@ -30,12 +35,9 @@ public:
     void draw_unit_rect();
     void draw_lines(std::size_t qty);
 
-    static const QString resource_path;
     QMatrix4x4 projection_matrix;
-    QOpenGLShaderProgram shaders_sprite;
-    static const std::size_t PROGRAM_VERTEX_ATTRIBUTE=0;
-    static const std::size_t PROGRAM_TEXCOORD_ATTRIBUTE=1;
-    static constexpr GLfloat sprite_etalon_radius = 10;
+
+
     QOpenGLShaderProgram shaders_link_lines;
 
 

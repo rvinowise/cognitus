@@ -61,8 +61,8 @@ void Speed_profiler::write_resume()
 {
     using namespace std::chrono;
     calulate_average_execution_time();
-    typedef std::chrono::duration<int, std::ratio<1,100>> time_unit_t;
-    debug.message("SPEED RESUME (centi-seconds): ");
+    typedef std::chrono::duration<int, std::ratio<1,1000>> time_unit_t;
+    debug.message("SPEED RESUME (milli-seconds): ");
     for (const auto action : completedActions) {
         auto actionData = action.second;
 

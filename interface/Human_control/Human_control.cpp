@@ -75,9 +75,9 @@ void Human_control::initializeGL()
     selection_vertices.bind();
 
     shader_selection.addShaderFromSourceFile(
-                QOpenGLShader::Vertex, RenderingWidget::resource_path+"shaders/selection.vert");
+                QOpenGLShader::Vertex, resource_path+"shaders/selection.vert");
     shader_selection.addShaderFromSourceFile(
-                QOpenGLShader::Fragment, RenderingWidget::resource_path+"shaders/selection.frag");
+                QOpenGLShader::Fragment, resource_path+"shaders/selection.frag");
 
     shader_selection.enableAttributeArray(0);
     shader_selection.setAttributeBuffer(0, GL_FLOAT, 0, 2, 2 * sizeof(GLfloat));
@@ -197,12 +197,12 @@ void Human_control::key_press(QKeyEvent *event)
 
 void Human_control::create_demo_units()
 {
-    network.input.initNodes(5);
+    network.input.initNodes(3);
     auto& input = network.input;
 
     std::for_each(input.begin(), input.end(), [](core::Node node){
         debug.profiler.start("create units");
-        //node.generate_random_empty_figure(0);
+        //node.generate_random_empty_figure(20);
         debug.profiler.stop("create units");
 
     });

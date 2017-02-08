@@ -90,16 +90,6 @@ void Node::deselect_all_parts()
     }
 }
 
-void Node::draw()
-{
-    std::for_each(bends().begin(), bends().end(), [](core::Bend bend){bend.draw();});
-    std::for_each(this->begin(), this->end(), [](const core::Hub hub){hub.draw();});
-    Drawable_unit::draw();
-
-    draw_links_to_first_hubs();
-    draw_links_to_bends();
-}
-
 void Node::dispose_hubs_into_positions()
 {
     std::for_each(begin(), end(),
@@ -110,6 +100,15 @@ void Node::dispose_hubs_into_positions()
 }
 
 
+void Node::draw()
+{
+    std::for_each(bends().begin(), bends().end(), [](core::Bend bend){bend.draw();});
+    std::for_each(this->begin(), this->end(), [](const core::Hub hub){hub.draw();});
+    Drawable_unit::draw();
+
+    draw_links_to_first_hubs();
+    draw_links_to_bends();
+}
 
 void Node::draw_links_to_bends() const
 {

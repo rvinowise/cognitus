@@ -1,7 +1,7 @@
 #pragma once
 #include <GL/gl.h>
 
-#include "interface/coordinates_type.h"
+#include "interface/common/constants.h"
 
 namespace render {
 

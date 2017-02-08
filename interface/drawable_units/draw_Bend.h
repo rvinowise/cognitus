@@ -22,6 +22,7 @@ public:
     void draw();
     void draw_links_to_next_bends();
     Color get_links_to_next_bends_color() const;
+    void draw_arrows();
 
     int get_radius()const;
     QOpenGLTexture* get_texture()const;

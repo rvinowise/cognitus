@@ -5,7 +5,7 @@
 #include <QOpenGLBuffer>
 #include <memory>
 
-#include "interface/coordinates_type.h"
+#include "interface/common/constants.h"
 #include "interface/primitives/Vertex/Vertex.h"
 
 namespace core {

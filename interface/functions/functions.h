@@ -3,7 +3,7 @@
 #include <QPoint>
 #include <cmath>
 
-#include "interface/coordinates_type.h"
+#include "interface/common/coordinates_type.h"
 
 /*template<typename Point>
 using Type = decltype(Point.x());

@@ -49,7 +49,9 @@ SOURCES += main.cpp \
     interface/primitives/Vertex/Vertex.cpp \
     interface/algorithms.cpp \
     interface/InterfaceWindow.cpp \
-    interface/RenderingWidget.cpp
+    interface/RenderingWidget.cpp \
+    interface/primitives/Arrow/Arrow.cpp \
+    interface/primitives/Rectangle/Rectangle.cpp
 
 
 
@@ -92,7 +94,11 @@ HEADERS  += \
     interface/algorithms.h \
     interface/coordinates_type.h \
     interface/InterfaceWindow.h \
-    interface/RenderingWidget.h
+    interface/RenderingWidget.h \
+    interface/primitives/Arrow/Arrow.h \
+    interface/primitives/Rectangle/Rectangle.h \
+    interface/common/constants.h \
+    interface/common/coordinates_type.h
 
 
 
