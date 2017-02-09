@@ -5,7 +5,7 @@
 #include "interface/RenderingWidget.h"
 namespace render {
 
-QOpenGLVertexArrayObject Arrow::vao_rect{};
+QOpenGLVertexArrayObject Arrow::vertex_array{};
 QOpenGLBuffer Arrow::vertex_buffer{};
 QOpenGLShaderProgram Arrow::shaders{};
 
@@ -17,7 +17,7 @@ Arrow::Arrow()
 void Arrow::init()
 {
     static const GLfloat sprite_coordinates[3][2] = {
-          { +0.5, 0 }, { 0, -1}, { -0.5, 0}
+          { +0.2, 1 }, { 0, 0.2}, { -0.2, 1}
     };
 
 
@@ -28,8 +28,8 @@ void Arrow::init()
                                sprite_etalon_radius * sprite_coordinates[j][1]
                            });
     }
-    vao_rect.create();
-    vao_rect.bind();
+    vertex_array.create();
+    vertex_array.bind();
     vertex_buffer.create();
     vertex_buffer.bind();
     vertex_buffer.allocate(vertices.constData(), vertices.count() * sizeof(Vertex));

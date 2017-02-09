@@ -21,7 +21,7 @@ public:
     static void draw();
 
     static QOpenGLShaderProgram shaders;
-    static QOpenGLVertexArrayObject vao_rect;
+    static QOpenGLVertexArrayObject vertex_array;
     static QOpenGLBuffer vertex_buffer;
 };
 

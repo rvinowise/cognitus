@@ -1,6 +1,5 @@
-//#version 130
 #version 410
-
+//#version 130
 
 in vec4 color_from_vert;
 out vec4 diffuse_color;

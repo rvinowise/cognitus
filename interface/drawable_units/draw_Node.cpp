@@ -112,14 +112,17 @@ void Node::draw()
 
 void Node::draw_links_to_bends() const
 {
-    std::vector<Vertex_point> vertices_of_links;
+    std::vector<Vertex_colored> vertices_of_links;
     Point attachment = this->position() + Point(0,-get_radius()+1);
+    Color color_link = Color::fromRgbF(0,0,0,0.2);
+    Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
     for (core::Bend bend: bends()) {
-        vertices_of_links.push_back(Vertex_point(attachment));
-        vertices_of_links.push_back(Vertex_point(bend.position()));
+        vertices_of_links.push_back(Vertex_colored(attachment, color_begin));
+        Color color_end = (bend.is_selected() ? /*color_link+*/selection_color : color_link);
+        vertices_of_links.push_back(Vertex_colored(bend.position(), color_end));
     }
 
-    draw_lines(vertices_of_links, Color::fromRgbF(0,0,0,0.3));
+    draw_lines(vertices_of_links);
 
 }
 

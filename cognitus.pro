@@ -51,7 +51,8 @@ SOURCES += main.cpp \
     interface/InterfaceWindow.cpp \
     interface/RenderingWidget.cpp \
     interface/primitives/Arrow/Arrow.cpp \
-    interface/primitives/Rectangle/Rectangle.cpp
+    interface/primitives/Rectangle/Rectangle.cpp \
+    interface/functions/functions.cpp
 
 
 
