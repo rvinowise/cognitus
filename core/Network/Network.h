@@ -23,7 +23,7 @@ struct High_nodes
 
 class Network
 {
-
+friend class Interface;
 public:
     Network();
     ~Network();
@@ -55,6 +55,7 @@ private:
     void find_and_memorize_patterns_of_inputs();
     void memorize_minimal_repeated_pattern(Circuit inCircuit);
     Node create_higher_node_for(Circuit inCircuit);
+    void fire_node(Node in_node);
 
     ActiveBends* lastActiveBends;
     ActiveBends* newActiveBends;
@@ -63,6 +64,5 @@ private:
     std::thread* threadProcessInput;
 };
 
-extern Network* global_network;
 
 }

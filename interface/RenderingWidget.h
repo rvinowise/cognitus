@@ -12,6 +12,7 @@
 
 #include "interface/primitives/Arrow/Arrow.h"
 #include "interface/primitives/Rectangle/Rectangle.h"
+#include "interface/drawable_units/draw_Network.h"
 
 namespace core {
     class Network;
@@ -74,7 +75,7 @@ private:
     Human_control human_control;
 
 
-    core::Network& network;
+    render::Network& network;
 
 };
 

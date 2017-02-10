@@ -6,14 +6,12 @@
 
 namespace core {
 
-Network* global_network;
 
 
 Network::Network():
     input(*this), output(*this)
 {
     lastActiveBends = new ActiveBends();
-    global_network = this;
 }
 
 Network::~Network()
@@ -109,6 +107,12 @@ Node Network::create_higher_node_for(Circuit inCircuit) {
     node.push_back(higherNode);
 
     return higherNode;
+}
+
+void Network::fire_node(Node in_node)
+{
+    Bend new_bend = in_node.fire();
+    save_new_activated_bend(new_bend);
 }
 
 

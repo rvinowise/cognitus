@@ -21,7 +21,7 @@ public:
     void draw() const;
 
     int get_radius()const;
-    QOpenGLTexture* get_texture() const;
+    virtual QOpenGLTexture* get_texture()const;
     Color get_links_to_next_hubs_color() const;
 
     virtual std::vector<core::Hub>& get_arr_next_hubs() const = 0;

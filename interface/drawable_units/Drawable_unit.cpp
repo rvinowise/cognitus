@@ -81,8 +81,8 @@ void Drawable_unit::draw() const
     Sprite::shaders.bind();
     Sprite::shaders.setUniformValue("matrix", matrix);
     Sprite::shaders.setUniformValue("is_selected", is_selected()?1.0f:0.0f);
-
     get_texture()->bind();
+
     Sprite::draw();
 }
 
@@ -139,7 +139,7 @@ Point Drawable_unit::position() const
     return data->position;
 }
 
-int Drawable_unit::get_radius() const
+int Drawable_unit::get_radius()const
 {
     throw("Drawable_unit::get_radius()");
     return 0;
@@ -147,9 +147,9 @@ int Drawable_unit::get_radius() const
 
 QOpenGLTexture *Drawable_unit::get_texture() const
 {
-    throw("Drawable_unit::get_texture()");
-    return nullptr;
+    return 0;
 }
+
 
 
 void Drawable_unit::draw_lines(

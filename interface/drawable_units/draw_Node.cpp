@@ -106,8 +106,8 @@ void Node::draw()
     std::for_each(this->begin(), this->end(), [](const core::Hub hub){hub.draw();});
     Drawable_unit::draw();
 
-    draw_links_to_first_hubs();
-    draw_links_to_bends();
+    //draw_links_to_first_hubs();
+    //draw_links_to_bends();
 }
 
 void Node::draw_links_to_bends() const

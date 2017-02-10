@@ -30,7 +30,7 @@ public:
     void dispose_hubs_into_positions();
 
     int get_radius()const;
-    QOpenGLTexture* get_texture()const;
+    virtual QOpenGLTexture* get_texture()const;
 
     void draw();
 

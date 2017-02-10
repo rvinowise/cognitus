@@ -20,7 +20,7 @@ class InterfaceWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit InterfaceWindow(QWidget *parent = 0);
+    //explicit InterfaceWindow(QWidget *parent = 0);
     InterfaceWindow(core::Network& inNetwork, QWidget *parent = 0);
     ~InterfaceWindow();
 
@@ -45,6 +45,8 @@ private:
     quint16 nextBlockSize;
 
     Ui::InterfaceWindow *ui;
+
+    core::Network& network;
 };
 
 

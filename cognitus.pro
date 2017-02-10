@@ -52,7 +52,8 @@ SOURCES += main.cpp \
     interface/RenderingWidget.cpp \
     interface/primitives/Arrow/Arrow.cpp \
     interface/primitives/Rectangle/Rectangle.cpp \
-    interface/functions/functions.cpp
+    interface/functions/functions.cpp \
+    interface/drawable_units/draw_Network.cpp
 
 
 
@@ -99,7 +100,8 @@ HEADERS  += \
     interface/primitives/Arrow/Arrow.h \
     interface/primitives/Rectangle/Rectangle.h \
     interface/common/constants.h \
-    interface/common/coordinates_type.h
+    interface/common/coordinates_type.h \
+    interface/drawable_units/draw_Network.h
 
 
 

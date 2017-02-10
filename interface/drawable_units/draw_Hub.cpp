@@ -63,7 +63,7 @@ void Hub::draw_links_to_next_hubs() const
 void Hub::draw() const
 {
     Drawable_unit::draw();
-    draw_links_to_next_hubs();
+    //draw_links_to_next_hubs();
 }
 
 

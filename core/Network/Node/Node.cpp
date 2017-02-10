@@ -151,17 +151,12 @@ void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
     }
 }
 
-void Node::fire()
+Bend Node::fire()
 {
-    add_new_bend_as_active();
+    Bend new_bend(*this);
+    return new_bend;
 }
 
-
-
-void Node::add_new_bend_as_active() {
-    Bend newBend(*this);
-    global_network->save_new_activated_bend(newBend);
-}
 
 
 

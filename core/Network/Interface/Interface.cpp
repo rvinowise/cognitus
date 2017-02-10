@@ -1,6 +1,7 @@
 #include "Interface.h"
 
 #include "core/test/Debug_inspector.h"
+#include "core/Network/Network.h"
 
 
 namespace core {
@@ -26,7 +27,7 @@ void Interface::firePreparedNodes()
 {
     for (size_t i_node = 0; i_node < node.size(); i_node++) {
         if (node[i_node].is_prepared_to_fire()) {
-            node[i_node].fire();
+            network.fire_node(node[i_node]);
         }
     }
 }

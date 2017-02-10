@@ -9,6 +9,7 @@ using namespace core;
 
 InterfaceWindow::InterfaceWindow(core::Network &inNetwork, QWidget *parent) :
     QMainWindow(parent),
+    network{inNetwork},
     ui(new Ui::InterfaceWindow)
 {
     ui->setupUi(this);
@@ -128,33 +129,33 @@ QBitArray InterfaceWindow::getArrayOfInputsFromClient(QTcpSocket* clientSocket) 
 }
 
 QString InterfaceWindow::getErrorOfInput(QBitArray input) {
-    if ((std::size_t)input.size() != global_network->input.getNodesQty()) {
+    if ((std::size_t)input.size() != network.input.getNodesQty()) {
         return QString("wrong input size: client sent %1, but core needs %2")
-                    .arg(input.size()).arg(global_network->input.getNodesQty());
+                    .arg(input.size()).arg(network.input.getNodesQty());
     }
     return QString();
 }
 
 void InterfaceWindow::inputToCore(const QBitArray& input) {
-    global_network->input.begin_setting_input_from_outside();
-    for (uint i_input = 0; i_input < global_network->input.getNodesQty(); i_input++) {
+    network.input.begin_setting_input_from_outside();
+    for (uint i_input = 0; i_input < network.input.getNodesQty(); i_input++) {
         if (input.testBit(i_input)) {
-            global_network->input.prepare_wire_for_input(i_input);
+            network.input.prepare_wire_for_input(i_input);
         }
     }
-    global_network->input.end_setting_input_from_outside();
+    network.input.end_setting_input_from_outside();
 
 }
 
 QBitArray InterfaceWindow::getArrayOfOutputsFromCore() {
     QBitArray output;
-    global_network->output.begin_getting_output_from_outside();
-    for (uint i_output = 0; i_output < global_network->output.getNodesQty(); i_output++) {
-        if (global_network->output.is_prepared_for_output(i_output)) {
+    network.output.begin_getting_output_from_outside();
+    for (uint i_output = 0; i_output < network.output.getNodesQty(); i_output++) {
+        if (network.output.is_prepared_for_output(i_output)) {
             output.setBit(i_output);
         }
     }
-    global_network->output.end_getting_output_from_outside();
+    network.output.end_getting_output_from_outside();
     return output;
 
 }

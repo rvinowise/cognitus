@@ -6,6 +6,10 @@
 #include "core/Network/Network.h"
 #include "core/Network/Node/Iterator/Iterator_node_BFS.h"
 #include "interface/drawable_units/draw_Node.h"
+#include "interface/drawable_units/draw_Bend.h"
+#include "interface/drawable_units/draw_Hub.h"
+#include "core/Network/Node/Iterator/Iterator_node_BFS.h"
+#include "core/Network/Node/Hub/Iterator/Iterator_BFS.h"
 #include "interface/primitives/Vertex/Vertex.h"
 #include "algorithms.h"
 #include "core/test/Debug_inspector.h"
@@ -196,9 +200,8 @@ void RenderingWidget::paintGL()
     projection_matrix = get_projection_according_to_observer_position(window_rect);
     projection_matrix.scale(window_scale);
 
-    for (core::Node node: network) {
-        node.draw();
-    }
+    network.draw();
+
     test::debug.profiler.stop("RenderingWidget::paintGL");
 }
 

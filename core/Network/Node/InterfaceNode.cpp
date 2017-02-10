@@ -44,9 +44,9 @@ bool InterfaceNode::is_prepared_to_fire() {
     return interface_data->is_prepared_to_fire;
 }
 
-void InterfaceNode::fire() {
+Bend InterfaceNode::fire() {
     interface_data->is_prepared_to_fire = false;
-    Node::fire();
+    return Node::fire();
 }
 
 void InterfaceNode::set_index_in_interface_array(std::size_t index)

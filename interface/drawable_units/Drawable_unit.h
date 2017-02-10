@@ -46,7 +46,8 @@ public:
     bool operator==(const Drawable_unit& other)const;
     bool operator=(const Drawable_unit& other);
 
-    static Drawable_unit get_empty();
+    Drawable_unit get_empty();
+
     bool is_empty() const;
     bool exists() const;
 
@@ -64,8 +65,8 @@ public:
     Point& position();
     Point position() const;
 
-    virtual int get_radius() const;
-    virtual QOpenGLTexture* get_texture() const;
+    virtual int get_radius()const;
+    virtual QOpenGLTexture* get_texture()const;
 
 private:
     Drawable_unit_data* data;

@@ -1,0 +1,43 @@
+Запускается D:\program\build-cognitus-Desktop_Qt_5_8_0_MinGW_32bit-Debug\debug\cognitus.exe...
+random seed=4232983308
+
+RESUME: 
+all 0 verifications are passed
+SPEED RESUME (milli-seconds): 
+RenderingWidget::paintGL : total 1291 | average 9
+dispose units : total 3 | average 0
+create units : total 2035 | average 20
+D:\program\build-cognitus-Desktop_Qt_5_8_0_MinGW_32bit-Debug\debug\cognitus.exe завершился с кодом 0
+
+Запускается D:\program\build-cognitus-Desktop_Qt_5_8_0_MinGW_32bit-Debug\debug\cognitus.exe...
+random seed=75326036
+
+RESUME: 
+all 0 verifications are passed
+SPEED RESUME (milli-seconds): 
+RenderingWidget::paintGL : total 1345 | average 8
+dispose units : total 4 | average 0
+create units : total 2147 | average 21
+D:\program\build-cognitus-Desktop_Qt_5_8_0_MinGW_32bit-Debug\debug\cognitus.exe завершился с кодом 0
+
+Запускается D:\program\build-cognitus-Desktop_Qt_5_8_0_MinGW_32bit-Debug\debug\cognitus.exe...
+random seed=2440716228
+
+RESUME: 
+all 0 verifications are passed
+SPEED RESUME (milli-seconds): 
+RenderingWidget::paintGL : total 2680 | average 22
+dispose units : total 3 | average 0
+create units : total 1971 | average 19
+D:\program\build-cognitus-Desktop_Qt_5_8_0_MinGW_32bit-Debug\debug\cognitus.exe завершился с кодом 0
+
+Запускается D:\program\build-cognitus-Desktop_Qt_5_8_0_MinGW_32bit-Debug\debug\cognitus.exe...
+random seed=671035004
+
+RESUME: 
+all 0 verifications are passed
+SPEED RESUME (milli-seconds): 
+RenderingWidget::paintGL : total 3454 | average 24
+dispose units : total 2 | average 0
+create units : total 1909 | average 19
+D:\program\build-cognitus-Desktop_Qt_5_8_0_MinGW_32bit-Debug\debug\cognitus.exe завершился с кодом 0

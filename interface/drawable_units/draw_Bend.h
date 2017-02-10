@@ -25,7 +25,7 @@ public:
     void draw_arrows();
 
     int get_radius()const;
-    QOpenGLTexture* get_texture()const;
+    virtual QOpenGLTexture* get_texture()const;
 
     virtual std::vector<core::Bend>& get_array_of_next_bends() = 0;
 

@@ -46,7 +46,7 @@ Color Bend::get_links_to_next_bends_color() const
 void Bend::draw()
 {
     Drawable_unit::draw();
-    draw_links_to_next_bends();
+    //draw_links_to_next_bends();
     //draw_arrows();
 }
 

@@ -24,7 +24,7 @@ public:
 
     void prepare_to_fire();
     bool is_prepared_to_fire();
-    void fire() override;
+    core::Bend fire() override;
 
     void set_index_in_interface_array(std::size_t index);
     std::size_t get_index_in_interface_array() const;

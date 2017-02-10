@@ -42,7 +42,7 @@ public:
 
     void incorporate_circuit_to_this_node(Circuit inCircuit);
 
-    virtual void fire();
+    virtual Bend fire();
 
     bool isLowest();
     Bend add_bend();
@@ -67,7 +67,6 @@ public:
 #endif
 
 private:
-   void add_new_bend_as_active();
    void carefully_preserve_initial_chain_because_of_its_context(
            LineOfCircuit inLine, Hub first_chain_bend, Hub second_chain_bend);
 
