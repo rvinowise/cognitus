@@ -46,7 +46,7 @@ void Network::prepare_to_new_input_iteration()
 
 void Network::save_new_activated_bend(Bend inBend)
 {
-    newActiveBends->bend.push_back(inBend);
+    newActiveBends->bends.push_back(inBend);
 }
 
 
@@ -79,7 +79,7 @@ iterator_node_BFS High_nodes::end()
 
 void Network::prolongate_history_of_inputs() {
     // incapsulate?
-    if (!newActiveBends->bend.empty()) {
+    if (!newActiveBends->bends.empty()) {
         lastActiveBends->connect_this_bends_to_others(*newActiveBends);
         delete lastActiveBends;
         lastActiveBends = newActiveBends;

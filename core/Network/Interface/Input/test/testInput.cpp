@@ -66,7 +66,7 @@ void Input::check_network_validity()
 {
     ActiveBends& lastAddedBends = network.getLastActiveBends();
 
-    const std::vector<Bend>* bendsOfIteration = &lastAddedBends.bend;
+    const std::vector<Bend>* bendsOfIteration = &lastAddedBends.bends;
     for (size_t i_iter = qtyIterations-1; i_iter > 0; i_iter--) {
         if (inputHistory[i_iter].count() > 0) {
             debug.profiler.start("check_network_validity iteration");

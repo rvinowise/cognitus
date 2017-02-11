@@ -22,7 +22,7 @@ namespace render {
 RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *parent):
     network{rendering_network},
     QOpenGLWidget(parent),
-    human_control(rendering_network),
+    human_control(rendering_network, disposer),
     network_renderer(rendering_network),
 
     //View_data{2},
@@ -154,13 +154,13 @@ void RenderingWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
 
 
+    view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect);
+    view_data.projection_matrix.scale(view_data.window_scale);
+    network_renderer.draw(view_data);
+
     view_data.projection_matrix = get_projection_according_to_window(view_data.window_rect);
     human_control.draw(view_data);
 
-    view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect);
-    view_data.projection_matrix.scale(view_data.window_scale);
-
-    network_renderer.draw(view_data);
 
     test::debug.profiler.stop("RenderingWidget::paintGL");
 }

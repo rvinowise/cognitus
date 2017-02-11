@@ -59,9 +59,10 @@ bool Selection::Units::exist()
 }
 
 
-Human_control::Human_control(core::Network& in_network):
+Human_control::Human_control(core::Network& in_network, Units_disposer& in_disposer):
     selection_vertices(QOpenGLBuffer::VertexBuffer),
-    network{in_network}
+    network{in_network},
+    disposer{in_disposer}
 {
     create_demo_units();
 }
@@ -230,6 +231,14 @@ void Human_control::fire_selected_input_nodes()
         network.input.prepare_wire_for_input(input_index);
     }
     network.input.end_setting_input_from_outside();
+
+    /*ActiveBends last_active_bends = network.getLastActiveBends();
+    vector<core::Bend> last_bends = last_active_bends.bends;
+    for (core::Bend bend: last_bends) {*/
+    network.input.wait_for_insertion_of_previous_input();
+    for (core::Node node: selection.units.input_nodes) {
+        disposer.dispose_last_bend(node);
+    }
 }
 
 

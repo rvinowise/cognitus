@@ -57,7 +57,6 @@ public:
     void prepare_shader_for_drawing
     (const QMatrix4x4& projection_matrix, QOpenGLShaderProgram &shaders) const;
 
-    void draw(const View_data &view_data, Sprite &sprite) const;
 
     bool is_inside(Rect rect)const;
     bool has_inside(Point point)const;

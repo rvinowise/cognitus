@@ -60,6 +60,7 @@ private:
 
     Human_control human_control;
     render::Network_renderer network_renderer;
+    Units_disposer disposer;
 
     core::Network& network;
 

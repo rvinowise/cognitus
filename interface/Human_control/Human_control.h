@@ -12,6 +12,7 @@
 #include "interface/common/constants.h"
 #include "core/Network/Node/InterfaceNode.h"
 #include "interface/View_data/View_data.h"
+#include "interface/Units_disposer/Units_disposer.h"
 
 namespace core {
     class Network;
@@ -63,7 +64,7 @@ enum Action
 class Human_control: protected QOpenGLFunctions
 {
 public:
-    Human_control(core::Network& in_network);
+    Human_control(core::Network& in_network, Units_disposer& in_disposer);
     void initializeGL();
 
     void mouse_press(QMouseEvent *event, View_data& view_data);
@@ -102,7 +103,8 @@ protected:
     QOpenGLBuffer selection_vertices;
     QOpenGLShaderProgram shader_selection;
 
-    core::Network& network; //overhead?
+    Units_disposer& disposer;
+    core::Network& network;
 };
 
 }

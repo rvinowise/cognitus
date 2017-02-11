@@ -81,17 +81,6 @@ void Drawable_unit::prepare_shader_for_drawing
     shaders.setUniformValue("is_selected", is_selected()?1.0f:0.0f);
 }
 
-void Drawable_unit::draw(const View_data& view_data, Sprite& sprite) const
-{
-    QMatrix4x4 matrix = view_data.projection_matrix;
-    matrix.translate(QVector2D(position()));
-    matrix.scale(get_radius()/Sprite::etalon_radius);
-
-    Sprite::shaders.setUniformValue("matrix", matrix);
-    Sprite::shaders.setUniformValue("is_selected", is_selected()?1.0f:0.0f);
-
-    sprite.draw();
-}
 
 
 bool Drawable_unit::is_inside(Rect rect) const
