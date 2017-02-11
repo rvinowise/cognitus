@@ -212,6 +212,10 @@ std::vector<Bend> &Bend::get_array_of_next_bends()
 {
     return data->next_bends;
 }
+const std::vector<Bend> &Bend::get_array_of_next_bends() const
+{
+    return data->next_bends;
+}
 
 void Bend::erase_prev_bend(std::size_t index)
 {

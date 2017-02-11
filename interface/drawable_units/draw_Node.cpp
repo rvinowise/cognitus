@@ -37,11 +37,10 @@ int Node::get_radius()const
 {
     return 10;
 }
-QOpenGLTexture* Node::get_texture()const
+QOpenGLTexture* Node::get_texture()
 {
-    return renderingWidget->textures[0];
+    return Sprite::textures[0];
 }
-
 
 
 
@@ -100,46 +99,38 @@ void Node::dispose_hubs_into_positions()
 }
 
 
-void Node::draw()
-{
-    std::for_each(bends().begin(), bends().end(), [](core::Bend bend){bend.draw();});
-    std::for_each(this->begin(), this->end(), [](const core::Hub hub){hub.draw();});
-    Drawable_unit::draw();
 
-    //draw_links_to_first_hubs();
-    //draw_links_to_bends();
+void Node::prepare_draw_data(std::vector<Vertex_colored>& vertices) const
+{
+    prepare_links_to_bends(vertices);
+    prepare_links_to_first_hubs(vertices);
 }
 
-void Node::draw_links_to_bends() const
+
+void Node::prepare_links_to_bends(std::vector<Vertex_colored>& vertices) const
 {
-    std::vector<Vertex_colored> vertices_of_links;
     Point attachment = this->position() + Point(0,-get_radius()+1);
     Color color_link = Color::fromRgbF(0,0,0,0.2);
     Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
     for (core::Bend bend: bends()) {
-        vertices_of_links.push_back(Vertex_colored(attachment, color_begin));
+        vertices.push_back(Vertex_colored(attachment, color_begin));
         Color color_end = (bend.is_selected() ? /*color_link+*/selection_color : color_link);
-        vertices_of_links.push_back(Vertex_colored(bend.position(), color_end));
+        vertices.push_back(Vertex_colored(bend.position(), color_end));
     }
-
-    draw_lines(vertices_of_links);
 
 }
 
-void Node::draw_links_to_first_hubs() const
+void Node::prepare_links_to_first_hubs(std::vector<Vertex_colored>& vertices) const
 {
-    std::vector<Vertex_colored> vertices_of_links;
     Point attachment = this->position() + Point(0,get_radius()-1);
     Color color_link = Color::fromRgbF(0,0,0,0.5);
     Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
     for (core::Hub hub: first_hubs()) {
-        vertices_of_links.push_back(Vertex_colored(attachment, color_begin));
+        vertices.push_back(Vertex_colored(attachment, color_begin));
         Point hub_attachment = hub.position() + Point(0,-hub.get_radius()+1);
         Color color_end = (hub.is_selected() ? /*color_link+*/selection_color : color_link);
-        vertices_of_links.push_back(Vertex_colored(hub_attachment, color_end));
+        vertices.push_back(Vertex_colored(hub_attachment, color_end));
     }
-
-    draw_lines(vertices_of_links);
 }
 
 

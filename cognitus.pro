@@ -53,7 +53,10 @@ SOURCES += main.cpp \
     interface/primitives/Arrow/Arrow.cpp \
     interface/primitives/Rectangle/Rectangle.cpp \
     interface/functions/functions.cpp \
-    interface/drawable_units/draw_Network.cpp
+    interface/drawable_units/Network_renderer.cpp \
+    interface/View_data/View_data.cpp \
+    interface/Units_disposer/Units_disposer.cpp \
+    interface/Shared_drawn_data/Shared_drawn_data.cpp
 
 
 
@@ -101,7 +104,10 @@ HEADERS  += \
     interface/primitives/Rectangle/Rectangle.h \
     interface/common/constants.h \
     interface/common/coordinates_type.h \
-    interface/drawable_units/draw_Network.h
+    interface/drawable_units/Network_renderer.h \
+    interface/View_data/View_data.h \
+    interface/Units_disposer/Units_disposer.h \
+    interface/Shared_drawn_data/Shared_drawn_data.h
 
 
 

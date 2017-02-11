@@ -10,34 +10,25 @@
 #include "interface/drawable_units/draw_Hub.h"
 #include "core/Network/Node/Iterator/Iterator_node_BFS.h"
 #include "core/Network/Node/Hub/Iterator/Iterator_BFS.h"
-#include "interface/primitives/Vertex/Vertex.h"
+//#include "interface/primitives/Vertex/Vertex.h"
 #include "algorithms.h"
 #include "core/test/Debug_inspector.h"
-#include "interface/primitives/Arrow/Arrow.h"
-#include "interface/primitives/Rectangle/Rectangle.h"
+
 
 namespace render {
-
-
-
-
-RenderingWidget* renderingWidget;
-
-
 
 
 
 RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *parent):
     network{rendering_network},
     QOpenGLWidget(parent),
-    vertex_buffer(QOpenGLBuffer::VertexBuffer),
     human_control(rendering_network),
+    network_renderer(rendering_network),
 
-    window_scale{2},
+    //View_data{2},
     clear_color(QColor(255,255,255))
 
 {
-    renderingWidget = this;
     resize(640, 480);
 
 
@@ -49,60 +40,19 @@ RenderingWidget::~RenderingWidget()
 {
 }
 
-void RenderingWidget::draw_unit_rect()
-{
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-}
-
-void RenderingWidget::draw_lines(std::size_t qty)
-{
-    glLineWidth(1*window_scale);
-    glDrawArrays(GL_LINES, 0, qty);
-}
-
 
 
 void RenderingWidget::initializeGL()
 {
     initializeOpenGLFunctions();
 
-    prepare_rendering_resources();
     human_control.initializeGL();
+    network_renderer.initializeGL();
 
     prepare_graphic_settings();
 }
 
 
-
-void RenderingWidget::prepare_rendering_resources()
-{
-
-    Arrow::init();
-    Rectangle::init();
-    Sprite::init();
-
-    vao_link_lines.create();
-    vao_link_lines.bind();
-    link_lines_buffer.create();
-    link_lines_buffer.bind();
-    shaders_link_lines.addShaderFromSourceFile(
-                QOpenGLShader::Vertex, resource_path+"shaders/lines.vert");
-    shaders_link_lines.addShaderFromSourceFile(
-                QOpenGLShader::Fragment, resource_path+"shaders/lines.frag");
-    shaders_link_lines.enableAttributeArray(Sprite::PROGRAM_VERTEX_ATTRIBUTE);
-    shaders_link_lines.setAttributeBuffer(Sprite::PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 2, 6 * sizeof(GLfloat));
-    shaders_link_lines.bindAttributeLocation("vertex", Sprite::PROGRAM_VERTEX_ATTRIBUTE);
-    shaders_link_lines.enableAttributeArray(1);
-    shaders_link_lines.setAttributeBuffer(1, GL_FLOAT, 2 * sizeof(GLfloat), 4, 6 * sizeof(GLfloat));
-    shaders_link_lines.bindAttributeLocation("color",1);
-    shaders_link_lines.link();
-
-    textures = {
-        new QOpenGLTexture(QImage(resource_path+"sprites/node.png").mirrored()),
-        new QOpenGLTexture(QImage(resource_path+"sprites/bend.png").mirrored()),
-        new QOpenGLTexture(QImage(resource_path+"sprites/hub.png").mirrored())
-    };
-}
 
 void RenderingWidget::prepare_graphic_settings()
 {
@@ -118,15 +68,15 @@ void RenderingWidget::prepare_graphic_settings()
 
 void RenderingWidget::resizeGL(int width, int height)
 {
-    window_rect.setWidth(width);
-    window_rect.setHeight(height);
+    view_data.window_rect.setWidth(width);
+    view_data.window_rect.setHeight(height);
 
-    projection_matrix = QMatrix4x4();
-    projection_matrix.ortho(
-        -window_rect.width()/2,
-         window_rect.width(),
-        -window_rect.height()/2,
-         window_rect.height(), -1.0f, 1.0f);
+    view_data.projection_matrix = QMatrix4x4();
+    view_data.projection_matrix.ortho(
+        -view_data.window_rect.width()/2,
+         view_data.window_rect.width(),
+        -view_data.window_rect.height()/2,
+         view_data.window_rect.height(), -1.0f, 1.0f);
 
 
     GLfloat aspect_ratio = 1.5;
@@ -139,27 +89,39 @@ void RenderingWidget::resizeGL(int width, int height)
 
 void RenderingWidget::mousePressEvent(QMouseEvent *event)
 {
-    human_control.mouse_press(event);
+    human_control.mouse_press(event, view_data);
+    update_if_need();
 }
 
 void RenderingWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    human_control.mouse_move(event);
+    human_control.mouse_move(event, view_data);
+    update_if_need();
 }
 
 void RenderingWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     human_control.mouse_release(event);
+    update_if_need();
 }
 
 void RenderingWidget::wheelEvent(QWheelEvent *event)
 {
-    human_control.mouse_wheel(event);
+    human_control.mouse_wheel(event, view_data);
+    update_if_need();
 }
 
 void RenderingWidget::keyPressEvent(QKeyEvent *event)
 {
     human_control.key_press(event);
+    update_if_need();
+}
+
+void RenderingWidget::update_if_need()
+{
+    if (human_control.world_changed) {
+        update();
+    }
 }
 
 
@@ -192,15 +154,13 @@ void RenderingWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
 
 
-    projection_matrix = get_projection_according_to_window(window_rect);
+    view_data.projection_matrix = get_projection_according_to_window(view_data.window_rect);
+    human_control.draw(view_data);
 
-    human_control.draw();
+    view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect);
+    view_data.projection_matrix.scale(view_data.window_scale);
 
-
-    projection_matrix = get_projection_according_to_observer_position(window_rect);
-    projection_matrix.scale(window_scale);
-
-    network.draw();
+    network_renderer.draw(view_data);
 
     test::debug.profiler.stop("RenderingWidget::paintGL");
 }

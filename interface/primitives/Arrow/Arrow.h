@@ -12,13 +12,19 @@
 namespace render {
 
 
+struct Arrow_vector
+{
+    Point position;
+    float direction;
+};
+
 struct Arrow: protected QOpenGLFunctions
 {
 public:
     Arrow();
+    void init();
 
-    static void init();
-    static void draw();
+    void draw();
 
     static QOpenGLShaderProgram shaders;
     static QOpenGLVertexArrayObject vertex_array;

@@ -4,6 +4,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
+#include <QOpenGLTexture>
 
 
 #include "interface/primitives/Vertex/Vertex.h"
@@ -27,16 +28,23 @@ public:
 
 };
 
+
 class Sprite: protected QOpenGLFunctions
 {
 public:
     Sprite();
-    static void init();
-    static void draw();
+    void init();
+
+    void draw();
+
 
     static QOpenGLShaderProgram shaders;
     static const std::size_t PROGRAM_VERTEX_ATTRIBUTE=0;
     static const std::size_t PROGRAM_TEXCOORD_ATTRIBUTE=1;
+    static constexpr float etalon_radius = 10.0;
+
+
+    static std::vector<QOpenGLTexture*> textures;
 };
 
 }

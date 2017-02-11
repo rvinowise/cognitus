@@ -14,8 +14,10 @@ Arrow::Arrow()
 
 }
 
+
 void Arrow::init()
 {
+    initializeOpenGLFunctions();
     static const GLfloat sprite_coordinates[3][2] = {
           { +0.2, 1 }, { 0, 0.2}, { -0.2, 1}
     };
@@ -50,7 +52,7 @@ void Arrow::init()
 
 void Arrow::draw()
 {
-    renderingWidget->glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 

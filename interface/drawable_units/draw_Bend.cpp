@@ -25,32 +25,52 @@ Bend::Bend(Bend &&other):
 {
 }
 
+
 int Bend::get_radius()const
 {
     return 3;
 }
-QOpenGLTexture* Bend::get_texture()const
+QOpenGLTexture* Bend::get_texture()
 {
-    return renderingWidget->textures[1];
-}
-
-
-Color Bend::get_links_to_next_bends_color() const
-{
-    return Color::fromRgbF(0,0,0,0.5);
+    return Sprite::textures[1];
 }
 
 
 
-
-void Bend::draw()
+void Bend::prepare_draw_data(Shared_drawn_data &drawn_data) const
 {
-    Drawable_unit::draw();
-    //draw_links_to_next_bends();
-    //draw_arrows();
+    auto& link_vertices = drawn_data.vertices;
+    auto& arrow_vectors = drawn_data.arrow_vectors;
+    Color color_link = Color::fromRgbF(0,0,0,0.5);
+    Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
+    for (const core::Bend next_bend: this->get_array_of_next_bends()) {
+        link_vertices.push_back(Vertex_colored(position(), color_begin));
+        Color color_end = (next_bend.is_selected() ? /*color_link+*/selection_color : color_link);
+        link_vertices.push_back(Vertex_colored(next_bend.position(), color_end));
+
+        float direction_to_next = poidir(position(), next_bend.position());
+        arrow_vectors.push_back(Arrow_vector{next_bend.position(), direction_to_next});
+    }
 }
 
-void Bend::draw_links_to_next_bends()
+/*void Bend::prepare_draw_data_of_arrows(std::vector<Arrow_vector> &vectors) const
+{
+    for (core::Bend next_bend: this->get_array_of_next_bends()) {
+        vertices_of_links.push_back(Vertex_colored(position(), color_begin));
+        Color color_end = (next_bend.is_selected() ? color_link+selection_color : color_link);
+        vertices_of_links.push_back(Vertex_colored(next_bend.position(), color_end));
+
+        QMatrix4x4 matrix = renderingWidget->projection_matrix;
+        matrix.translate(QVector2D(next_bend.position()));
+        float direction_to_next = poidir(position(), next_bend.position());
+        matrix.rotate(direction_to_next,0,0,1);
+        Arrow::shaders.setUniformValue("matrix", matrix);
+        Arrow::draw();
+    }
+}
+*/
+
+/*void Bend::draw_links_to_next_bends() const
 {
     Arrow::vertex_array.bind();
 
@@ -61,10 +81,10 @@ void Bend::draw_links_to_next_bends()
 
     std::vector<Vertex_colored> vertices_of_links;
     Color color_link = Color::fromRgbF(0,0,0,0.5);
-    Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
+    Color color_begin = (is_selected() ? color_link+selection_color : color_link);
     for (core::Bend next_bend: this->get_array_of_next_bends()) {
         vertices_of_links.push_back(Vertex_colored(position(), color_begin));
-        Color color_end = (next_bend.is_selected() ? /*color_link+*/selection_color : color_link);
+        Color color_end = (next_bend.is_selected() ? color_link+selection_color : color_link);
         vertices_of_links.push_back(Vertex_colored(next_bend.position(), color_end));
 
         QMatrix4x4 matrix = renderingWidget->projection_matrix;
@@ -92,7 +112,7 @@ void Bend::draw_arrows() {
     Arrow::shaders.setUniformValue("color", Color::fromRgbF(0,0,0,0.5));
 
     Arrow::draw();
-}
+}*/
 
 
 

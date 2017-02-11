@@ -7,6 +7,8 @@
 
 #include "interface/common/constants.h"
 #include "interface/primitives/Vertex/Vertex.h"
+#include "interface/View_data/View_data.h"
+
 
 namespace core {
     class Bend;
@@ -18,6 +20,7 @@ namespace render {
 class Node;
 class Bend;
 class Hub;
+class Sprite;
 
 struct Drawable_unit_data
 {
@@ -44,17 +47,17 @@ public:
     void create_data();
 
     bool operator==(const Drawable_unit& other)const;
-    bool operator=(const Drawable_unit& other);
+    Drawable_unit& operator=(const Drawable_unit& other);
 
     Drawable_unit get_empty();
 
     bool is_empty() const;
     bool exists() const;
 
-    void draw() const;
-    void draw_link_to(const Drawable_unit& other) const;
-    void draw_lines(const std::vector<Vertex_point>& vertices, const Color& color)const;
-    void draw_lines(const std::vector<Vertex_colored>& vertices)const;
+    void prepare_shader_for_drawing
+    (const QMatrix4x4& projection_matrix, QOpenGLShaderProgram &shaders) const;
+
+    void draw(const View_data &view_data, Sprite &sprite) const;
 
     bool is_inside(Rect rect)const;
     bool has_inside(Point point)const;
@@ -66,7 +69,6 @@ public:
     Point position() const;
 
     virtual int get_radius()const;
-    virtual QOpenGLTexture* get_texture()const;
 
 private:
     Drawable_unit_data* data;

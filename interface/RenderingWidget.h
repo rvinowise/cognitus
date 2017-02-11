@@ -3,7 +3,7 @@
 #include <QtGui>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
-#include <QOpenGLBuffer>
+
 #include <string>
 #include <memory>
 
@@ -12,7 +12,8 @@
 
 #include "interface/primitives/Arrow/Arrow.h"
 #include "interface/primitives/Rectangle/Rectangle.h"
-#include "interface/drawable_units/draw_Network.h"
+#include "interface/drawable_units/Network_renderer.h"
+#include "interface/View_data/View_data.h"
 
 namespace core {
     class Network;
@@ -33,24 +34,7 @@ public:
     //explicit RenderingWidget(RenderingWidget* other = 0);
     ~RenderingWidget();
 
-    void draw_unit_rect();
-    void draw_lines(std::size_t qty);
-
-    QMatrix4x4 projection_matrix;
-
-
-    QOpenGLShaderProgram shaders_link_lines;
-
-
-
-    Rect window_rect;
-    float window_scale;
-    std::vector<QOpenGLTexture*> textures;
-
-    QOpenGLBuffer vertex_buffer;
-    QOpenGLVertexArrayObject vao_sprite_rect;
-    QOpenGLBuffer link_lines_buffer;
-    QOpenGLVertexArrayObject vao_link_lines;
+    View_data view_data;
 
 
 protected:
@@ -64,6 +48,8 @@ protected:
     void wheelEvent(QWheelEvent*event) Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent*event) Q_DECL_OVERRIDE;
 
+    void update_if_need();
+
 private:
     void update_units_according_to_network();
     void prepare_rendering_resources();
@@ -73,13 +59,11 @@ private:
     QColor clear_color;
 
     Human_control human_control;
+    render::Network_renderer network_renderer;
 
-
-    render::Network& network;
+    core::Network& network;
 
 };
-
-extern RenderingWidget* renderingWidget;
 
 
 

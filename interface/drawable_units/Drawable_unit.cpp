@@ -49,9 +49,10 @@ bool Drawable_unit::operator==(const Drawable_unit& other) const
     return data==other.data;
 }
 
-bool Drawable_unit::operator=(const Drawable_unit &other)
+Drawable_unit& Drawable_unit::operator=(const Drawable_unit &other)
 {
     data=other.data;
+    return *this;
 }
 
 Drawable_unit Drawable_unit::get_empty()
@@ -70,26 +71,28 @@ bool Drawable_unit::exists() const
 }
 
 
-void Drawable_unit::draw() const
+void Drawable_unit::prepare_shader_for_drawing
+(const QMatrix4x4 &projection_matrix, QOpenGLShaderProgram &shaders) const
 {
-    Rectangle::vao_rect.bind();
-
-    QMatrix4x4 matrix = renderingWidget->projection_matrix;
+    QMatrix4x4 matrix{projection_matrix};
     matrix.translate(QVector2D(position()));
-    matrix.scale(get_radius()/sprite_etalon_radius);
+    matrix.scale(get_radius()/Sprite::etalon_radius);
+    shaders.setUniformValue("matrix", matrix);
+    shaders.setUniformValue("is_selected", is_selected()?1.0f:0.0f);
+}
 
-    Sprite::shaders.bind();
+void Drawable_unit::draw(const View_data& view_data, Sprite& sprite) const
+{
+    QMatrix4x4 matrix = view_data.projection_matrix;
+    matrix.translate(QVector2D(position()));
+    matrix.scale(get_radius()/Sprite::etalon_radius);
+
     Sprite::shaders.setUniformValue("matrix", matrix);
     Sprite::shaders.setUniformValue("is_selected", is_selected()?1.0f:0.0f);
-    get_texture()->bind();
 
-    Sprite::draw();
+    sprite.draw();
 }
 
-void Drawable_unit::draw_link_to(const Drawable_unit &other) const
-{
-
-}
 
 bool Drawable_unit::is_inside(Rect rect) const
 {
@@ -145,39 +148,8 @@ int Drawable_unit::get_radius()const
     return 0;
 }
 
-QOpenGLTexture *Drawable_unit::get_texture() const
-{
-    return 0;
-}
 
 
-
-void Drawable_unit::draw_lines(
-        const std::vector<Vertex_point>& vertices,
-        const Color& color) const
-{
-    renderingWidget->vao_link_lines.bind();
-    renderingWidget->link_lines_buffer.bind();
-    renderingWidget->link_lines_buffer.allocate(vertices.data(), vertices.size() * sizeof(Vertex_point));
-    renderingWidget->shaders_link_lines.bind();
-
-    QMatrix4x4 matrix = renderingWidget->projection_matrix;
-    renderingWidget->shaders_link_lines.setUniformValue("matrix", matrix);
-    renderingWidget->shaders_link_lines.setUniformValue("color", color);
-    renderingWidget->draw_lines(vertices.size());
-}
-
-void Drawable_unit::draw_lines(const std::vector<Vertex_colored> &vertices) const
-{
-    renderingWidget->vao_link_lines.bind();
-    renderingWidget->link_lines_buffer.bind();
-    renderingWidget->link_lines_buffer.allocate(vertices.data(), vertices.size() * sizeof(Vertex_colored));
-    renderingWidget->shaders_link_lines.bind();
-
-    QMatrix4x4 matrix = renderingWidget->projection_matrix;
-    renderingWidget->shaders_link_lines.setUniformValue("matrix", matrix);
-    renderingWidget->draw_lines(vertices.size());
-}
 
 
 

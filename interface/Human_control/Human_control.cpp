@@ -19,29 +19,29 @@ namespace render {
 using std::vector;
 
 
-void Mouse_state::set_position(Point in_position) {
+void Mouse_state::set_position(Point in_position, View_data& view_data) {
     position = in_position;
-    world_pos = (in_position - renderingWidget->window_rect.topLeft())
-            / renderingWidget->window_scale;
+    world_pos = (in_position - view_data.window_rect.topLeft())
+            / view_data.window_scale;
 }
-void Selection::set_screen_rect(Rect in_rect)
+void Selection::set_screen_rect(Rect in_rect, View_data& view_data)
 {
     screen_rect = in_rect;
     world_rect.setTopLeft(
                     Point(
-                        screen_rect.left()/(renderingWidget->window_scale),
-                        screen_rect.top()/(renderingWidget->window_scale)
+                        screen_rect.left()/(view_data.window_scale),
+                        screen_rect.top()/(view_data.window_scale)
                         )
                     );
 
     world_rect.setBottomRight(
                 Point(
-                    screen_rect.right()/(renderingWidget->window_scale),
-                    screen_rect.bottom()/(renderingWidget->window_scale)
+                    screen_rect.right()/(view_data.window_scale),
+                    screen_rect.bottom()/(view_data.window_scale)
                     )
                 );
 
-    world_rect.translate(-renderingWidget->window_rect.topLeft()/renderingWidget->window_scale);
+    world_rect.translate(-view_data.window_rect.topLeft()/view_data.window_scale);
 
 }
 
@@ -85,9 +85,9 @@ void Human_control::initializeGL()
     shader_selection.link();
 }
 
-void Human_control::mouse_press(QMouseEvent *event)
+void Human_control::mouse_press(QMouseEvent *event, View_data& view_data)
 {
-    mouse_state.set_position(event->pos());
+    mouse_state.set_position(event->pos(), view_data);
     if (event->button()==Qt::LeftButton) {
         mouse_left_press(event);
     } else if (event->button()==Qt::RightButton) {
@@ -107,7 +107,7 @@ void Human_control::mouse_left_press(QMouseEvent *event)
     if (pressed_unit.exist()) {
         if (!contains(selection.units.all, *pressed_unit.all.begin())) {
             select_only_this(pressed_unit);
-            renderingWidget->update();
+            set_changed();
         }
         current_action = moving_units;
     } else {
@@ -115,7 +115,7 @@ void Human_control::mouse_left_press(QMouseEvent *event)
         select_only_this(selection.units);
         current_action = selection_units;
         selection.start = event->pos();
-        renderingWidget->update();
+        set_changed();
     }
 }
 
@@ -124,27 +124,26 @@ void Human_control::mouse_right_press(QMouseEvent *event)
 
 }
 
-void Human_control::mouse_move(QMouseEvent *event)
+void Human_control::mouse_move(QMouseEvent *event, View_data& view_data)
 {
     Point position_delta = event->pos() - mouse_state.position;
-    Point world_position_delta = position_delta/renderingWidget->window_scale;
+    Point world_position_delta = position_delta/view_data.window_scale;
 
     if (current_action == selection_units) {
 
-        selection.set_screen_rect(get_selection_rect_in_screen());
+        selection.set_screen_rect(get_selection_rect_in_screen(), view_data);
         selection.units = get_units_inside_selection_rect(selection.world_rect);
         mark_as_selected_only_theese(selection.units.all);
-        renderingWidget->update();
+        set_changed();
     } else if (current_action == Action::moving_units) {
         move_units(selection.units.all, world_position_delta);
-        renderingWidget->update();
+        set_changed();
     } else if (current_action == move_screen) {
-        Rect& rect = renderingWidget->window_rect;
-        rect.translate(position_delta);
-        renderingWidget->update();
+        view_data.window_rect.translate(position_delta);
+        set_changed();
     }
 
-    mouse_state.set_position(event->pos());
+    mouse_state.set_position(event->pos(), view_data);
 }
 
 void Human_control::mouse_release(QMouseEvent *event)
@@ -161,21 +160,21 @@ void Human_control::mouse_release(QMouseEvent *event)
         )
     {
         current_action = nothing;
-        renderingWidget->update();
+        set_changed();
     }
 
 }
 
-void Human_control::mouse_wheel(QWheelEvent *event)
+void Human_control::mouse_wheel(QWheelEvent *event, View_data& view_data)
 {
     static float scaling_step = 1.05;
     auto rotation = event->angleDelta();
     if (rotation.y() > 0) {
-        renderingWidget->window_scale *= scaling_step;
+        view_data.window_scale *= scaling_step;
     } else {
-        renderingWidget->window_scale /= scaling_step;
+        view_data.window_scale /= scaling_step;
     }
-    renderingWidget->update();
+    set_changed();
 }
 
 
@@ -191,8 +190,17 @@ void Human_control::key_press(QKeyEvent *event)
         break;
     }
 
-    renderingWidget->update();
+    set_changed();
     debug.write_resume();
+}
+
+void Human_control::set_changed()
+{
+    world_changed = true;
+}
+void Human_control::reset_changed()
+{
+    world_changed = false;
 }
 
 void Human_control::create_demo_units()
@@ -310,7 +318,7 @@ Selection::Units Human_control::get_unit_under_mouse() const
 
 void Human_control::mark_as_selected_only_theese(vector<Drawable_unit> &units)
 {
-    for (core::Node node: renderingWidget->network) {
+    for (core::Node node: network) {
         node.deselect_all_parts();
     }
     for (auto unit: units) {
@@ -319,7 +327,7 @@ void Human_control::mark_as_selected_only_theese(vector<Drawable_unit> &units)
 }
 void Human_control::select_only_this(Selection::Units& unit_to_select)
 {
-    for (core::Node node: renderingWidget->network) {
+    for (core::Node node: network) {
         node.deselect_all_parts();
     }
     selection.units = unit_to_select;
@@ -329,14 +337,14 @@ void Human_control::select_only_this(Selection::Units& unit_to_select)
 }
 
 
-void Human_control::draw()
+void Human_control::draw(View_data& view_data)
 {
     if (current_action == selection_units) {
-        draw_selection_rect();
+        draw_selection_rect(view_data);
     }
 }
 
-void Human_control::draw_selection_rect()
+void Human_control::draw_selection_rect(View_data& view_data)
 {
     QVector<Vertex_point> vertices_of_selection;
     vertices_of_selection.push_back(Vertex_point(selection.start));
@@ -345,11 +353,11 @@ void Human_control::draw_selection_rect()
     vertices_of_selection.push_back(Vertex_point(mouse_state.position.x(),selection.start.y()));
 
     vao_selection_rect.bind();
-    selection_vertices.bind(); //?
+    selection_vertices.bind();
     selection_vertices.allocate(vertices_of_selection.constData(), vertices_of_selection.count() * sizeof(Vertex_point));
     shader_selection.bind();
 
-    QMatrix4x4 matrix = renderingWidget->projection_matrix;
+    QMatrix4x4 matrix = view_data.projection_matrix;
     shader_selection.setUniformValue("matrix", matrix);
     shader_selection.setUniformValue("color", QColor::fromRgbF(0,1,0.5));
 

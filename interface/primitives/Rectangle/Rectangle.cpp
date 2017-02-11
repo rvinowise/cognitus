@@ -39,8 +39,19 @@ void Rectangle::init()
 }
 
 QOpenGLShaderProgram Sprite::shaders{};
+std::vector<QOpenGLTexture*> Sprite::textures;
+//float Sprite::etalon_radius = 10;
+
+Sprite::Sprite()
+{
+
+}
+
 void Sprite::init()
 {
+    Rectangle::init();
+    initializeOpenGLFunctions();
+
     shaders.addShaderFromSourceFile(
                 QOpenGLShader::Vertex, resource_path+"shaders/sprite.vert");
     shaders.addShaderFromSourceFile(
@@ -55,11 +66,17 @@ void Sprite::init()
     shaders.bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
     shaders.link();
     shaders.setUniformValue("texture", 0);
+
+    textures = {
+        new QOpenGLTexture(QImage(resource_path+"sprites/node.png").mirrored()),
+        new QOpenGLTexture(QImage(resource_path+"sprites/bend.png").mirrored()),
+        new QOpenGLTexture(QImage(resource_path+"sprites/hub.png").mirrored())
+    };
 }
 
 void Sprite::draw()
 {
-    renderingWidget->glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
 
