@@ -46,6 +46,8 @@ struct Selection
         std::vector<core::InterfaceNode> input_nodes;
         std::vector<core::InterfaceNode> output_nodes;
 
+        std::vector<core::InterfaceNode> get_interface_nodes();
+
         void clear();
         bool exist();
     } units;
@@ -64,21 +66,23 @@ enum Action
 class Human_control: protected QOpenGLFunctions
 {
 public:
-    Human_control(core::Network& in_network, Units_disposer& in_disposer);
+    Human_control(core::Network& in_network, 
+                  Units_disposer& in_disposer,
+                  View_data& in_view_data);
     void initializeGL();
 
-    void mouse_press(QMouseEvent *event, View_data& view_data);
+    void mouse_press(QMouseEvent *event);
     void mouse_left_press(QMouseEvent *event);
     void mouse_right_press(QMouseEvent *event);
-    void mouse_move(QMouseEvent *event, View_data &view_data);
+    void mouse_move(QMouseEvent *event);
     void mouse_release(QMouseEvent *event);
-    void mouse_wheel(QWheelEvent *event, View_data &view_data);
+    void mouse_wheel(QWheelEvent *event);
     void key_press(QKeyEvent *event);
 
     bool world_changed;
     void set_changed();
     void reset_changed();
-    void draw(View_data& view_data);
+    void draw();
 
 
 private:
@@ -87,7 +91,7 @@ private:
     Rect get_selection_rect_in_screen() const;
     void mark_as_selected_only_theese(std::vector<Drawable_unit> &units);
     void select_only_this(Selection::Units &unit);
-    void draw_selection_rect(View_data &view_data);
+    void draw_selection_rect();
     void move_units(std::vector<Drawable_unit> &units, Point vector);
     void create_demo_units();
     void fire_selected_input_nodes();
@@ -105,6 +109,7 @@ protected:
 
     Units_disposer& disposer;
     core::Network& network;
+    View_data& view_data;
 };
 
 }

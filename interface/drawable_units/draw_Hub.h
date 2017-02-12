@@ -22,6 +22,7 @@ public:
 
     void prepare_draw_data(std::vector<Vertex_colored> &vertices) const;
 
+    static const float radius;
     int get_radius()const;
     static QOpenGLTexture* get_texture();
     Color get_links_to_next_hubs_color() const;

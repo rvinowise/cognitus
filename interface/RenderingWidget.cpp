@@ -22,8 +22,8 @@ namespace render {
 RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *parent):
     network{rendering_network},
     QOpenGLWidget(parent),
-    human_control(rendering_network, disposer),
-    network_renderer(rendering_network),
+    human_control(rendering_network, disposer, view_data),
+    network_renderer(rendering_network, this),
 
     //View_data{2},
     clear_color(QColor(255,255,255))
@@ -89,13 +89,13 @@ void RenderingWidget::resizeGL(int width, int height)
 
 void RenderingWidget::mousePressEvent(QMouseEvent *event)
 {
-    human_control.mouse_press(event, view_data);
+    human_control.mouse_press(event);
     update_if_need();
 }
 
 void RenderingWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    human_control.mouse_move(event, view_data);
+    human_control.mouse_move(event);
     update_if_need();
 }
 
@@ -107,7 +107,7 @@ void RenderingWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void RenderingWidget::wheelEvent(QWheelEvent *event)
 {
-    human_control.mouse_wheel(event, view_data);
+    human_control.mouse_wheel(event);
     update_if_need();
 }
 
@@ -137,11 +137,13 @@ QMatrix4x4 get_projection_according_to_window(const QRectF& screen_rect)
         0, -1.0f, 1.0f);
     return matrix;
 }
-QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_rect)
+QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_rect, float window_scale)
 {
     QMatrix4x4 matrix = get_projection_according_to_window(screen_rect);
-    matrix.translate(screen_rect.x(),
-                       screen_rect.y(), 0);
+    matrix.scale(window_scale);
+    matrix.translate(-screen_rect.x(),
+                     -screen_rect.y(), 0);
+    
     return matrix;
 }
 
@@ -151,17 +153,26 @@ QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_re
 void RenderingWidget::paintGL()
 {
     test::debug.profiler.start("RenderingWidget::paintGL");
+    
+    QPainter painter;
+    painter.begin(this);
+ 
+    painter.beginNativePainting();
+    
     glClear(GL_COLOR_BUFFER_BIT);
 
 
-    view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect);
-    view_data.projection_matrix.scale(view_data.window_scale);
+    view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect, view_data.window_scale);
     network_renderer.draw(view_data);
 
-    view_data.projection_matrix = get_projection_according_to_window(view_data.window_rect);
-    human_control.draw(view_data);
-
-
+    //view_data.projection_matrix = get_projection_according_to_window(view_data.window_rect);
+    human_control.draw();
+    painter.endNativePainting();
+    
+    //painter.drawLine(10,10,1000,1000);
+    //painter.drawText(50,50,"LOL");
+    painter.end();
+    
     test::debug.profiler.stop("RenderingWidget::paintGL");
 }
 

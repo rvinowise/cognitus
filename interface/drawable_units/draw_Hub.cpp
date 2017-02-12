@@ -26,6 +26,7 @@ Hub::Hub(Hub &&other):
 }
 
 
+const float Hub::radius = 4;
 int Hub::get_radius()const
 {
     return 4;

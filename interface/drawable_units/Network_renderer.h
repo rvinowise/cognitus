@@ -30,10 +30,11 @@ class Hub;
 class Network_renderer: protected QOpenGLFunctions
 {
 public:
-    Network_renderer(core::Network& in_network);
+    Network_renderer(core::Network& in_network, QPaintDevice* paint_device);
     void initializeGL();
 
     void draw(const View_data& view_data);
+    void draw_text_in_units(const View_data &view_data);
     void draw_unit_sprites(const View_data& view_data);
     void draw_link_lines(const View_data& view_data);
     void draw_arrows(const View_data &view_data) ;
@@ -44,8 +45,10 @@ private:
 
     Shared_drawn_data drawn_data;
     View_data view_data;
+    QPaintDevice* paint_device;
 
     core::Network& network;
+    
 };
 
 }

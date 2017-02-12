@@ -64,7 +64,7 @@ void Input::input_history_in_cycle()
 
 void Input::check_network_validity()
 {
-    ActiveBends& lastAddedBends = network.getLastActiveBends();
+    Synchro_bends& lastAddedBends = network.get_last_active_bends();
 
     const std::vector<Bend>* bendsOfIteration = &lastAddedBends.bends;
     for (size_t i_iter = qtyIterations-1; i_iter > 0; i_iter--) {

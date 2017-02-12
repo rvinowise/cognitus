@@ -32,10 +32,10 @@ Node::Node(Node &&other):
 }
 
 
-
+const float Node::radius = 10;
 int Node::get_radius()const
 {
-    return 10;
+    return radius;
 }
 QOpenGLTexture* Node::get_texture()
 {

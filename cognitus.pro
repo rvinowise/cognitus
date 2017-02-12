@@ -20,7 +20,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     core/auxiliary/Acquiring_handles/Acquiring_handles.cpp \
-    core/Network/ActiveBend/ActiveBend.cpp \
     core/Network/Circuit/Circuit.cpp \
     core/Network/CircuitFinder/test/testCircuitFinder.cpp \
     core/Network/CircuitFinder/CircuitFinder.cpp \
@@ -56,7 +55,8 @@ SOURCES += main.cpp \
     interface/drawable_units/Network_renderer.cpp \
     interface/View_data/View_data.cpp \
     interface/Units_disposer/Units_disposer.cpp \
-    interface/Shared_drawn_data/Shared_drawn_data.cpp
+    interface/Shared_drawn_data/Shared_drawn_data.cpp \
+    core/Network/Synchro_bends/Synchro_bends.cpp
 
 
 
@@ -64,7 +64,6 @@ SOURCES += main.cpp \
 
 HEADERS  += \
     core/auxiliary/Acquiring_handles/Acquiring_handles.h \
-    core/Network/ActiveBend/ActiveBend.h \
     core/Network/Circuit/Circuit.h \
     core/Network/CircuitFinder/test/testCircuitFinder.h \
     core/Network/CircuitFinder/CircuitFinder.h \
@@ -107,7 +106,8 @@ HEADERS  += \
     interface/drawable_units/Network_renderer.h \
     interface/View_data/View_data.h \
     interface/Units_disposer/Units_disposer.h \
-    interface/Shared_drawn_data/Shared_drawn_data.h
+    interface/Shared_drawn_data/Shared_drawn_data.h \
+    core/Network/Synchro_bends/Synchro_bends.h
 
 
 

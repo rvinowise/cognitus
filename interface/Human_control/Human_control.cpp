@@ -19,30 +19,38 @@ namespace render {
 using std::vector;
 
 
+Point get_world_pos_by_screen_pos(Point screen_pos, View_data& view_data)
+{
+    Point world_pos = screen_pos / view_data.window_scale 
+            + QVector2D(view_data.window_rect.topLeft());
+    
+    return world_pos;
+}
+
 void Mouse_state::set_position(Point in_position, View_data& view_data) {
     position = in_position;
-    world_pos = (in_position - view_data.window_rect.topLeft())
-            / view_data.window_scale;
+    world_pos = get_world_pos_by_screen_pos(in_position, view_data);
 }
 void Selection::set_screen_rect(Rect in_rect, View_data& view_data)
 {
     screen_rect = in_rect;
     world_rect.setTopLeft(
-                    Point(
-                        screen_rect.left()/(view_data.window_scale),
-                        screen_rect.top()/(view_data.window_scale)
-                        )
-                    );
-
-    world_rect.setBottomRight(
-                Point(
-                    screen_rect.right()/(view_data.window_scale),
-                    screen_rect.bottom()/(view_data.window_scale)
-                    )
+                get_world_pos_by_screen_pos(screen_rect.topLeft(), view_data)
+                .toPointF()
                 );
 
-    world_rect.translate(-view_data.window_rect.topLeft()/view_data.window_scale);
+    world_rect.setBottomRight(
+                get_world_pos_by_screen_pos(screen_rect.bottomRight(), view_data)
+                .toPointF()
+                );
+}
 
+std::vector<InterfaceNode> Selection::Units::get_interface_nodes()
+{
+    std::vector<InterfaceNode> result;
+    result.insert(result.end(), input_nodes.begin(), input_nodes.end());
+    result.insert(result.end(), output_nodes.begin(), output_nodes.end());
+    return result;
 }
 
 void Selection::Units::clear()
@@ -59,10 +67,14 @@ bool Selection::Units::exist()
 }
 
 
-Human_control::Human_control(core::Network& in_network, Units_disposer& in_disposer):
+Human_control::Human_control(
+        core::Network& in_network, 
+        Units_disposer& in_disposer,
+        View_data& in_view_data):
     selection_vertices(QOpenGLBuffer::VertexBuffer),
     network{in_network},
-    disposer{in_disposer}
+    disposer{in_disposer},
+    view_data{in_view_data}
 {
     create_demo_units();
 }
@@ -86,7 +98,7 @@ void Human_control::initializeGL()
     shader_selection.link();
 }
 
-void Human_control::mouse_press(QMouseEvent *event, View_data& view_data)
+void Human_control::mouse_press(QMouseEvent *event)
 {
     mouse_state.set_position(event->pos(), view_data);
     if (event->button()==Qt::LeftButton) {
@@ -115,7 +127,8 @@ void Human_control::mouse_left_press(QMouseEvent *event)
         selection.units.clear();
         select_only_this(selection.units);
         current_action = selection_units;
-        selection.start = event->pos();
+        selection.start = event->pos();//get_world_pos_by_screen_pos(event->pos(), view_data);
+        selection.set_screen_rect(get_selection_rect_in_screen(), view_data);
         set_changed();
     }
 }
@@ -125,9 +138,9 @@ void Human_control::mouse_right_press(QMouseEvent *event)
 
 }
 
-void Human_control::mouse_move(QMouseEvent *event, View_data& view_data)
+void Human_control::mouse_move(QMouseEvent *event)
 {
-    Point position_delta = event->pos() - mouse_state.position;
+    Point position_delta = Point(event->pos()) - mouse_state.position;
     Point world_position_delta = position_delta/view_data.window_scale;
 
     if (current_action == selection_units) {
@@ -140,7 +153,7 @@ void Human_control::mouse_move(QMouseEvent *event, View_data& view_data)
         move_units(selection.units.all, world_position_delta);
         set_changed();
     } else if (current_action == move_screen) {
-        view_data.window_rect.translate(position_delta);
+        view_data.window_rect.translate(-position_delta.toPointF()/view_data.window_scale);
         set_changed();
     }
 
@@ -166,15 +179,32 @@ void Human_control::mouse_release(QMouseEvent *event)
 
 }
 
-void Human_control::mouse_wheel(QWheelEvent *event, View_data& view_data)
+void Human_control::mouse_wheel(QWheelEvent *event)
 {
     static float scaling_step = 1.05;
     auto rotation = event->angleDelta();
+    int scale_abs;
     if (rotation.y() > 0) {
         view_data.window_scale *= scaling_step;
+        scale_abs = 1;
     } else {
         view_data.window_scale /= scaling_step;
+        scale_abs = -1;
     }
+    
+    /*Point window_offset(view_data.window_rect.topLeft());
+    window_offset.normalize();
+    view_data.window_rect.translate(
+                window_offset.x()*
+                view_data.window_scale*
+                scale_abs*
+                view_data.window_rect.width(),
+                window_offset.y()*
+                view_data.window_scale*
+                scale_abs*
+                view_data.window_rect.height()
+                );*/
+    
     set_changed();
 }
 
@@ -206,12 +236,12 @@ void Human_control::reset_changed()
 
 void Human_control::create_demo_units()
 {
-    network.input.initNodes(100);
+    network.input.initNodes(50);
     auto& input = network.input;
 
     std::for_each(input.begin(), input.end(), [](core::Node node){
         debug.profiler.start("create units");
-        node.generate_random_empty_figure(20);
+        node.generate_random_empty_figure(10);
         debug.profiler.stop("create units");
 
     });
@@ -221,10 +251,13 @@ void Human_control::create_demo_units()
         node.dispose_hubs_into_positions();
         debug.profiler.stop("dispose units");
     });
+    
+    disposer.dispose_interface_nodes(network.input);
 }
 
 void Human_control::fire_selected_input_nodes()
 {
+    Synchro_bends last_placed_active_bends = network.get_last_active_bends();
     network.input.begin_setting_input_from_outside();
     for (core::InterfaceNode input_node: selection.units.input_nodes) {
         std::size_t input_index = input_node.get_index_in_interface_array();
@@ -232,20 +265,19 @@ void Human_control::fire_selected_input_nodes()
     }
     network.input.end_setting_input_from_outside();
 
-    /*ActiveBends last_active_bends = network.getLastActiveBends();
-    vector<core::Bend> last_bends = last_active_bends.bends;
-    for (core::Bend bend: last_bends) {*/
+
     network.input.wait_for_insertion_of_previous_input();
-    for (core::Node node: selection.units.input_nodes) {
-        disposer.dispose_last_bend(node);
-    }
+
+    auto nodes = selection.units.get_interface_nodes();
+    disposer.dispose_bends(nodes, last_placed_active_bends, network.get_last_active_bends());
+
 }
 
 
 Rect Human_control::get_selection_rect_in_screen() const
 {
 
-    Point first, last;
+    QPointF first, last;
     first.rx() = (selection.start.x() < mouse_state.position.x()) ?
             selection.start.x() : mouse_state.position.x();
     first.ry() = (selection.start.y() < mouse_state.position.y()) ?
@@ -346,20 +378,30 @@ void Human_control::select_only_this(Selection::Units& unit_to_select)
 }
 
 
-void Human_control::draw(View_data& view_data)
+void Human_control::draw()
 {
     if (current_action == selection_units) {
-        draw_selection_rect(view_data);
+        draw_selection_rect();
     }
 }
 
-void Human_control::draw_selection_rect(View_data& view_data)
+void Human_control::draw_selection_rect()
 {
     QVector<Vertex_point> vertices_of_selection;
-    vertices_of_selection.push_back(Vertex_point(selection.start));
-    vertices_of_selection.push_back(Vertex_point(selection.start.x(),mouse_state.position.y()));
-    vertices_of_selection.push_back(Vertex_point(mouse_state.position));
-    vertices_of_selection.push_back(Vertex_point(mouse_state.position.x(),selection.start.y()));
+    
+    vertices_of_selection.push_back(Vertex_point(selection.world_rect.topLeft()));
+        vertices_of_selection.push_back(
+                    Vertex_point(selection.world_rect.left(),
+                                 selection.world_rect.bottom()));
+        vertices_of_selection.push_back(selection.world_rect.bottomRight());
+        vertices_of_selection.push_back(
+                    Vertex_point(selection.world_rect.right(),
+                                 selection.world_rect.top()));
+    
+    /*vertices_of_selection.push_back(Vertex_point(selection.start));
+    vertices_of_selection.push_back(Vertex_point(selection.start.x(),mouse_state.world_pos.y()));
+    vertices_of_selection.push_back(Vertex_point(mouse_state.world_pos));
+    vertices_of_selection.push_back(Vertex_point(mouse_state.world_pos.x(),selection.start.y()));*/
 
     vao_selection_rect.bind();
     selection_vertices.bind();

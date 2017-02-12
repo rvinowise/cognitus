@@ -22,6 +22,7 @@ public:
 
     void prepare_draw_data(Shared_drawn_data& drawn_data)const;
 
+    static const float radius;
     int get_radius()const;
     static QOpenGLTexture* get_texture();
 

@@ -5,7 +5,8 @@
 #include <algorithm>
 #include <exception>
 
-//template<typename Cont1, typename Cont2>
+#include <interface/common/coordinates_type.h>
+
 
 
 template<typename Cont1, typename Cont2/*, typename T*/>
@@ -57,4 +58,23 @@ template <typename Cont,
 bool contains(const Cont& container, const Item& item)
 {
     return std::find(container.begin(), container.end(), item) != container.end();
+}
+
+
+using render::Point;
+template <typename Cont,
+          typename Unit = typename Cont::value_type,
+          typename Iterator = typename Cont::iterator>
+Point get_center_among_of(const Cont& container)
+{
+    if (container.size()==0) {
+        throw("get_center_among_of for a container without units" );
+    }
+    Point center{0,0};
+    for (const Unit& unit: container) {
+        center += unit.position();
+    }
+    center /= container.size();
+
+    return center;
 }

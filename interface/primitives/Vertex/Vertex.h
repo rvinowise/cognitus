@@ -16,6 +16,7 @@ struct Vertex_point
     Vertex_point(){}
     Vertex_point(GLfloat in_x, GLfloat in_y);
     Vertex_point(Point point);
+    Vertex_point(QPointF point);
     GLfloat position[2];
 };
 struct Vertex_colored

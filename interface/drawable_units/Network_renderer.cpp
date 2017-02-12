@@ -13,8 +13,12 @@ namespace render {
 
 
 
-Network_renderer::Network_renderer(core::Network &in_network):
-    network{in_network}
+Network_renderer::Network_renderer(
+        core::Network &in_network,
+        QPaintDevice* in_paint_device
+        ):
+    network{in_network},
+    paint_device{in_paint_device}
 {
 
 }
@@ -50,6 +54,18 @@ void Network_renderer::draw(const View_data &view_data)
     draw_unit_sprites(view_data);
     draw_link_lines(view_data);
     draw_arrows(view_data);
+    //draw_text_in_units(view_data);
+}
+
+void Network_renderer::draw_text_in_units(const View_data &view_data)
+{
+    static QPainter painter(paint_device);
+    painter.drawText(50,50,"LOL");
+    for (core::Node node: network) {
+        for (core::Bend bend: node.bends()) {
+            
+        }
+    }
 }
 
 void Network_renderer::draw_unit_sprites(const View_data &view_data)

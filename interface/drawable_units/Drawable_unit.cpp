@@ -85,8 +85,8 @@ void Drawable_unit::prepare_shader_for_drawing
 
 bool Drawable_unit::is_inside(Rect rect) const
 {
-    Point first = rect.topLeft();
-    Point last = rect.bottomRight();
+    Point first(rect.topLeft());
+    Point last(rect.bottomRight());
     if (
             (first.x() < position().x()) &&
             (first.y() < position().y()) &&

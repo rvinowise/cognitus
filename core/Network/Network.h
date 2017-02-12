@@ -2,7 +2,7 @@
 
 #include "Interface/Input/Input.h"
 #include "Interface/Output/Output.h"
-#include "ActiveBend/ActiveBend.h"
+#include "core/Network/Synchro_bends/Synchro_bends.h"
 #include "CircuitFinder/CircuitFinder.h"
 #include "core/Network/Node/Iterator/Iterator_node_BFS.h"
 
@@ -36,7 +36,7 @@ public:
 
     void step();
 
-    ActiveBends& getLastActiveBends();
+    Synchro_bends& get_last_active_bends();
 
     void prepare_to_new_input_iteration();
     void save_new_activated_bend(Bend inBend);
@@ -57,8 +57,8 @@ private:
     Node create_higher_node_for(Circuit inCircuit);
     void fire_node(Node &in_node);
 
-    ActiveBends* lastActiveBends;
-    ActiveBends* newActiveBends;
+    Synchro_bends* last_active_bends;
+    Synchro_bends* new_active_bends;
     std::vector<Node> node;
 
     std::thread* threadProcessInput;

@@ -30,6 +30,7 @@ public:
     void deselect_all_parts();
     void dispose_hubs_into_positions();
 
+    static const float radius;
     int get_radius()const;
     static QOpenGLTexture* get_texture();
 

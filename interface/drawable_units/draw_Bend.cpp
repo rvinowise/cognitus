@@ -25,10 +25,10 @@ Bend::Bend(Bend &&other):
 {
 }
 
-
+const float Bend::radius = 3;
 int Bend::get_radius()const
 {
-    return 3;
+    return radius;
 }
 QOpenGLTexture* Bend::get_texture()
 {

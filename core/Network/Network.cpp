@@ -11,7 +11,7 @@ namespace core {
 Network::Network():
     input(*this), output(*this)
 {
-    lastActiveBends = new ActiveBends();
+    last_active_bends = new Synchro_bends();
 }
 
 Network::~Network()
@@ -32,21 +32,21 @@ void Network::step() {
 
 }
 
-ActiveBends& Network::getLastActiveBends()
+Synchro_bends& Network::get_last_active_bends()
 {
-    return *lastActiveBends;
+    return *last_active_bends;
 }
 
 
 
 void Network::prepare_to_new_input_iteration()
 {
-    newActiveBends = new ActiveBends();
+    new_active_bends = new Synchro_bends();
 }
 
 void Network::save_new_activated_bend(Bend inBend)
 {
-    newActiveBends->bends.push_back(inBend);
+    new_active_bends->bends.push_back(inBend);
 }
 
 
@@ -79,12 +79,12 @@ iterator_node_BFS High_nodes::end()
 
 void Network::prolongate_history_of_inputs() {
     // incapsulate?
-    if (!newActiveBends->bends.empty()) {
-        lastActiveBends->connect_this_bends_to_others(*newActiveBends);
-        delete lastActiveBends;
-        lastActiveBends = newActiveBends;
+    if (!new_active_bends->bends.empty()) {
+        last_active_bends->connect_this_bends_to_others(*new_active_bends);
+        delete last_active_bends;
+        last_active_bends = new_active_bends;
     } else {
-        delete newActiveBends;
+        delete new_active_bends;
     }
 }
 
