@@ -15,9 +15,10 @@
 #include "core/test/Debug_inspector.h"
 
 
+
 namespace render {
 
-
+QPainter p;
 
 RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *parent):
     network{rendering_network},
@@ -41,15 +42,17 @@ RenderingWidget::~RenderingWidget()
 }
 
 
-
 void RenderingWidget::initializeGL()
 {
+    //p.beginNativePainting();
     initializeOpenGLFunctions();
-
+    
     human_control.initializeGL();
+    
     network_renderer.initializeGL();
-
+//p.endNativePainting();
     prepare_graphic_settings();
+    
 }
 
 
@@ -152,11 +155,37 @@ QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_re
 
 void RenderingWidget::paintGL()
 {
-    test::debug.profiler.start("RenderingWidget::paintGL");
+    //test::debug.profiler.start("RenderingWidget::paintGL");
+    p.begin(this);
+    p.setCompositionMode(QPainter::CompositionMode_Difference);
+    p.setPen(Qt::red);
+    /*p.drawLine(rect().topLeft(), rect().bottomRight()); 
+    p.drawText(100,50,"LOL");*/
+    p.end();
     
+    p.beginNativePainting();
+    glClear(GL_COLOR_BUFFER_BIT);
+
+
+    view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect, view_data.window_scale);
+    network_renderer.draw(view_data);
+
+    ////view_data.projection_matrix = get_projection_according_to_window(view_data.window_rect);
+    human_control.draw();
+    p.endNativePainting();
+    
+    
+
+    
+    //test::debug.profiler.stop("RenderingWidget::paintGL");
+}
+
+
+/*void RenderingWidget::paintEvent(QPaintEvent *event)
+{
+    test::debug.profiler.start("RenderingWidget::paintGL");
     QPainter painter;
     painter.begin(this);
- 
     painter.beginNativePainting();
     
     glClear(GL_COLOR_BUFFER_BIT);
@@ -167,15 +196,20 @@ void RenderingWidget::paintGL()
 
     //view_data.projection_matrix = get_projection_according_to_window(view_data.window_rect);
     human_control.draw();
-    painter.endNativePainting();
-    
     //painter.drawLine(10,10,1000,1000);
     //painter.drawText(50,50,"LOL");
-    painter.end();
-    
-    test::debug.profiler.stop("RenderingWidget::paintGL");
-}
 
+    painter.endNativePainting();
+    
+    test::debug.profiler.stop("RenderingWidget::paintGL");*/
+    
+    /*QPainter painter;
+    painter.begin(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    //helper->paint(&painter, event, elapsed);
+    painter.drawLine(10,10,1000,1000);
+    painter.end();
+}*/
 
 
 

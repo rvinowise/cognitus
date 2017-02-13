@@ -56,7 +56,7 @@ SOURCES += main.cpp \
     interface/View_data/View_data.cpp \
     interface/Units_disposer/Units_disposer.cpp \
     interface/Shared_drawn_data/Shared_drawn_data.cpp \
-    core/Network/Synchro_bends/Synchro_bends.cpp
+    core/Network/Synchro_bends/Synchro_bends.cpp 
 
 
 
@@ -107,7 +107,7 @@ HEADERS  += \
     interface/View_data/View_data.h \
     interface/Units_disposer/Units_disposer.h \
     interface/Shared_drawn_data/Shared_drawn_data.h \
-    core/Network/Synchro_bends/Synchro_bends.h
+    core/Network/Synchro_bends/Synchro_bends.h \
 
 
 
@@ -117,7 +117,8 @@ FORMS    += \
 
 INCLUDEPATH += \
     C:/ydisk/program/boost_1_62_0/ \
-    D:/program/glm/
+    D:/program/glm/ 
+
 
 #DISTFILES += \
 #    interface/shaders/sprite.frag \

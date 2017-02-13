@@ -96,6 +96,8 @@ void Human_control::initializeGL()
     shader_selection.setAttributeBuffer(0, GL_FLOAT, 0, 2, 2 * sizeof(GLfloat));
     shader_selection.bindAttributeLocation("vertex", 0);
     shader_selection.link();
+    selection_vertices.release();
+    vao_selection_rect.release();
 }
 
 void Human_control::mouse_press(QMouseEvent *event)
@@ -414,6 +416,11 @@ void Human_control::draw_selection_rect()
 
     glLineWidth(2);
     glDrawArrays(GL_LINE_LOOP, 0, 4);
+    
+    
+    shader_selection.release();
+    vao_selection_rect.release();
+    selection_vertices.release();
 }
 
 void Human_control::move_units(std::vector<Drawable_unit> &units, Point vector)
