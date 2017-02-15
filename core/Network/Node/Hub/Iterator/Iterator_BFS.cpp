@@ -37,18 +37,18 @@ void iterator_hub_BFS::continue_with_hub(Hub in_hub) {
     }
 }
 
-
-iterator_hub_BFS iterator_hub_BFS::operator++(int) {
-    (*this)++;
-
-}
-
 void iterator_hub_BFS::enqueue_for_iteration(Hub in_hub)
 {
     queue_hub.push(in_hub);
     ordered_hubs.emplace(in_hub);
 }
 
+
+iterator_hub_BFS iterator_hub_BFS::operator++(int) {
+    auto temp = *this;  
+    ++*this;  
+    return temp;
+}
 
 iterator_hub_BFS& iterator_hub_BFS::operator++()
 {
@@ -60,7 +60,6 @@ iterator_hub_BFS& iterator_hub_BFS::operator++()
     }
 
     return *this;
-
 }
 
 bool iterator_hub_BFS::is_end()

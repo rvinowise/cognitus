@@ -204,15 +204,15 @@ Bend Bend::add_next_bend()
     return newBend;
 }
 
-const std::vector<Bend>& Bend::get_array_of_prev_bends() const
+const std::vector<Bend>& Bend::prev_bends() const
 {
     return data->prev_bends;
 }
-std::vector<Bend> &Bend::get_array_of_next_bends()
+std::vector<Bend>& Bend::next_bends()
 {
     return data->next_bends;
 }
-const std::vector<Bend> &Bend::get_array_of_next_bends() const
+const std::vector<Bend>& Bend::next_bends() const
 {
     return data->next_bends;
 }

@@ -86,7 +86,7 @@ void Input::check_if_all_bends_of_input_iteration_have_the_same_previous_bends
 
     const size_t any_from_equal_ones = 0;
     const auto etalonPrevBends =
-            bendsOfIteration.at(any_from_equal_ones).get_array_of_prev_bends();
+            bendsOfIteration.at(any_from_equal_ones).next_bends();
     size_t etalonQtyPrevBends = etalonPrevBends.size();
 
     const size_t first_brother_bend_of_iteration = 1;
@@ -95,7 +95,7 @@ void Input::check_if_all_bends_of_input_iteration_have_the_same_previous_bends
          i_this_iteration_bend++)
     {
         auto prevBendsOfBrothers =
-                bendsOfIteration.at(i_this_iteration_bend).get_array_of_prev_bends();
+                bendsOfIteration.at(i_this_iteration_bend).next_bends();
         VERIFY(etalonPrevBends.size() == prevBendsOfBrothers.size());
 
         for (size_t i_prevBend = 0; i_prevBend < etalonQtyPrevBends; i_prevBend++) {
@@ -130,7 +130,7 @@ void Input::compare_inputted_array_with_nodes_in_network
 const std::vector<Bend>& Input::get_bends_of_previous_input_iteration(const std::vector<Bend>& bendsOfIteration)
 {
     size_t anyFromEqualOnes = 0;
-    return bendsOfIteration[anyFromEqualOnes].get_array_of_prev_bends();
+    return bendsOfIteration[anyFromEqualOnes].next_bends();
 }
 
 

@@ -24,15 +24,17 @@ int main(int argc, char *argv[])
     test::Input input(network);
     //input.init_input_characteristics();
 
-    /*QSurfaceFormat format;
+    QSurfaceFormat format;
     format.setSamples(4);
-    QSurfaceFormat::setDefaultFormat(format);*/
-    QSurfaceFormat  format;
-    format.setProfile(QSurfaceFormat::OpenGLContextProfile::CompatibilityProfile);
     QSurfaceFormat::setDefaultFormat(format);
+    /*QSurfaceFormat  format;
+    format.setProfile(QSurfaceFormat::OpenGLContextProfile::CompatibilityProfile);
+    format.setAlphaBufferSize(1);
+    QSurfaceFormat::setDefaultFormat(format);*/
 
     render::RenderingWidget renderingWindow(network);
     renderingWindow.setFormat(format);
+    //renderingWindow.setAutoFillBackground(true);
     renderingWindow.show();
 
     //InterfaceWindow interfaceWindow(network);

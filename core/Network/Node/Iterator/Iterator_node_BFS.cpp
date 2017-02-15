@@ -69,7 +69,9 @@ void iterator_node_BFS::enqueue_for_iteration(Node in_node)
 
 
 iterator_node_BFS iterator_node_BFS::operator++(int) {
-    (*this)++;
+    auto temp = *this;  
+    ++*this;  
+    return temp; 
 
 }
 

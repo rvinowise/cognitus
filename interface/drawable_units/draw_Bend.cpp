@@ -43,7 +43,7 @@ void Bend::prepare_draw_data(Shared_drawn_data &drawn_data) const
     auto& arrow_vectors = drawn_data.arrow_vectors;
     Color color_link = Color::fromRgbF(0,0,0,0.5);
     Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
-    for (const core::Bend next_bend: this->get_array_of_next_bends()) {
+    for (const core::Bend next_bend: this->next_bends()) {
         link_vertices.push_back(Vertex_colored(position(), color_begin));
         Color color_end = (next_bend.is_selected() ? /*color_link+*/selection_color : color_link);
         link_vertices.push_back(Vertex_colored(next_bend.position(), color_end));
@@ -55,7 +55,7 @@ void Bend::prepare_draw_data(Shared_drawn_data &drawn_data) const
 
 /*void Bend::prepare_draw_data_of_arrows(std::vector<Arrow_vector> &vectors) const
 {
-    for (core::Bend next_bend: this->get_array_of_next_bends()) {
+    for (core::Bend next_bend: this->next_bends()) {
         vertices_of_links.push_back(Vertex_colored(position(), color_begin));
         Color color_end = (next_bend.is_selected() ? color_link+selection_color : color_link);
         vertices_of_links.push_back(Vertex_colored(next_bend.position(), color_end));
@@ -82,7 +82,7 @@ void Bend::prepare_draw_data(Shared_drawn_data &drawn_data) const
     std::vector<Vertex_colored> vertices_of_links;
     Color color_link = Color::fromRgbF(0,0,0,0.5);
     Color color_begin = (is_selected() ? color_link+selection_color : color_link);
-    for (core::Bend next_bend: this->get_array_of_next_bends()) {
+    for (core::Bend next_bend: this->next_bends()) {
         vertices_of_links.push_back(Vertex_colored(position(), color_begin));
         Color color_end = (next_bend.is_selected() ? color_link+selection_color : color_link);
         vertices_of_links.push_back(Vertex_colored(next_bend.position(), color_end));

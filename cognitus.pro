@@ -56,7 +56,8 @@ SOURCES += main.cpp \
     interface/View_data/View_data.cpp \
     interface/Units_disposer/Units_disposer.cpp \
     interface/Shared_drawn_data/Shared_drawn_data.cpp \
-    core/Network/Synchro_bends/Synchro_bends.cpp 
+    core/Network/Synchro_bends/Synchro_bends.cpp \ 
+    core/Network/Node/Bend/Iterator/Iterator_bend_BFS.cpp
 
 
 
@@ -108,6 +109,7 @@ HEADERS  += \
     interface/Units_disposer/Units_disposer.h \
     interface/Shared_drawn_data/Shared_drawn_data.h \
     core/Network/Synchro_bends/Synchro_bends.h \
+    core/Network/Node/Bend/Iterator/Iterator_bend_BFS.h
 
 
 

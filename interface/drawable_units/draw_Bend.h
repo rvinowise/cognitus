@@ -26,8 +26,8 @@ public:
     int get_radius()const;
     static QOpenGLTexture* get_texture();
 
-    virtual std::vector<core::Bend>& get_array_of_next_bends() = 0;
-    virtual const std::vector<core::Bend>& get_array_of_next_bends()const = 0;
+    virtual std::vector<core::Bend>& next_bends() = 0;
+    virtual const std::vector<core::Bend>& next_bends()const = 0;
 
 private:
 

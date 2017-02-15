@@ -24,6 +24,7 @@ class Bend: public Linked
         ,public render::Bend
 #endif
 {
+friend struct std::hash<core::Bend>;
 public:
     Bend();
     Bend(Node &masterNode);
@@ -44,9 +45,9 @@ public:
     Bend get_prev_bend(std::size_t index) const;
     Bend get_next_bend(std::size_t index) const;
 
-    const std::vector<core::Bend>& get_array_of_prev_bends() const;
-    std::vector<core::Bend>& get_array_of_next_bends();
-    const std::vector<core::Bend>& get_array_of_next_bends() const;
+    const std::vector<core::Bend>& prev_bends() const;
+    std::vector<core::Bend>& next_bends();
+    const std::vector<core::Bend>& next_bends() const;
 
     std::size_t get_higher_nodes_qty() const;
     Node get_higher_node(std::size_t index) const;
@@ -74,4 +75,17 @@ private:
 };
 
 
+}
+
+
+namespace std {
+  template <> struct hash<core::Bend>
+  {
+    size_t operator()(const core::Bend& bend) const
+    {
+      return hash<std::size_t>()(
+                  reinterpret_cast<std::size_t>(bend.data)
+                  );
+    }
+  };
 }
