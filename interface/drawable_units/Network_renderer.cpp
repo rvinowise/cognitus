@@ -46,9 +46,6 @@ void Network_renderer::initializeGL()
     drawn_data.shaders.bindAttributeLocation("color",1);
     drawn_data.shaders.link();
     
-    drawn_data.buffer.release();
-    drawn_data.vao.release();
-    
 
 }
 
@@ -99,7 +96,6 @@ void Network_renderer::draw_unit_sprites(const View_data &view_data)
         }
     }
     
-    Rectangle::vao_rect.release();
 }
 
 void Network_renderer::draw_link_lines(const View_data &view_data)
@@ -133,9 +129,7 @@ void Network_renderer::draw_arrows(const View_data &view_data)
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
     drawn_data.arrow_vectors.clear();
-    
-    Arrow::vertex_buffer.release();
-    Arrow::vertex_array.release();
+
 }
 
 
