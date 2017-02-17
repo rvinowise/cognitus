@@ -27,7 +27,7 @@ class Bend: public Linked
 friend struct std::hash<core::Bend>;
 public:
     Bend();
-    Bend(Node &masterNode);
+    Bend(Node &masterNode, std::size_t index_in_master_node);
     Bend(const Bend& other);
     Bend(Bend&& other);
     ~Bend();
@@ -39,11 +39,14 @@ public:
     bool is_empty() const;
 
     Node& get_master_node();
+    const Node& get_master_node() const;
+    std::size_t get_index_in_master_node() const;
 
     std::size_t get_prev_links_qty() const;
     std::size_t get_next_links_qty() const;
     Bend get_prev_bend(std::size_t index) const;
     Bend get_next_bend(std::size_t index) const;
+    Bend get_prev_brother_bend() const;
 
     const std::vector<core::Bend>& prev_bends() const;
     std::vector<core::Bend>& next_bends();
@@ -59,11 +62,13 @@ public:
     void copy_prev_bends_from(Bend otherBend);
     void copy_next_bends_from(Bend otherBend);
     void attach_to_hub(Hub hub);
-    Bend add_next_bend();
     void connect_to(Bend& toBend);
 
     void deallocate_all_connected_entities_upward();
     void remove();
+    
+    bool executed_before_this(Bend in_bend) const;
+    bool executed_after_this(Bend in_bend) const;
 
 protected:
     void erase_next_bend(std::size_t index);

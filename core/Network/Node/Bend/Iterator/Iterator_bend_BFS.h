@@ -18,6 +18,7 @@ public:
         bend(other.bend), queue_bend(other.queue_bend){}
     
     bool is_end();
+    static Iterator_bend_BFS end();
     
     Iterator_bend_BFS& operator++();
     Iterator_bend_BFS operator++(int);
@@ -27,6 +28,8 @@ public:
     Bend operator->() { return bend; }
     bool operator==(const Iterator_bend_BFS& other) { return bend == other.bend; }
     bool operator!=(const Iterator_bend_BFS& other) { return bend != other.bend; }
+    
+    void end_loop_after_this_bend(Bend in_final_bend);
     
 private:
     enum class Direction
@@ -44,6 +47,7 @@ private:
     Bend bend;
     std::queue<Bend> queue_bend;
     std::unordered_set<Bend> ordered_bends;
+    Bend final_bend;
 };
 
 

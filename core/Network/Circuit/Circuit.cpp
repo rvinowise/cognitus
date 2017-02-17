@@ -4,20 +4,20 @@
 
 namespace core {
 
-bool LineOfCircuit::is_has_noise_bends_inside()
+bool Sequence_pair::is_has_noise_bends_inside()
 {
     if (
-            (start.get_next_links_qty() == 0) ||
-            (end.get_prev_links_qty() == 0)
+            (start().get_next_links_qty() == 0) ||
+            (end().get_prev_links_qty() == 0)
             )
     {
         throw("not connected Bends inside one Line_of_circuit");
     }
 
     if (
-            (start.get_next_links_qty() > 0) ||
-            (end.get_prev_links_qty() > 0) ||
-            (start.get_next_bend(0) != end.get_prev_bend(0))
+            (start().get_next_links_qty() > 0) ||
+            (end().get_prev_links_qty() > 0) ||
+            (start().get_next_bend(0) != end().get_prev_bend(0))
             )
     {
         return true;
@@ -34,41 +34,41 @@ Circuit::Circuit()
 
 Bend Circuit::getFirstStartBend()
 {
-    return firstLine.start;
+    return first_sequence.start();
 }
 Bend Circuit::getFirstEndBend()
 {
-    return firstLine.end;
+    return first_sequence.end();
 }
 Bend Circuit::getSecondStartBend()
 {
-    return secondLine.start;
+    return last_sequence.start();
 }
 Bend Circuit::getSecondEndBend()
 {
-    return secondLine.end;
+    return last_sequence.end();
 }
 
 void Circuit::putFirstStartBend(Bend bend)
 {
-    firstLine.start = bend;
+    first_sequence.start() = bend;
 }
 void Circuit::putFirstEndBend(Bend bend)
 {
-    firstLine.end = bend;
+    first_sequence.end() = bend;
 }
 void Circuit::putSecondStartBend(Bend bend)
 {
-    secondLine.start = bend;
+    last_sequence.start() = bend;
 }
 void Circuit::putSecondEndBend(Bend bend)
 {
-    secondLine.end = bend;
+    last_sequence.end() = bend;
 }
 
 bool Circuit::is_first_consequence_placed_inside_one_higher_node()
 {
-    if (firstLine.start.get_common_higher_nodes_with(firstLine.end).size() > 0)
+    if (first_sequence.start().get_common_higher_nodes_with(first_sequence.end()).size() > 0)
     {
         return true;
     }
@@ -93,14 +93,14 @@ bool Circuit::is_complete()
 
 
 
-LineOfCircuit Circuit::get_first_line()
+Sequence_pair Circuit::get_first_line()
 {
-    return firstLine;
+    return first_sequence;
 }
 
-LineOfCircuit Circuit::get_second_line()
+Sequence_pair Circuit::get_second_line()
 {
-    return secondLine;
+    return last_sequence;
 }
 
 

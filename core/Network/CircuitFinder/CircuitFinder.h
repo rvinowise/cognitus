@@ -11,7 +11,7 @@ class CircuitFinder
 public:
     CircuitFinder();
 
-    std::vector<Circuit> find_circuits_backward(const Bend& initialBend);
+    std::vector<Circuit> find_circuits_backward(const Bend& last_end_bend);
 };
 
 

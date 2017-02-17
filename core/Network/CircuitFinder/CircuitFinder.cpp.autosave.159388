@@ -1,0 +1,50 @@
+#include "CircuitFinder.h"
+
+#include "core/Network/Node/Node.h"
+
+namespace core {
+
+using std::size_t;
+
+CircuitFinder::CircuitFinder()
+{
+
+}
+
+std::vector<Circuit> CircuitFinder::find_circuits_backward(const Bend& last_end_bend)
+{
+    if (last_end_bend.get_prev_links_qty()==0) {
+        return std::vector<Circuit>();
+    }
+
+    static size_t search_area{100};
+    size_t current_search_deepening{0};
+    
+    Node end_master_node = last_end_bend.get_master_node();
+    
+    for (Bend prev_bend: last_end_bend.prev_bends()) {
+        for (Bend brother_bend: end_master_node.bends()) {
+            if (brother_bend == last_end_bend) {
+                continue;
+            }
+            for (Bend prev_bend_of_brother: brother_bend.prev_bends()) {
+                Node prev_master_node{prev_bend_of_brother.get_master_node()};
+                
+                if (end_) {
+                    
+                }
+            }
+        }
+        
+        if (++current_search_deepening == search_area) {
+            break;
+        }
+    }
+
+
+    //return std::vector<Circuit>();
+}
+
+
+
+}

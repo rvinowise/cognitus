@@ -27,24 +27,38 @@ void Iterator_bend_BFS::continue_forward_with_bend(Bend in_bend)
     enqueue_next_bends_of(in_bend);
 }
 
+
+inline bool is_not_enqueued_already(Bend in_bend) {
+    return !ordered_bends.count(in_bend);
+}
+
 void Iterator_bend_BFS::enqueue_prev_bends_of(Bend in_bend) {
     for(Bend bend: in_bend.prev_bends()) {
-        enqueue_for_iteration(bend);
+        if (
+                (is_not_enqueued_already(in_bend))&&
+                (!bend.executed_before_this(final_bend))
+                ){
+            enqueue_for_iteration(bend);
+        }
     }
 }
 void Iterator_bend_BFS::enqueue_next_bends_of(Bend in_bend) {
     for(Bend bend: in_bend.next_bends()) {
-        enqueue_for_iteration(bend);
+        if (
+                (is_not_enqueued_already(in_bend))&&
+                (!bend.executed_after_this(final_bend))
+                ){
+            enqueue_for_iteration(bend);
+        }
     }
 }
 
 
 void Iterator_bend_BFS::enqueue_for_iteration(Bend in_bend)
 {
-    if (!ordered_bends.count(in_bend)) {
-        queue_bend.push(in_bend);
-        ordered_bends.emplace(in_bend);
-    }
+    queue_bend.push(in_bend);
+    ordered_bends.emplace(in_bend);
+
 }
 
 void Iterator_bend_BFS::clear_memory_state()
@@ -86,6 +100,11 @@ Iterator_bend_BFS Iterator_bend_BFS::operator--(int) {
     return temp;
 }
 
+void Iterator_bend_BFS::end_loop_after_this_bend(Bend in_final_bend)
+{
+    final_bend = in_final_bend;
+}
+
 Iterator_bend_BFS& Iterator_bend_BFS::operator--()
 {
     if (direction!=Direction::backward) {
@@ -109,6 +128,11 @@ Iterator_bend_BFS& Iterator_bend_BFS::operator--()
 bool Iterator_bend_BFS::is_end()
 {
     return bend.is_empty();
+}
+
+Iterator_bend_BFS Iterator_bend_BFS::end()
+{
+    return Iterator_bend_BFS();
 }
 
 

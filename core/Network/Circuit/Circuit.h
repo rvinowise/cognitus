@@ -4,16 +4,23 @@
 
 namespace core {
 
-struct LineOfCircuit
+class Bend;
+
+struct Sequence_pair
 {
 public:
-    LineOfCircuit() {}
+    Sequence_pair() {}
+    Sequence_pair(Bend start_bend, Bend end_bend):
+        data{start_bend, end_bend}{}
     bool is_has_noise_bends_inside();
-    Bend get_start(){return start;}
-    Bend get_end() {return end;}
+    Bend start(){return data.start;}
+    Bend end() {return data.end;}
 
-    Bend start;
-    Bend end;
+private:
+    struct Data {
+        Bend start;
+        Bend end;
+    } data;
 };
 
 class Node;
@@ -39,11 +46,11 @@ public:
     bool is_complete();
 
 
-    LineOfCircuit get_first_line();
-    LineOfCircuit get_second_line();
+    Sequence_pair get_first_line();
+    Sequence_pair get_second_line();
 private:
-    LineOfCircuit firstLine;
-    LineOfCircuit secondLine;
+    Sequence_pair first_sequence;
+    Sequence_pair last_sequence;
 };
 
 }

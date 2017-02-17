@@ -129,12 +129,12 @@ std::vector<Bend>& Hub::get_arr_free_bends()
 }
 
 #ifdef debug_mode
-void Hub::letdown_new_bends_to_node(std::size_t qty, Node node)
+/*void Hub::letdown_new_bends_to_node(std::size_t qty, Node node)
 {
     for (std::size_t i_bend=0; i_bend<qty; i_bend++) {
         data->free_bends.push_back(Bend(node));
     }
-}
+}*/
 
 std::vector<Hub> Hub::get_hubs_leading_to_this()
 {

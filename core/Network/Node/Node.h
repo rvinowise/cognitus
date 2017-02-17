@@ -8,7 +8,7 @@
 
 namespace core {
 
-class LineOfCircuit;
+class Sequence_pair;
 class Circuit;
 class Bend;
 class Hub;
@@ -68,7 +68,7 @@ public:
 
 private:
    void carefully_preserve_initial_chain_because_of_its_context(
-           LineOfCircuit inLine, Hub first_chain_bend, Hub second_chain_bend);
+           Sequence_pair inLine, Hub first_chain_bend, Hub second_chain_bend);
 
 
     Node_data* data; 

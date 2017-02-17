@@ -107,21 +107,21 @@ Node::Node(Circuit inCircuit)
 }
 
 
-bool there_are_other_bends_inside_this_line(LineOfCircuit inLine) {
+bool there_are_other_bends_inside_this_line(Sequence_pair inLine) {
     return inLine.is_has_noise_bends_inside();
 }
 
-void delete_initial_chain_which_is_redundant_now(LineOfCircuit inChain) {
-    inChain.get_start().remove();
-    inChain.get_end().remove();
+void delete_initial_chain_which_is_redundant_now(Sequence_pair inChain) {
+    inChain.start().remove();
+    inChain.end().remove();
 }
 
 void Node::carefully_preserve_initial_chain_because_of_its_context(
-        LineOfCircuit inLine,
+        Sequence_pair inLine,
         Hub first_chain_bend,
         Hub second_chain_bend) {
-    inLine.get_start().attach_to_hub(first_chain_bend);
-    inLine.get_end().attach_to_hub(second_chain_bend);
+    inLine.start().attach_to_hub(first_chain_bend);
+    inLine.end().attach_to_hub(second_chain_bend);
 }
 
 void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
@@ -153,8 +153,7 @@ void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
 
 Bend Node::fire()
 {
-    Bend new_bend(*this);
-    return new_bend;
+    return add_bend();
 }
 
 
@@ -162,8 +161,9 @@ Bend Node::fire()
 
 Bend Node::add_bend()
 {
-    data->bends.push_back(Bend(*this));
-    return data->bends.back();
+    Bend new_bend(*this, bends().size());
+    bends().push_back(new_bend);
+    return new_bend;
 }
 
 void Node::append_bend(const Bend& bend)

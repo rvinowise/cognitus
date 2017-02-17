@@ -18,13 +18,13 @@ Bend::Bend():
 {
 }
 
-Bend::Bend(Node& masterNode)
+Bend::Bend(Node& masterNode, std::size_t index_in_master_node)
 {	
 #ifdef render_mode
     render::Bend::Drawable_unit::create_data();
 #endif
     data = new Bend_data(masterNode);
-    masterNode.append_bend(*this);
+    data->index_in_master_node = index_in_master_node;
 }
 
 Bend::Bend(const Bend& other)
@@ -98,6 +98,16 @@ void Bend::remove()
     }
 }
 
+bool Bend::executed_before_this(Bend in_bend) const
+{
+    return this->data->interval.end() < in_bend.interval.start();
+}
+
+bool Bend::executed_after_this(Bend in_bend) const
+{
+    return this->data->interval.start() > in_bend.interval.end();
+}
+
 
 
 
@@ -120,6 +130,15 @@ bool Bend::is_empty() const
 Node& Bend::get_master_node()
 {
     return data->master_node;
+}
+const Node& Bend::get_master_node() const
+{
+    return data->master_node;
+}
+
+std::size_t Bend::get_index_in_master_node() const
+{
+    return data->index_in_master_node;
 }
 
 
@@ -145,6 +164,16 @@ Bend Bend::get_next_bend(std::size_t index) const
         throw std::out_of_range("Bend::getNextBend gets wrong index of Bend");
     }
     return data->next_bends[index];
+}
+
+Bend Bend::get_prev_brother_bend() const
+{
+    Node master_node = get_master_node();
+    if (this->get_index_in_master_node() > 0) {
+        return master_node.bends()[get_index_in_master_node()-1];
+    }
+    return Bend();
+  
 }
 
 std::size_t Bend::get_higher_nodes_qty() const
@@ -197,12 +226,6 @@ void Bend::attach_to_hub(Hub hub)
     this->data->higher_hubs.push_back(hub);
 }
 
-Bend Bend::add_next_bend()
-{
-    Bend newBend(this->get_master_node());
-    data->next_bends.push_back(newBend);
-    return newBend;
-}
 
 const std::vector<Bend>& Bend::prev_bends() const
 {
