@@ -15,9 +15,9 @@ bool Sequence_pair::is_has_noise_bends_inside()
     }
 
     if (
-            (start().get_next_links_qty() > 0) ||
-            (end().get_prev_links_qty() > 0) ||
-            (start().get_next_bend(0) != end().get_prev_bend(0))
+            (start().get_next_links_qty() > 1) ||
+            (end().get_prev_links_qty() > 1) ||
+            (start().get_next_bend(0) != end())
             )
     {
         return true;

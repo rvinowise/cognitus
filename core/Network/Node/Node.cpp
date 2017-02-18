@@ -26,11 +26,11 @@ Node::Node():
 
 Node::Node(Circuit inCircuit)
 {
-    data = new Node_data;
-    incorporate_circuit_to_this_node(inCircuit);
 #ifdef render_mode
     render::Node::create_data();
 #endif
+    data = new Node_data;
+    incorporate_circuit_to_this_node(inCircuit);
 }
 
 Node::Node(const Node &other)
@@ -123,10 +123,10 @@ void delete_initial_chain_which_is_redundant_now(Sequence_pair inChain) {
 
 void Node::carefully_preserve_initial_chain_because_of_its_context(
         Sequence_pair inLine,
-        Hub first_chain_bend,
-        Hub second_chain_bend) {
-    inLine.start().attach_to_hub(first_chain_bend);
-    inLine.end().attach_to_hub(second_chain_bend);
+        Hub first_hub,
+        Hub second_hub) {
+    inLine.start().attach_to_hub(first_hub);
+    inLine.end().attach_to_hub(second_hub);
 }
 
 void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
@@ -145,13 +145,13 @@ void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
     Hub first_hub = this->add_hub();
     Hub second_hub = first_hub.add_next_hub();
 
-    if (there_are_other_bends_inside_this_line(inCircuit.get_first_line())) {
+    //if (there_are_other_bends_inside_this_line(inCircuit.get_first_line())) {
         carefully_preserve_initial_chain_because_of_its_context(
                     inCircuit.get_first_line(),
                     first_hub, second_hub);
-    } else {
-        delete_initial_chain_which_is_redundant_now(inCircuit.get_first_line());
-    }
+    //} else {
+    //    delete_initial_chain_which_is_redundant_now(inCircuit.get_first_line());
+    //}
 }
 
 Bend Node::add_bend_according_to_line(Sequence_pair in_line)

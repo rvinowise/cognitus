@@ -70,8 +70,7 @@ public:
 #endif
 
 private:
-   void carefully_preserve_initial_chain_because_of_its_context(
-           Sequence_pair inLine, Hub first_chain_bend, Hub second_chain_bend);
+   void carefully_preserve_initial_chain_because_of_its_context(Sequence_pair inLine, Hub first_hub, Hub second_hub);
 
 
     Node_data* data; 

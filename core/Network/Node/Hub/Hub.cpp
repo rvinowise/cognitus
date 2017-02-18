@@ -9,13 +9,12 @@
 namespace core {
 
 
-Hub_data::Hub_data():
-    Acquiring_handles()
+Hub_data::Hub_data()
 {
 }
 
 Hub_data::Hub_data(Node in_figure_node):
-    figure_node(in_figure_node), Acquiring_handles()
+    figure_node(in_figure_node)
 {
 
 }
@@ -42,22 +41,17 @@ Hub::Hub(const Hub &other)
 #endif
 {
     data = other.data;
-    if (data) {
-        data->connect_a_handle();
-    }
 }
 
 Hub::~Hub()
 {
-    if (data) {
-        data->disconnect_a_handle();
-    }
+
 }
 
 Hub Hub::new_empty()
 {
-    Hub figure;
-    return figure;
+    Hub hub;
+    return hub;
 }
 
 bool Hub::is_empty()
@@ -77,9 +71,6 @@ bool Hub::operator!=(const Hub &other)const
 Hub &Hub::operator=(const Hub &other)
 {
     data = other.data;
-    if (data) {
-        data->connect_a_handle();
-    }
 #ifdef render_mode
     render::Hub::Drawable_unit::data = other.render::Hub::Drawable_unit::data;
 #endif
@@ -98,6 +89,11 @@ std::size_t Hub::get_next_links_qty() const
 std::vector<Hub>& Hub::get_arr_next_hubs() const
 {
     return data->next_hubs;
+}
+
+std::vector<Bend>& Hub::bends() const
+{
+    return data->bends;
 }
 
 
@@ -126,7 +122,12 @@ void Hub::push_next_hub(Hub in_hub)
 
 std::vector<Bend>& Hub::get_arr_free_bends()
 {
-    return data->free_bends;
+    return data->bends;
+}
+
+void Hub::emplace_bend(Bend bend)
+{
+    data->bends.push_back(bend);
 }
 
 #ifdef debug_mode

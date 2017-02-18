@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     core::Network network;
     test::Network test_network(network);
     test_network.init_common_data_for_all_tests();
-    test::Input input(network);
+    //test::Input input(network);
     //input.bring_inputs_to_representation_of_network();
     //input.init_input_characteristics();
 

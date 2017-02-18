@@ -54,6 +54,14 @@ void Hub::prepare_draw_data(std::vector<Vertex_colored>& vertices) const
         Color color_end = (next_hub.is_selected() ? /*color_link+*/selection_color : color_link);
         vertices.emplace_back(Vertex_colored(hub_attachment, color_end));
     }
+
+    attachment = this->position() + Point(0, get_radius());
+    for (core::Bend bend: this->bends()) {
+        vertices.emplace_back(Vertex_colored(attachment, color_begin));
+        Point bend_attachment = bend.position() + Point(0,-bend.get_radius());
+        Color color_end = (bend.is_selected() ? /*color_link+*/selection_color : color_link);
+        vertices.emplace_back(Vertex_colored(bend_attachment, color_end));
+    }
 }
 
 

@@ -8,7 +8,7 @@ namespace core {
 
 class Node_data;
 
-class Hub_data: public Acquiring_handles
+class Hub_data
 {
 public:
     Hub_data();
@@ -19,7 +19,7 @@ public:
     std::vector<Hub> next_hubs;
 
     Node figure_node;
-    std::vector<Bend> free_bends;
+    std::vector<Bend> bends;
 };
 
 

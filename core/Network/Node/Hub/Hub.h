@@ -46,12 +46,14 @@ public:
     Hub get_next(size_t index);
     Hub get_prev(size_t index);
     std::vector<core::Hub>& get_arr_next_hubs() const;
+    std::vector<Bend>& bends() const;
 
     Node get_node_of_whole_figure();
     bool is_this_last_bend_in_chain() const;
     Hub add_next_hub();
     void push_next_hub(Hub in_hub);
     std::vector<Bend>& get_arr_free_bends();
+    void emplace_bend(Bend bend);
 
 #ifdef debug_mode
     void letdown_new_bends_to_node(size_t qty, Node node);

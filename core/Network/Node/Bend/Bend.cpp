@@ -240,18 +240,21 @@ void Bend::copy_prev_bends_from(Bend otherBend)
 {
     for(Bend bend: otherBend.data->prev_bends) {
         data->prev_bends.push_back(bend);
+        bend.data->next_bends.push_back(*this);
     }
 }
 void Bend::copy_next_bends_from(Bend otherBend)
 {
     for(Bend bend: otherBend.data->next_bends) {
         data->next_bends.push_back(bend);
+        bend.data->prev_bends.push_back(*this);
     }
 }
 
 void Bend::attach_to_hub(Hub hub)
 {
     this->data->higher_hubs.push_back(hub);
+    hub.emplace_bend(*this);
 }
 
 

@@ -152,26 +152,14 @@ QMatrix4x4 get_projection_according_to_observer_position(const QRectF& screen_re
 void RenderingWidget::paintGL()
 {
     test::debug.profiler.start("RenderingWidget::paintGL");
-    
-    
-    p.beginNativePainting();
-    glClear(GL_COLOR_BUFFER_BIT);
 
+    glClear(GL_COLOR_BUFFER_BIT);
 
     view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect, view_data.window_scale);
     network_renderer.draw(view_data);
 
     ////view_data.projection_matrix = get_projection_according_to_window(view_data.window_rect);
     human_control.draw();
-    p.endNativePainting();
-    
-    //p.begin(this);
-    //p.setCompositionMode(QPainter::CompositionMode_Source);
-    //p.setPen(Qt::red);
-    //p.drawLine(rect().topLeft(), rect().bottomRight()); 
-    //p.drawText(100,50,"LOL");
-    //p.end();
-
     
     test::debug.profiler.stop("RenderingWidget::paintGL");
 }

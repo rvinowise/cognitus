@@ -28,6 +28,7 @@ public:
     Color get_links_to_next_hubs_color() const;
 
     virtual std::vector<core::Hub>& get_arr_next_hubs() const = 0;
+    virtual std::vector<core::Bend>& bends() const = 0;
 
 private:
 
