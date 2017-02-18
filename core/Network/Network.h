@@ -32,7 +32,7 @@ public:
     Input input;
     Output output;
 
-    CircuitFinder circuitFinder;
+    CircuitFinder circuit_finder;
 
     void step();
 
@@ -45,12 +45,15 @@ public:
     iterator_node_BFS end();
     High_nodes high_nodes();
     typedef Node value_type;
+    
+    static Moment this_moment();
 
 private:
     friend class Input;
     friend class Output;
     void prepareOutputOnMotors();
 
+    void process_inputted_data();
     void prolongate_history_of_inputs();
     void find_and_memorize_patterns_of_inputs();
     void memorize_minimal_repeated_pattern(Circuit inCircuit);
@@ -62,6 +65,8 @@ private:
     std::vector<Node> node;
 
     std::thread* threadProcessInput;
+    
+    static Moment moment;
 };
 
 

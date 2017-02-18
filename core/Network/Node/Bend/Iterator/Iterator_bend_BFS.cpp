@@ -36,8 +36,11 @@ void Iterator_bend_BFS::enqueue_prev_bends_of(Bend in_bend) {
     for(Bend bend: in_bend.prev_bends()) {
         if (
                 (is_not_enqueued_already(in_bend))&&
-                (!bend.executed_before_this(final_bend))
-                ){
+                (
+                    (final_bend.is_empty())||
+                    (!bend.executed_before_this(final_bend))
+                 )
+            ){
             enqueue_for_iteration(bend);
         }
     }
@@ -46,8 +49,11 @@ void Iterator_bend_BFS::enqueue_next_bends_of(Bend in_bend) {
     for(Bend bend: in_bend.next_bends()) {
         if (
                 (is_not_enqueued_already(in_bend))&&
-                (!bend.executed_after_this(final_bend))
-                ){
+                (
+                    (final_bend.is_empty())||
+                    (!bend.executed_after_this(final_bend))
+                 )
+             ){
             enqueue_for_iteration(bend);
         }
     }

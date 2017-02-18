@@ -4,18 +4,29 @@
 #include "core/Network/Node/Node.h"
 #include "Bend_data.h"
 
+#include "core/Network/Circuit/Circuit.h"
+
+
 namespace core {
 
 Bend_data::Bend_data(Node& masterNode)
     :master_node(masterNode)
 {
-
+    
 }
 
 
 Bend::Bend():
     data{nullptr}
 {
+}
+
+Bend::Bend(Activation_interval interval)
+{
+#ifdef render_mode
+    render::Bend::Drawable_unit::create_data();
+#endif
+    set_interval(interval);
 }
 
 Bend::Bend(Node& masterNode, std::size_t index_in_master_node)
@@ -108,6 +119,16 @@ bool Bend::executed_after_this(Bend in_bend) const
     return this->data->interval.start > in_bend.data->interval.end;
 }
 
+Activation_interval Bend::interval()
+{
+    return data->interval;
+}
+
+void Bend::set_interval(Activation_interval in_interval)
+{
+    data->interval = in_interval;
+}
+
 
 
 
@@ -120,6 +141,13 @@ void Bend::connect_to(Bend &toBend)
 {
     this->data->next_bends.push_back(toBend);
     toBend.data->prev_bends.push_back(Bend(*this));
+}
+
+Bend Bend::incorporate_line_to_this_bend(Sequence_pair in_line)
+{
+    copy_prev_bends_from(in_line.start());
+    copy_next_bends_from(in_line.end());
+    set_interval(in_line.interval());
 }
 
 bool Bend::is_empty() const

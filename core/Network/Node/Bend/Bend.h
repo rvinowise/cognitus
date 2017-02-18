@@ -15,9 +15,29 @@
 
 namespace core {
 
+
+typedef std::size_t Moment;
+
+struct Activation_interval
+{
+public:
+    Activation_interval() = default;
+    Activation_interval(Moment moment):
+        start{moment}, end{moment}{}
+    Activation_interval(Moment in_start, Moment in_end):
+        start{in_start}, end{in_end}{}
+    Moment when_does_the_bend_becomes_active() {return start;}
+    Moment when_does_the_bend_turns_off() {return end;}
+
+    Moment start;
+    Moment end;
+};
+
+
 class Bend_data;
 class Node;
 class Hub;
+class Sequence_pair;
 
 class Bend: public Linked
 #ifdef render_mode
@@ -27,9 +47,12 @@ class Bend: public Linked
 friend struct std::hash<core::Bend>;
 public:
     Bend();
+    Bend(Activation_interval interval);
     Bend(Node &masterNode, std::size_t index_in_master_node);
+    Bend incorporate_line_to_this_bend(Sequence_pair in_line);
     Bend(const Bend& other);
     Bend(Bend&& other);
+    
     ~Bend();
     Bend& operator=(const Bend& other);
     bool operator==(const Bend& other) const;
@@ -63,12 +86,15 @@ public:
     void copy_next_bends_from(Bend otherBend);
     void attach_to_hub(Hub hub);
     void connect_to(Bend& toBend);
+    
 
     void deallocate_all_connected_entities_upward();
     void remove();
     
     bool executed_before_this(Bend in_bend) const;
     bool executed_after_this(Bend in_bend) const;
+    Activation_interval interval();
+    void set_interval(Activation_interval in_interval);
 
 protected:
     void erase_next_bend(std::size_t index);

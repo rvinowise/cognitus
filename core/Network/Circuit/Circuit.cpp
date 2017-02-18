@@ -25,6 +25,12 @@ bool Sequence_pair::is_has_noise_bends_inside()
     return false;
 }
 
+Activation_interval Sequence_pair::interval()
+{
+    return Activation_interval{
+        start().interval().start, end().interval().end};
+}
+
 
 
 Circuit::Circuit()

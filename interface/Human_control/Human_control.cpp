@@ -236,12 +236,12 @@ void Human_control::reset_changed()
 
 void Human_control::create_demo_units()
 {
-    network.input.initNodes(50);
+    network.input.initNodes(5);
     auto& input = network.input;
 
     std::for_each(input.begin(), input.end(), [](core::Node node){
         debug.profiler.start("create units");
-        node.generate_random_empty_figure(20);
+        //node.generate_random_empty_figure(20);
         debug.profiler.stop("create units");
 
     });

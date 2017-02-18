@@ -15,6 +15,7 @@ public:
     bool is_has_noise_bends_inside();
     Bend start(){return data.start;}
     Bend end() {return data.end;}
+    Activation_interval interval();
 
 private:
     struct Data {
@@ -31,6 +32,8 @@ public:
     Circuit();
     Circuit(const Circuit& other) = default;
     Circuit(Circuit&& other) = default;
+    Circuit(const Sequence_pair& prev_line, const Sequence_pair& last_line):
+        first_sequence{prev_line}, last_sequence{last_line}{}
 
     Bend getFirstStartBend();
     Bend getSecondStartBend();

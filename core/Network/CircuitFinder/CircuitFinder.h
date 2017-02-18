@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 #include "core/Network/Circuit/Circuit.h"
 
@@ -11,7 +12,10 @@ class CircuitFinder
 public:
     CircuitFinder();
 
-    std::vector<Circuit> find_circuits_backward(const Bend& last_end_bend);
+    Circuit find_last_circuit_backward(const Bend& last_end_bend);
+
+private:    
+    
 };
 
 

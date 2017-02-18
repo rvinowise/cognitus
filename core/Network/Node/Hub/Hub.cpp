@@ -30,7 +30,9 @@ Hub::Hub()
 Hub::Hub(Node in_figure_node)
 {
     data = new Hub_data(in_figure_node);
+#ifdef render_mode
     render::Hub::create_data();
+#endif
 }
 
 
@@ -108,10 +110,9 @@ bool Hub::is_this_last_bend_in_chain() const {
     return data->next_hubs.empty();
 }
 
-Hub Hub::add_next_bend()
+Hub Hub::add_next_hub()
 {
-    Hub hub;
-    hub.create_data();
+    Hub hub(this->get_node_of_whole_figure());
     data->next_hubs.push_back(hub);
     hub.data->prev_hubs.push_back(*this);
     return hub;

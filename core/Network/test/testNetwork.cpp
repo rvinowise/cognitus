@@ -49,16 +49,6 @@ void Network::construct_network_ignoring_interface()
         }
     }
 
-    Node node = network.input.getNode(0);
-    Bend bend = node.add_bend();
-
-
-    /*Node node1_lvl2();
-    Figure_bend figure1_node1_lvl2 = node1_lvl2.get_lower_chain_bend();
-    figure1_node1_lvl2.
-
-
-    Node node_2_lvl_2();*/
 
 }
 

@@ -33,6 +33,7 @@ public:
     Hub(Node in_figure_node);
     Hub(const Hub &other);
     ~Hub();
+    void create_data();
     static Hub new_empty();
     bool is_empty();
 
@@ -48,7 +49,7 @@ public:
 
     Node get_node_of_whole_figure();
     bool is_this_last_bend_in_chain() const;
-    Hub add_next_bend();
+    Hub add_next_hub();
     void push_next_hub(Hub in_hub);
     std::vector<Bend>& get_arr_free_bends();
 

@@ -46,8 +46,11 @@ void Input::bring_inputs_to_representation_of_network()
 
         network.prepare_to_new_input_iteration();
         firePreparedNodes();
-        network.prolongate_history_of_inputs();
+        //if (!network.get_last_active_bends().bends.empty()) {
+            network.process_inputted_data();
+        //}
 
+        
         waiterForChangeOfInput.worker_prepare_for_next_task();
     }
 }

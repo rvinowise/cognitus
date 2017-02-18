@@ -11,6 +11,7 @@ namespace core {
 class Sequence_pair;
 class Circuit;
 class Bend;
+class Activation_interval;
 class Hub;
 class Node_data;
 class iterator_hub_BFS;
@@ -39,14 +40,16 @@ public:
     bool operator==(const Node& other) const;
     bool operator!=(const Node& other) const;
     bool operator<(const Node& other) const;
-
+    
     void incorporate_circuit_to_this_node(Circuit inCircuit);
+    Bend add_bend_according_to_line(Sequence_pair in_line);
 
     virtual Bend fire();
 
     bool isLowest();
     Bend add_bend();
-    void append_bend(const Bend& bend);
+    Bend add_bend(Activation_interval interval);
+    
 
     Hub add_hub();
 

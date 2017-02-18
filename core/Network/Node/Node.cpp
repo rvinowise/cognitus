@@ -24,6 +24,14 @@ Node::Node():
 
 }
 
+Node::Node(Circuit inCircuit)
+{
+    data = new Node_data;
+    incorporate_circuit_to_this_node(inCircuit);
+#ifdef render_mode
+    render::Node::create_data();
+#endif
+}
 
 Node::Node(const Node &other)
 #ifdef render_mode
@@ -100,11 +108,8 @@ bool Node::operator<(const Node &other) const
 
 
 
-Node::Node(Circuit inCircuit)
-{
-    data = new Node_data;
-    incorporate_circuit_to_this_node(inCircuit);
-}
+
+
 
 
 bool there_are_other_bends_inside_this_line(Sequence_pair inLine) {
@@ -132,15 +137,13 @@ void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
     if (!inCircuit.is_complete()) {
         throw("trying to incorporate an _incomplete_ Circuit to Node");
     }
-    Bend firstHigherBend = this->add_bend();
-    firstHigherBend.copy_prev_bends_from(inCircuit.getFirstStartBend());
-    firstHigherBend.copy_next_bends_from(inCircuit.getFirstEndBend());
-    Bend secondHigherBend = this->add_bend();
-    secondHigherBend.copy_prev_bends_from(inCircuit.getSecondStartBend());
-    secondHigherBend.copy_next_bends_from(inCircuit.getSecondEndBend());
+    Bend firstHigherBend = add_bend_according_to_line(
+                inCircuit.get_first_line());
+    Bend secondHigherBend = add_bend_according_to_line(
+                inCircuit.get_second_line());
 
     Hub first_hub = this->add_hub();
-    Hub second_hub = first_hub.add_next_bend();
+    Hub second_hub = first_hub.add_next_hub();
 
     if (there_are_other_bends_inside_this_line(inCircuit.get_first_line())) {
         carefully_preserve_initial_chain_because_of_its_context(
@@ -151,11 +154,18 @@ void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
     }
 }
 
-Bend Node::fire()
+Bend Node::add_bend_according_to_line(Sequence_pair in_line)
 {
-    return add_bend();
+    Bend bend = add_bend();
+    bend.incorporate_line_to_this_bend(in_line);
+    
+    return bend;
 }
 
+Bend Node::fire()
+{
+    return add_bend(Network::this_moment());
+}
 
 
 
@@ -166,10 +176,14 @@ Bend Node::add_bend()
     return new_bend;
 }
 
-void Node::append_bend(const Bend& bend)
+Bend Node::add_bend(Activation_interval interval)
 {
-    data->bends.push_back(bend);
+    Bend new_bend(*this, bends().size());
+    new_bend.set_interval(interval);
+    bends().push_back(new_bend);
+    return new_bend;
 }
+
 
 std::vector<Hub>& Node::first_hubs()
 {

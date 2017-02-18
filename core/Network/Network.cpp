@@ -7,6 +7,7 @@
 namespace core {
 
 
+Moment Network::moment{Moment(0)};
 
 Network::Network():
     input(*this), output(*this)
@@ -67,6 +68,12 @@ High_nodes Network::high_nodes()
     high_hodes.iter_begin = iterator;
     return high_hodes;
 }
+
+Moment Network::this_moment()
+{
+    return moment;
+}
+
 iterator_node_BFS High_nodes::begin()
 {
     return iter_begin;
@@ -76,6 +83,19 @@ iterator_node_BFS High_nodes::end()
     return iterator_node_BFS();
 }
 
+
+void Network::process_inputted_data()
+{
+    prolongate_history_of_inputs();
+    
+    Bend new_bend = get_last_active_bends().bends.front();
+    Circuit new_circuit = circuit_finder.find_last_circuit_backward(new_bend);
+    if (new_circuit.is_complete()) {
+        Node high_node = Node(new_circuit);
+    }
+    
+    ++moment;
+}
 
 void Network::prolongate_history_of_inputs() {
     // incapsulate?
@@ -118,8 +138,10 @@ void Network::fire_node(Node& in_node)
 
 
 void Network::prepareOutputOnMotors() {
-
+    
 }
+
+
 
 
 
