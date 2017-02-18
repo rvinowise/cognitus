@@ -113,9 +113,9 @@ void Node::prepare_links_to_bends(std::vector<Vertex_colored>& vertices) const
     Color color_link = Color::fromRgbF(0,0,0,0.2);
     Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
     for (core::Bend bend: bends()) {
-        vertices.push_back(Vertex_colored(attachment, color_begin));
+        vertices.emplace_back(Vertex_colored(attachment, color_begin));
         Color color_end = (bend.is_selected() ? /*color_link+*/selection_color : color_link);
-        vertices.push_back(Vertex_colored(bend.position(), color_end));
+        vertices.emplace_back(Vertex_colored(bend.position(), color_end));
     }
 
 }
@@ -126,10 +126,10 @@ void Node::prepare_links_to_first_hubs(std::vector<Vertex_colored>& vertices) co
     Color color_link = Color::fromRgbF(0,0,0,0.5);
     Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
     for (core::Hub hub: first_hubs()) {
-        vertices.push_back(Vertex_colored(attachment, color_begin));
+        vertices.emplace_back(Vertex_colored(attachment, color_begin));
         Point hub_attachment = hub.position() + Point(0,-hub.get_radius()+1);
         Color color_end = (hub.is_selected() ? /*color_link+*/selection_color : color_link);
-        vertices.push_back(Vertex_colored(hub_attachment, color_end));
+        vertices.emplace_back(Vertex_colored(hub_attachment, color_end));
     }
 }
 

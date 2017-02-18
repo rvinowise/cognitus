@@ -22,15 +22,16 @@ int main(int argc, char *argv[])
     test::Network test_network(network);
     test_network.init_common_data_for_all_tests();
     test::Input input(network);
+    input.bring_inputs_to_representation_of_network();
     //input.init_input_characteristics();
 
-    render::RenderingWidget renderingWindow(network);
-    renderingWindow.show();
+    //render::RenderingWidget renderingWindow(network);
+    //renderingWindow.show();
 
     //InterfaceWindow interfaceWindow(network);
     //interfaceWindow.show();
 
-    return app.exec();
+    //return app.exec();
 
 
     //test_network.work_of_network();

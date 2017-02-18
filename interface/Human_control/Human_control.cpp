@@ -107,7 +107,7 @@ void Human_control::mouse_press(QMouseEvent *event)
         mouse_right_press(event);
     } else if (event->button()==Qt::MiddleButton) {
         mouse_state.middle = true;
-        current_action = move_screen;
+        current_action = Action::move_screen;
     }
 }
 
@@ -122,11 +122,11 @@ void Human_control::mouse_left_press(QMouseEvent *event)
             select_only_this(pressed_unit);
             set_changed();
         }
-        current_action = moving_units;
+        current_action = Action::moving_units;
     } else {
         selection.units.clear();
         select_only_this(selection.units);
-        current_action = selection_units;
+        current_action = Action::selection_units;
         selection.start = event->pos();//get_world_pos_by_screen_pos(event->pos(), view_data);
         selection.set_screen_rect(get_selection_rect_in_screen(), view_data);
         set_changed();
@@ -143,7 +143,7 @@ void Human_control::mouse_move(QMouseEvent *event)
     Point position_delta = Point(event->pos()) - mouse_state.position;
     Point world_position_delta = position_delta/view_data.window_scale;
 
-    if (current_action == selection_units) {
+    if (current_action == Action::selection_units) {
 
         selection.set_screen_rect(get_selection_rect_in_screen(), view_data);
         selection.units = get_units_inside_selection_rect(selection.world_rect);
@@ -152,7 +152,7 @@ void Human_control::mouse_move(QMouseEvent *event)
     } else if (current_action == Action::moving_units) {
         move_units(selection.units.all, world_position_delta);
         set_changed();
-    } else if (current_action == move_screen) {
+    } else if (current_action == Action::move_screen) {
         view_data.window_rect.translate(-position_delta.toPointF()/view_data.window_scale);
         set_changed();
     }
@@ -169,11 +169,11 @@ void Human_control::mouse_release(QMouseEvent *event)
     }
 
     if (
-            (current_action == move_screen) ||
-            (current_action == selection_units)
+            (current_action == Action::move_screen) ||
+            (current_action == Action::selection_units)
         )
     {
-        current_action = nothing;
+        current_action = Action::nothing;
         set_changed();
     }
 
@@ -380,27 +380,27 @@ void Human_control::select_only_this(Selection::Units& unit_to_select)
 
 void Human_control::draw()
 {
-    if (current_action == selection_units) {
+    if (current_action == Action::selection_units) {
         draw_selection_rect();
     }
 }
 
 void Human_control::draw_selection_rect()
 {
-    QVector<Vertex_point> vertices_of_selection;
+    std::vector<Vertex_point> vertices_of_selection;
     
-    vertices_of_selection.push_back(Vertex_point(selection.world_rect.topLeft()));
-        vertices_of_selection.push_back(
-                    Vertex_point(selection.world_rect.left(),
-                                 selection.world_rect.bottom()));
-        vertices_of_selection.push_back(selection.world_rect.bottomRight());
-        vertices_of_selection.push_back(
-                    Vertex_point(selection.world_rect.right(),
-                                 selection.world_rect.top()));
+    vertices_of_selection.emplace_back(Vertex_point(selection.world_rect.topLeft()));
+    vertices_of_selection.emplace_back(
+                Vertex_point(selection.world_rect.left(),
+                             selection.world_rect.bottom()));
+    vertices_of_selection.emplace_back(selection.world_rect.bottomRight());
+    vertices_of_selection.emplace_back(
+                Vertex_point(selection.world_rect.right(),
+                             selection.world_rect.top()));
     
     vao_selection_rect.bind();
     selection_vertices.bind();
-    selection_vertices.allocate(vertices_of_selection.constData(), vertices_of_selection.count() * sizeof(Vertex_point));
+    selection_vertices.allocate(vertices_of_selection.data(), vertices_of_selection.size() * sizeof(Vertex_point));
     shader_selection.bind();
 
     QMatrix4x4 matrix = view_data.projection_matrix;

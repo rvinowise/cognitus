@@ -130,7 +130,7 @@ void Input::compare_inputted_array_with_nodes_in_network
 const std::vector<Bend>& Input::get_bends_of_previous_input_iteration(const std::vector<Bend>& bendsOfIteration)
 {
     size_t anyFromEqualOnes = 0;
-    return bendsOfIteration[anyFromEqualOnes].next_bends();
+    return bendsOfIteration[anyFromEqualOnes].prev_bends();
 }
 
 

@@ -28,7 +28,7 @@ void Iterator_bend_BFS::continue_forward_with_bend(Bend in_bend)
 }
 
 
-inline bool is_not_enqueued_already(Bend in_bend) {
+inline bool Iterator_bend_BFS::is_not_enqueued_already(Bend in_bend) {
     return !ordered_bends.count(in_bend);
 }
 

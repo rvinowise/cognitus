@@ -100,12 +100,12 @@ void Bend::remove()
 
 bool Bend::executed_before_this(Bend in_bend) const
 {
-    return this->data->interval.end() < in_bend.interval.start();
+    return this->data->interval.end < in_bend.data->interval.start;
 }
 
 bool Bend::executed_after_this(Bend in_bend) const
 {
-    return this->data->interval.start() > in_bend.interval.end();
+    return this->data->interval.start > in_bend.data->interval.end;
 }
 
 

@@ -49,10 +49,10 @@ void Hub::prepare_draw_data(std::vector<Vertex_colored>& vertices) const
     Color color_link = Color::fromRgbF(0,0,0,0.5);
     Color color_begin = (is_selected() ? /*color_link+*/selection_color : color_link);
     for (core::Hub next_hub: this->get_arr_next_hubs()) {
-        vertices.push_back(Vertex_colored(attachment, color_begin));
+        vertices.emplace_back(Vertex_colored(attachment, color_begin));
         Point hub_attachment = next_hub.position() + Point(-next_hub.get_radius()+1,0);
         Color color_end = (next_hub.is_selected() ? /*color_link+*/selection_color : color_link);
-        vertices.push_back(Vertex_colored(hub_attachment, color_end));
+        vertices.emplace_back(Vertex_colored(hub_attachment, color_end));
     }
 }
 

@@ -41,6 +41,7 @@ private:
     void clear_memory_state();
     void continue_forward_with_bend(Bend in_bend);
     void continue_backward_with_bend(Bend in_bend);
+    inline bool is_not_enqueued_already(Bend in_bend);
     void enqueue_prev_bends_of(Bend in_bend);
     void enqueue_next_bends_of(Bend in_bend);
 

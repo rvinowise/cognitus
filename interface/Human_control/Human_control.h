@@ -53,7 +53,7 @@ struct Selection
     } units;
 };
 
-enum Action
+enum class Action
 {
     nothing,
     selection_units,
