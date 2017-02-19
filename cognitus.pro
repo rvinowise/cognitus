@@ -10,7 +10,7 @@ QT += widgets core gui network testlib opengl
 
 #CONFIG += c++11
 CONFIG += object_parallel_to_source
-DEFINES += test_itself debug_mode debug_msg_core render_mode
+DEFINES += test_itself debug_mode debug_msg_core rendering_mode
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -57,7 +57,8 @@ SOURCES += main.cpp \
     interface/Units_disposer/Units_disposer.cpp \
     interface/Shared_drawn_data/Shared_drawn_data.cpp \
     core/Network/Synchro_bends/Synchro_bends.cpp \ 
-    core/Network/Node/Bend/Iterator/Iterator_bend_BFS.cpp
+    core/Network/Node/Bend/Iterator/Iterator_bend_BFS.cpp \
+    interface/Text_drawer/Text_drawer.cpp
 
 
 
@@ -109,7 +110,8 @@ HEADERS  += \
     interface/Units_disposer/Units_disposer.h \
     interface/Shared_drawn_data/Shared_drawn_data.h \
     core/Network/Synchro_bends/Synchro_bends.h \
-    core/Network/Node/Bend/Iterator/Iterator_bend_BFS.h
+    core/Network/Node/Bend/Iterator/Iterator_bend_BFS.h \
+    interface/Text_drawer/Text_drawer.h
 
 
 
@@ -119,7 +121,9 @@ FORMS    += \
 
 INCLUDEPATH += \
     C:/ydisk/program/boost_1_62_0/ \
-    D:/program/glm/ 
+    D:/program/glm/ \
+    D:/program/cognitus/freetype-2.7.1/include
+
 
 
 #DISTFILES += \
@@ -142,3 +146,6 @@ DISTFILES += \
     interface/shaders/sprite.frag \
     interface/shaders/selection.vert \
     interface/shaders/sprite.vert
+
+
+

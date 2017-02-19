@@ -26,7 +26,7 @@ Node::Node():
 
 Node::Node(Circuit inCircuit)
 {
-#ifdef render_mode
+#ifdef rendering_mode
     render::Node::create_data();
 #endif
     data = new Node_data;
@@ -34,7 +34,7 @@ Node::Node(Circuit inCircuit)
 }
 
 Node::Node(const Node &other)
-#ifdef render_mode
+#ifdef rendering_mode
     :render::Node(other)
 #endif
 {
@@ -42,7 +42,7 @@ Node::Node(const Node &other)
 }
 
 Node::Node(Node &&other)
-#ifdef render_mode
+#ifdef rendering_mode
     :render::Node(std::move(other))
 #endif
 {
@@ -58,7 +58,7 @@ Node::~Node()
 void Node::create_data()
 {
     data = new Node_data();
-#ifdef render_mode
+#ifdef rendering_mode
     render::Node::Drawable_unit::create_data();
 #endif
 }
@@ -83,7 +83,7 @@ void Node::deallocate_with_all_connected_entities_upward()
 
 Node& Node::operator=(const Node &other)
 {
-#ifdef render_mode
+#ifdef rendering_mode
     render::Node::data = other.render::Node::data;
 #endif
     data = other.data;

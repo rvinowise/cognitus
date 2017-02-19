@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#ifdef render_mode
+#ifdef rendering_mode
 #include "interface/drawable_units/draw_Node.h"
 #endif
 
@@ -17,7 +17,7 @@ class Node_data;
 class iterator_hub_BFS;
 
 class Node
-#ifdef render_mode
+#ifdef rendering_mode
         :public render::Node
 #endif
 {

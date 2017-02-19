@@ -23,7 +23,7 @@ Bend::Bend():
 
 Bend::Bend(Activation_interval interval)
 {
-#ifdef render_mode
+#ifdef rendering_mode
     render::Bend::Drawable_unit::create_data();
 #endif
     set_interval(interval);
@@ -31,7 +31,7 @@ Bend::Bend(Activation_interval interval)
 
 Bend::Bend(Node& masterNode, std::size_t index_in_master_node)
 {	
-#ifdef render_mode
+#ifdef rendering_mode
     render::Bend::Drawable_unit::create_data();
 #endif
     data = new Bend_data(masterNode);
@@ -39,7 +39,7 @@ Bend::Bend(Node& masterNode, std::size_t index_in_master_node)
 }
 
 Bend::Bend(const Bend& other)
-#ifdef render_mode
+#ifdef rendering_mode
     :render::Bend(other)
 #endif
 {
@@ -47,7 +47,7 @@ Bend::Bend(const Bend& other)
 }
 
 Bend::Bend(Bend &&other)
-#ifdef render_mode
+#ifdef rendering_mode
     :render::Bend(std::move(other))
 #endif
 {
@@ -62,7 +62,7 @@ Bend::~Bend()
 
 Bend& Bend::operator=(const Bend &other)
 {
-#ifdef render_mode
+#ifdef rendering_mode
     render::Bend::data = other.render::Bend::data;
 #endif
     data = other.data;

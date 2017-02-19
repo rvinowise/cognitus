@@ -29,14 +29,14 @@ Hub::Hub()
 Hub::Hub(Node in_figure_node)
 {
     data = new Hub_data(in_figure_node);
-#ifdef render_mode
+#ifdef rendering_mode
     render::Hub::create_data();
 #endif
 }
 
 
 Hub::Hub(const Hub &other)
-#ifdef render_mode
+#ifdef rendering_mode
     :render::Hub(other)
 #endif
 {
@@ -71,7 +71,7 @@ bool Hub::operator!=(const Hub &other)const
 Hub &Hub::operator=(const Hub &other)
 {
     data = other.data;
-#ifdef render_mode
+#ifdef rendering_mode
     render::Hub::Drawable_unit::data = other.render::Hub::Drawable_unit::data;
 #endif
     return *this;

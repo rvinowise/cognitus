@@ -14,6 +14,7 @@
 #include "interface/primitives/Rectangle/Rectangle.h"
 #include "interface/drawable_units/Network_renderer.h"
 #include "interface/View_data/View_data.h"
+#include "interface/Text_drawer/Text_drawer.h"
 
 namespace core {
     class Network;
@@ -63,6 +64,7 @@ private:
     Human_control human_control;
     render::Network_renderer network_renderer;
     Units_disposer disposer;
+    Text_drawer text_drawer;
 
     core::Network& network;
 

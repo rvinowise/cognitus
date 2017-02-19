@@ -8,7 +8,7 @@
 #include "core/Network/Link/Linked.h"
 #include "core/auxiliary/Acquiring_handles/Acquiring_handles.h"
 
-#ifdef render_mode
+#ifdef rendering_mode
 #include "interface/drawable_units/draw_Bend.h"
 #endif
 
@@ -40,7 +40,7 @@ class Hub;
 class Sequence_pair;
 
 class Bend: public Linked
-#ifdef render_mode
+#ifdef rendering_mode
         ,public render::Bend
 #endif
 {

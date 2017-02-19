@@ -25,9 +25,6 @@ void fill_map_of_prev_nodes_and_bends(std::map<Node, Bend>& prev_nodes, Bend las
         
         prev_nodes[prev_bend.get_master_node()] = prev_bend;
       
-        /*if (++current_search_deepening == search_area) {
-            break;
-        }*/
     }
 }
 

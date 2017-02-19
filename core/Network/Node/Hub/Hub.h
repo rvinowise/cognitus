@@ -6,7 +6,7 @@
 
 #include "core/Network/Link/Linked.h"
 
-#ifdef render_mode
+#ifdef rendering_mode
 #include "interface/drawable_units/draw_Hub.h"
 #endif
 
@@ -23,7 +23,7 @@ class Hub_data;
 using std::size_t;
 
 class Hub: public Linked
-#ifdef render_mode
+#ifdef rendering_mode
         ,public render::Hub
 #endif
 {

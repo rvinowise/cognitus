@@ -45,9 +45,12 @@ void RenderingWidget::initializeGL()
     initializeOpenGLFunctions();
     
     human_control.initializeGL();
-    
     network_renderer.initializeGL();
+    text_drawer.initializeGL();
     prepare_graphic_settings();
+    
+    text_drawer.load_char_sequence_in_symbol_table("char_sequence.txt");
+    text_drawer.load_font("arial.bmp");
     
 }
 
@@ -160,6 +163,9 @@ void RenderingWidget::paintGL()
 
     ////view_data.projection_matrix = get_projection_according_to_window(view_data.window_rect);
     human_control.draw();
+    
+    view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect, view_data.window_scale);
+    text_drawer.write("lol");
     
     test::debug.profiler.stop("RenderingWidget::paintGL");
 }
