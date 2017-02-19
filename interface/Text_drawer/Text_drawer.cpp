@@ -27,60 +27,91 @@ void Text_drawer::load_font(QString file_name)
     QImage image(resource_path+"sprites/"+file_name);
     symbol_table = new QOpenGLTexture(image.mirrored());        
     
+    static const Point sprite_coordinates[4] = {
+          { -1, +1 }, { +1, +1}, { +1, -1},{ -1, -1}
+    };
+
     static Point char_rect{32,32};
     static size_t horizontal_qty{image.rect().width()/char_rect.x()};
     static size_t vertical_qty{image.rect().height()/char_rect.y()};
     
+    QPoint char_place_in_table{0,0};
     for (char symbol: char_sequence) {
         QOpenGLBuffer* char_buffer = new QOpenGLBuffer();
         symbol_vertices[symbol] = char_buffer;
-        char_buffer->allocate(vertices.data(), vertices.size()*sizeof(Vertex));
-        vertices.clear();
-    }
-    
-    static const GLfloat sprite_coordinates[4][2] = {
-          { -1, +1 }, { +1, +1}, { +1, -1},{ -1, -1}
-    };
-    
-    
-    image.rect();
-    //Rect symbol_rect_pixels();
-    
 
-    std::vector<Vertex> vertices;
 
-    vertices.push_back(Vertex{
-                           sprite_coordinates[0][0],
-                           sprite_coordinates[0][1],
-                           0.5,
-                           0.7
-                       });
+        static Point texture_offset{char_rect.x()/image.rect().width(),
+                                   char_rect.y()/image.rect().height()};
+        Point texture_bottom_left{
+            char_place_in_table.x()*texture_offset.x(),
+            (vertical_qty-char_place_in_table.y()-1)*texture_offset.y()
+        };
+        Point texture_upper_right{texture_bottom_left+texture_offset};
 
-    
-    
-    
-    symbol_vertices['a'] = new QOpenGLBuffer();
-    symbol_vertices['a']->allocate(vertices.data(), vertices.size()*sizeof(Vertex));
-    vertices.clear();
-    for (int j = 0; j < 4; ++j) {
-        vertices.push_back(Vertex{
-                               sprite_etalon_radius * sprite_coordinates[j][0],
-                               sprite_etalon_radius * sprite_coordinates[j][1],
-                               0.5,
-                               0.7
+
+        std::vector<Vertex> vertices;
+        /*vertices.push_back(Vertex{
+                               sprite_coordinates[0]*50,
+                               texture_bottom_left.x(),
+                               texture_bottom_left.y()
                            });
+        vertices.push_back(Vertex{
+                               sprite_coordinates[1]*50,
+                               texture_bottom_left.x()+texture_offset.x(),
+                               texture_bottom_left.y()
+                           });
+        vertices.push_back(Vertex{
+                               sprite_coordinates[2]*50,
+                               texture_bottom_left.x()+texture_offset.x(),
+                               texture_bottom_left.y()+texture_offset.y(),
+                           });
+        vertices.push_back(Vertex{
+                               sprite_coordinates[3]*50,
+                               texture_bottom_left.x(),
+                               texture_bottom_left.y()+texture_offset.y()
+                           });*/
+        vertices.push_back(Vertex{
+                               sprite_coordinates[0]*50,
+                               0,
+                               0
+                           });
+        vertices.push_back(Vertex{
+                               sprite_coordinates[1]*50,
+                               1,
+                               0
+                           });
+        vertices.push_back(Vertex{
+                               sprite_coordinates[2]*50,
+                               1,
+                               1,
+                           });
+        vertices.push_back(Vertex{
+                               sprite_coordinates[3]*50,
+                               0,
+                               1
+                           });
+        char_buffer->allocate(vertices.data(), vertices.size()*sizeof(Vertex));
+
+
+        ++char_place_in_table.rx();
+        if (char_place_in_table.x() >= horizontal_qty) {
+            ++char_place_in_table.ry();
+            char_place_in_table.setX(0);
+        }
     }
-    symbol_vertices['b'] = new QOpenGLBuffer();
-    symbol_vertices['b']->allocate(vertices.data(), vertices.size()*sizeof(Vertex));
+    
 }
 
 
 void Text_drawer::write(std::string string)
 {
-    symbol_vertices['a']->bind();
+    //
+    symbol_vertices['D']->bind();
     //Rectangle::vao_rect.bind();
     Sprite::shaders.bind();
     symbol_table->bind();
+
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 

@@ -17,7 +17,7 @@ Rectangle::Rectangle()
 
 void Rectangle::init()
 {
-    static const GLfloat sprite_coordinates[4][2] = {
+    static const Point sprite_coordinates[4] = {
           { -1, +1 }, { +1, +1}, { +1, -1},{ -1, -1}
     };
 
@@ -25,8 +25,7 @@ void Rectangle::init()
     QVector<Vertex> vertices;
     for (int j = 0; j < 4; ++j) {
         vertices.push_back(Vertex{
-                               sprite_etalon_radius * sprite_coordinates[j][0],
-                               sprite_etalon_radius * sprite_coordinates[j][1],
+                               sprite_etalon_radius * sprite_coordinates[j],
                                j == 2 || j == 1,
                                j == 2 || j == 3
                            });
