@@ -35,6 +35,7 @@ void Rectangle::init()
     vertex_buffer.create();
     vertex_buffer.bind();
     vertex_buffer.allocate(vertices.constData(), vertices.count() * sizeof(Vertex));
+    
 }
 
 QOpenGLShaderProgram Sprite::shaders{};

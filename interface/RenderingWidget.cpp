@@ -25,6 +25,7 @@ RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *pare
     QOpenGLWidget(parent),
     human_control(rendering_network, disposer, view_data),
     network_renderer(rendering_network, this),
+    text_drawer(view_data),
     clear_color(QColor(255,255,255))
 
 {
@@ -50,7 +51,7 @@ void RenderingWidget::initializeGL()
     prepare_graphic_settings();
     
     text_drawer.load_char_sequence_in_symbol_table("char_sequence.txt");
-    text_drawer.load_font("arial.bmp");
+    text_drawer.load_font("consolas.bmp");
     
 }
 
@@ -165,7 +166,8 @@ void RenderingWidget::paintGL()
     human_control.draw();
     
     view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect, view_data.window_scale);
-    text_drawer.write("lol");
+    view_data.projection_matrix.translate(400,200,0);
+    text_drawer.write("verte lapides in frumenta 123 456 789 0 lol",21,Color(0.1,0.9,0.9));
     
     test::debug.profiler.stop("RenderingWidget::paintGL");
 }
