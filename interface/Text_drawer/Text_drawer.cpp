@@ -42,8 +42,8 @@ void Text_drawer::initializeGL()
     shaders.bindAttributeLocation("tex_coord", 1);
     shaders.link();
     //shaders.setUniformValue("matrix", 0);
-    shaders.setUniformValue("texture", 1);
-    shaders.setUniformValue("color", 2);
+    //shaders.setUniformValue("texture", 1);
+    //shaders.setUniformValue("color", 2);
 }
 
 
@@ -136,8 +136,8 @@ void Text_drawer::write(std::string string, float in_size, Color in_color)
         letter.vao->bind();    
         
         shaders.setUniformValue("matrix", matrix);
-        shaders.setUniformValue("color", Color(1,0,0,0.5));
-        
+        shaders.setUniformValue("color", in_color);
+
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
         matrix.translate(QVector3D(letter.get_width(),0,0));
     }

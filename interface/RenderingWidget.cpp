@@ -167,7 +167,7 @@ void RenderingWidget::paintGL()
     
     view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect, view_data.window_scale);
     view_data.projection_matrix.translate(400,200,0);
-    text_drawer.write("verte lapides in frumenta 123 456 789 0 lol",21,Color(0.1,0.9,0.9));
+    text_drawer.write("verte lapides in frumenta 123 456 789 0 lol",21,Color::fromRgbF(1,0,0,0.9));
     
     test::debug.profiler.stop("RenderingWidget::paintGL");
 }

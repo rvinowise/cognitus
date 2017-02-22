@@ -3,6 +3,7 @@
 #include <QtCore>
 #include <QColor>
 #include <QVector2D>
+#include <QVector4D>
 
 namespace render {
 
@@ -34,6 +35,19 @@ public:
 
 using Rect = QRectF;
 using Color = QColor;
+
+/*class Color: public QColor
+{
+public:
+    Color(QColor in_color):QColor{in_color} {}
+    Color(float r, float g, float b, float a=1) {
+        this->fromRgbF(r,g,b,a);
+    }
+
+    QVector4D toVector() {
+        return QVector4D(redF(), greenF(), blueF(), alphaF());
+    }
+};*/
 
 
 
