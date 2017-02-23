@@ -12,8 +12,7 @@
 
 namespace core {
 
-Node_data::Node_data():
-    Acquiring_handles()
+Node_data::Node_data()
 {
 }
 
@@ -29,7 +28,7 @@ Node::Node(Circuit inCircuit)
 #ifdef rendering_mode
     render::Node::create_data();
 #endif
-    data = new Node_data;
+    data = new Node_data();
     incorporate_circuit_to_this_node(inCircuit);
 }
 
@@ -59,7 +58,7 @@ void Node::create_data()
 {
     data = new Node_data();
 #ifdef rendering_mode
-    render::Node::Drawable_unit::create_data();
+    render::Node::create_data();
 #endif
 }
 
@@ -143,7 +142,11 @@ void Node::incorporate_circuit_to_this_node(Circuit inCircuit)
                 inCircuit.get_second_line());
 
     Hub first_hub = this->add_hub();
+    first_hub.set_name(inCircuit.get_first_line().start().name());
     Hub second_hub = first_hub.add_next_hub();
+    second_hub.set_name(inCircuit.get_first_line().end().name());
+    
+    this->set_name(QString("%1%2").arg(first_hub.name()).arg(second_hub.name()));
 
     //if (there_are_other_bends_inside_this_line(inCircuit.get_first_line())) {
         carefully_preserve_initial_chain_because_of_its_context(

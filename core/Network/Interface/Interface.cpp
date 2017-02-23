@@ -20,6 +20,10 @@ void Interface::initNodes(std::size_t inQty) {
         newInterfaceNode.create_data();
         newInterfaceNode.set_index_in_interface_array(node.size());
         node.push_back(newInterfaceNode);
+        
+        static const std::size_t first_letter_index = 97;
+        char node_name{first_letter_index+ newInterfaceNode.get_index_in_interface_array()};
+        newInterfaceNode.set_name(QString(node_name));
     }
 }
 

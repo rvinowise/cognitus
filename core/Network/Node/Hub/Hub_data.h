@@ -2,7 +2,6 @@
 
 #include "core/Network/Node/Bend/Bend.h"
 #include "core/Network/Node/Node.h"
-#include "core/auxiliary/Acquiring_handles/Acquiring_handles.h"
 
 namespace core {
 

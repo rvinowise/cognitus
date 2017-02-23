@@ -14,7 +14,7 @@ public:
 
     std::vector<Bend> prev_bends;
     std::vector<Bend> next_bends;
-    Node& master_node;
+    Node master_node;
     std::size_t index_in_master_node;
     std::vector<Hub> higher_hubs;
     Activation_interval interval;

@@ -13,12 +13,12 @@ namespace render {
 
 
 
-Network_renderer::Network_renderer(
-        core::Network &in_network,
-        QPaintDevice* in_paint_device
+Network_renderer::Network_renderer(core::Network &in_network, View_data &in_view_data,
+        Text_drawer &in_text_drawer
         ):
     network{in_network},
-    paint_device{in_paint_device}
+    view_data{in_view_data},
+    text_drawer{in_text_drawer}
 {
 
 }
@@ -50,26 +50,64 @@ void Network_renderer::initializeGL()
 }
 
 
-void Network_renderer::draw(const View_data &view_data)
+void Network_renderer::draw()
 {
-    draw_unit_sprites(view_data);
-    draw_link_lines(view_data);
-    draw_arrows(view_data);
-    //draw_text_in_units(view_data);
+    draw_unit_sprites();
+    draw_link_lines();
+    draw_arrows();
+    draw_text_in_units();
 }
 
-void Network_renderer::draw_text_in_units(const View_data &view_data)
+void Network_renderer::draw_text_in_node(core::Node node) const
 {
-    static QPainter painter(paint_device);
-    painter.drawText(50,50,"LOL");
+    Matrix matrix{view_data.projection_matrix};
+    matrix.translate(node.position()+Point(0,node.radius+5));
+    text_drawer.set_matrix(matrix);
+    text_drawer.write(QString("%1").arg(node.name()), 15, Color(.2,.1,0,0));
+}
+void Network_renderer::draw_text_in_bend(core::Bend bend) const
+{
+    Matrix matrix{view_data.projection_matrix};
+    
+    if (bend.interval().start != bend.interval().end) {
+        matrix.translate(bend.position()+Point(-bend.radius*3,-bend.radius*3));
+        text_drawer.set_matrix(matrix);
+        text_drawer.write(QString("%1 %2").arg(bend.interval().start).arg(bend.interval().end), 15, Color(.6,.4,.1,0));
+    } else {
+        matrix.translate(bend.position()+Point(0,-bend.radius*3));
+        text_drawer.set_matrix(matrix);
+        text_drawer.write(QString::number(bend.interval().start), 15, Color(.6,.4,.1,0));
+    }
+    
+    matrix = view_data.projection_matrix;
+    matrix.translate(bend.position()+Point(0,bend.radius*3));
+    text_drawer.set_matrix(matrix);
+    text_drawer.write(QString("%1").arg(bend.get_master_node().name()), 15, Color(.2,.1,0,0));
+}
+void Network_renderer::draw_text_in_hub(core::Hub hub) const
+{
+    Matrix matrix{view_data.projection_matrix};
+
+    matrix = view_data.projection_matrix;
+    matrix.translate(hub.position()+Point(0,hub.radius*3));
+    text_drawer.set_matrix(matrix);
+    text_drawer.write(QString("%1").arg(hub.name()), 15, Color(.2,.1,0,0));
+}
+
+void Network_renderer::draw_text_in_units()const
+{
     for (core::Node node: network) {
+        draw_text_in_node(node);
         for (core::Bend bend: node.bends()) {
-            
+            draw_text_in_bend(bend);
+        }
+        for (core::Hub hub: node) {
+            draw_text_in_hub(hub);
         }
     }
 }
 
-void Network_renderer::draw_unit_sprites(const View_data &view_data)
+void Network_renderer::draw_unit_sprites()
 {
     Rectangle::vao_rect.bind();
     Sprite::shaders.bind();
@@ -78,6 +116,7 @@ void Network_renderer::draw_unit_sprites(const View_data &view_data)
         node.prepare_draw_data(drawn_data.vertices);
         node.prepare_shader_for_drawing(view_data.projection_matrix, sprite.shaders);
         sprite.draw();
+        
     }
     render::Bend::get_texture()->bind();
     for (core::Node node: network) {
@@ -98,7 +137,7 @@ void Network_renderer::draw_unit_sprites(const View_data &view_data)
     
 }
 
-void Network_renderer::draw_link_lines(const View_data &view_data)
+void Network_renderer::draw_link_lines()
 {
     drawn_data.vao.bind();
     drawn_data.buffer.bind();
@@ -114,7 +153,7 @@ void Network_renderer::draw_link_lines(const View_data &view_data)
 
 }
 
-void Network_renderer::draw_arrows(const View_data &view_data)
+void Network_renderer::draw_arrows()
 {
     Arrow::vertex_array.bind();
     Arrow::vertex_buffer.bind();

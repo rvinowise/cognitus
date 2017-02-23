@@ -19,7 +19,7 @@ Units_disposer::Units_disposer():
 void Units_disposer::dispose_interface_nodes(Input& input)
 {
     static Point start_position{500, 500};
-    static Point offset{Node::radius*3, 0};
+    static Point offset{Node::radius*8, 0};
     Point current_position{start_position};
     for (core::InterfaceNode node: input) {
         node.position() = current_position;

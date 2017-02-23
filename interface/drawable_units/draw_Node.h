@@ -39,8 +39,7 @@ public:
     void prepare_links_to_first_hubs(std::vector<Vertex_colored>& vertices) const;
 
     typedef Hub value_type;
-
-
+ 
 private:
 
     render::Bend& get_bend_in_margin();
@@ -54,6 +53,7 @@ private:
 
     virtual core::iterator_hub_BFS begin() = 0;
     virtual core::iterator_hub_BFS end() = 0;
+    
 };
 
 }

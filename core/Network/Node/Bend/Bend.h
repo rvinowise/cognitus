@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "core/Network/Link/Linked.h"
-#include "core/auxiliary/Acquiring_handles/Acquiring_handles.h"
 
 #ifdef rendering_mode
 #include "interface/drawable_units/draw_Bend.h"

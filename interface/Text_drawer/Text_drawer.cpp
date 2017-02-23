@@ -41,12 +41,31 @@ void Text_drawer::initializeGL()
     shaders.bindAttributeLocation("vertex", 0);
     shaders.bindAttributeLocation("tex_coord", 1);
     shaders.link();
-    //shaders.setUniformValue("matrix", 0);
-    //shaders.setUniformValue("texture", 1);
-    //shaders.setUniformValue("color", 2);
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 
+void Text_drawer::load_char_sequence_in_symbol_table(QString file_name)
+{
+    QFile file(resource_path+"sprites/"+file_name);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        throw_msg("load_char_sequence_in_symbol_table !file.open");
+    
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        char next_char;
+        in >> next_char;
+        char_sequence.push_back(next_char);
+    }
+    file.close();
+}
+
+void Text_drawer::set_matrix(Matrix in_matrix)
+{
+    given_matrix = in_matrix;
+}
 
 void Text_drawer::load_font(QString file_name)
 {
@@ -56,7 +75,7 @@ void Text_drawer::load_font(QString file_name)
     static Point char_rect{12,21};
     font_size = char_rect.y();
     static const Point sprite_coordinates[4] = {
-          { 0, char_rect.y() }, {char_rect}, { char_rect.x(), 0},{ 0, 0}
+          { -char_rect.x()/2, char_rect.y()/2 }, {char_rect/2}, { char_rect.x()/2, -char_rect.y()/2},{-char_rect.x()/2, -char_rect.y()/2}
     };
 
     static size_t horizontal_qty{image.rect().width()/char_rect.x()};
@@ -122,17 +141,27 @@ void Text_drawer::load_font(QString file_name)
     
 }
 
-void Text_drawer::write(std::string string, float in_size, Color in_color)
+
+void Text_drawer::write(QString string)
 {
-    QMatrix4x4 matrix{view_data.projection_matrix};
+    write(string, 10, Color::fromRgbF(0,0,0));
+}
+void Text_drawer::write(QString string, Color color)
+{
+    write(string, 10, color);
+}
+
+void Text_drawer::write(QString string, float in_size, Color in_color)
+{
+    QMatrix4x4 matrix{given_matrix};
     
     float nearest_font_size = font_size;
     float scaling = in_size / nearest_font_size;
     matrix.scale(scaling);
-    for (char next_char: string) {
+    for (const QChar& next_char: string) {
         symbol_table->bind();
         shaders.bind();
-        Letter& letter = letters[next_char];
+        Letter& letter = letters[next_char.toLatin1()];
         letter.vao->bind();    
         
         shaders.setUniformValue("matrix", matrix);
@@ -143,25 +172,6 @@ void Text_drawer::write(std::string string, float in_size, Color in_color)
     }
 }
 
-void Text_drawer::write(std::string string)
-{
-    write(string, 1, Color::fromRgbF(0,0,0));
-}
-
-void Text_drawer::load_char_sequence_in_symbol_table(QString file_name)
-{
-    QFile file(resource_path+"sprites/"+file_name);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        throw_msg("load_char_sequence_in_symbol_table !file.open");
-    
-    QTextStream in(&file);
-    while (!in.atEnd()) {
-        char next_char;
-        in >> next_char;
-        char_sequence.push_back(next_char);
-    }
-    file.close();
-}
 
 
 

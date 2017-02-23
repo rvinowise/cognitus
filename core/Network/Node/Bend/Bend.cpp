@@ -33,6 +33,7 @@ Bend::Bend(Node& masterNode, std::size_t index_in_master_node)
 {	
 #ifdef rendering_mode
     render::Bend::Drawable_unit::create_data();
+    set_name(masterNode.name());
 #endif
     data = new Bend_data(masterNode);
     data->index_in_master_node = index_in_master_node;

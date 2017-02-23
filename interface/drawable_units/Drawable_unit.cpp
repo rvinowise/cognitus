@@ -12,7 +12,8 @@ namespace render {
 using namespace pos_functions;
 
 Drawable_unit_data::Drawable_unit_data():
-    is_selected{false}
+    is_selected{false},
+    name{"0"}
 {
 
 }
@@ -42,6 +43,15 @@ Drawable_unit::~Drawable_unit()
 void Drawable_unit::create_data()
 {
     data = new Drawable_unit_data();
+}
+
+void Drawable_unit::set_name(QString in_name)
+{
+    data->name = in_name;
+}
+QString Drawable_unit::name() const
+{
+    return data->name;
 }
 
 bool Drawable_unit::operator==(const Drawable_unit& other) const

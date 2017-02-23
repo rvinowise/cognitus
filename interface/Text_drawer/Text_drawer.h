@@ -34,11 +34,15 @@ public:
     void load_font(QString in_path);
     void load_char_sequence_in_symbol_table(QString file_name);
     
-    void write(std::string string, float in_size, Color in_color);
-    void write(std::string in_text);
+    void set_matrix(Matrix in_matrix);
+    
+    void write(QString string, float in_size, Color in_color);
+    void write(QString string);
+    void write(QString string, Color color);
     
 private:
     View_data& view_data;
+    Matrix given_matrix;
     
     QOpenGLTexture* symbol_table;
     std::unordered_map<char,Letter> letters;
@@ -48,6 +52,7 @@ private:
     QOpenGLShaderProgram shaders;
     
     float font_size;
+    
 };
 
 

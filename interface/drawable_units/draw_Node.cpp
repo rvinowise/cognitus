@@ -23,6 +23,7 @@ Node::Node():
 
 Node::Node(const Node &other):
     Drawable_unit(other)
+  
 {
 }
 

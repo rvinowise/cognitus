@@ -28,6 +28,7 @@ public:
     Drawable_unit_data();
     Point position;
     bool is_selected;
+    QString name;
 };
 
 class Drawable_unit//: protected QOpenGLFunctions
@@ -45,6 +46,9 @@ public:
     Drawable_unit(Drawable_unit&& other);
     ~Drawable_unit();
     void create_data();
+    
+    void set_name(QString in_name);
+    QString name() const;
 
     bool operator==(const Drawable_unit& other)const;
     Drawable_unit& operator=(const Drawable_unit& other);
@@ -68,6 +72,7 @@ public:
     Point position() const;
 
     virtual int get_radius()const;
+    
 
 private:
     Drawable_unit_data* data;

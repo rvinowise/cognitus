@@ -24,7 +24,7 @@ RenderingWidget::RenderingWidget(core::Network& rendering_network, QWidget *pare
     network{rendering_network},
     QOpenGLWidget(parent),
     human_control(rendering_network, disposer, view_data),
-    network_renderer(rendering_network, this),
+    network_renderer(rendering_network, view_data, text_drawer),
     text_drawer(view_data),
     clear_color(QColor(255,255,255))
 
@@ -51,7 +51,7 @@ void RenderingWidget::initializeGL()
     prepare_graphic_settings();
     
     text_drawer.load_char_sequence_in_symbol_table("char_sequence.txt");
-    text_drawer.load_font("consolas.bmp");
+    text_drawer.load_font("consolas.png");
     
 }
 
@@ -160,14 +160,15 @@ void RenderingWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
 
     view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect, view_data.window_scale);
-    network_renderer.draw(view_data);
+    network_renderer.draw();
 
     ////view_data.projection_matrix = get_projection_according_to_window(view_data.window_rect);
     human_control.draw();
     
     view_data.projection_matrix = get_projection_according_to_observer_position(view_data.window_rect, view_data.window_scale);
     view_data.projection_matrix.translate(400,200,0);
-    text_drawer.write("verte lapides in frumenta 123 456 789 0 lol",21,Color::fromRgbF(1,0,0,0.9));
+    text_drawer.set_matrix(view_data.projection_matrix);
+    text_drawer.write("verte lapides in frumenta 123 456 789 0 lol",21,Color(1,0,0,0));
     
     test::debug.profiler.stop("RenderingWidget::paintGL");
 }

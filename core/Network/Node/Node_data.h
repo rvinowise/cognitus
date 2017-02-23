@@ -4,11 +4,10 @@
 
 #include "core/Network/Node/Bend/Bend.h"
 #include "core/Network/Node/Hub/Hub.h"
-#include "core/auxiliary/Acquiring_handles/Acquiring_handles.h"
 
 namespace core {
 
-class Node_data: public Acquiring_handles
+class Node_data
 {
 public:
     Node_data();

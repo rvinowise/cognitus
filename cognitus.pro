@@ -19,7 +19,6 @@ TEMPLATE = app
 #TEMPLATE=vcapp
 
 SOURCES += main.cpp \
-    core/auxiliary/Acquiring_handles/Acquiring_handles.cpp \
     core/Network/Circuit/Circuit.cpp \
     core/Network/CircuitFinder/test/testCircuitFinder.cpp \
     core/Network/CircuitFinder/CircuitFinder.cpp \
@@ -65,7 +64,6 @@ SOURCES += main.cpp \
 
 
 HEADERS  += \
-    core/auxiliary/Acquiring_handles/Acquiring_handles.h \
     core/Network/Circuit/Circuit.h \
     core/Network/CircuitFinder/test/testCircuitFinder.h \
     core/Network/CircuitFinder/CircuitFinder.h \
