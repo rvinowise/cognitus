@@ -74,6 +74,11 @@ void Iterator_bend_BFS::clear_memory_state()
 }
 
 
+void Iterator_bend_BFS::end_loop_after_this_bend(Bend in_final_bend)
+{
+    final_bend = in_final_bend;
+}
+
 
 Iterator_bend_BFS Iterator_bend_BFS::operator++(int) {
     auto temp = *this;  
@@ -100,15 +105,11 @@ Iterator_bend_BFS& Iterator_bend_BFS::operator++()
     return *this;
 }
 
+
 Iterator_bend_BFS Iterator_bend_BFS::operator--(int) {
     auto temp = *this;  
     --*this;  
     return temp;
-}
-
-void Iterator_bend_BFS::end_loop_after_this_bend(Bend in_final_bend)
-{
-    final_bend = in_final_bend;
 }
 
 Iterator_bend_BFS& Iterator_bend_BFS::operator--()
